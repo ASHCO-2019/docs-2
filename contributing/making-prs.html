@@ -898,18 +898,20 @@
                                 
                                 <h1 id="creating-and-sending-patches-">Creating and sending patches <!--TODO: (in the future: Making Pull Requests)--></h1>
 <!-- TODO: this will need to be updated in the future when we move to GitHub -->
+<h2 id="creating-a-patch">Creating a patch</h2>
+<p>To create a patch you need to first commit your changes and then export them to a patch file.</p>
+<p>With Mercurial:</p>
+<ul>
+<li><code>hg commit -m &apos;your commit message&apos;</code></li>
+<li><code>hg export &gt; /path/to/your/patch</code></li>
+</ul>
+<p>With Git, the process is similar, but you first need to add an alias to create Mercurial-style patches. Have a look at <a href="https://developer.mozilla.org/en-US/docs/Tools/Contributing#Creating_a_patch_to_check_in" target="_blank">the detailed documentation</a>.</p>
+<h2 id="commit-messags">Commit messags</h2>
+<p>Commit messages should follow the pattern <code>Bug 1234567 - change description. r=reviewer</code></p>
+<p>First is the bug number related to the patch. Then the description should explain what the patch changes. The last part is used to keep track of the reviewer for the patch.</p>
+<h2 id="submitting-a-patch">Submitting a patch</h2>
 <p>Once you have a patch file, add it as an attachment to the Bugzilla ticket you are working on and add the <code>feedback?</code> or <code>review?</code> flag depending on if you just want feedback and confirmation you&apos;re doing the right thing or if you think the patch is ready to land respectively. Read more about <a href="https://developer.mozilla.org/en-US/docs/Developer_Guide/How_to_Submit_a_Patch" target="_blank">how to submit a patch and the Bugzilla review cycle here</a>.</p>
 <p>You can also take a look at the <a href="code-reviews.html">Code Review Checklist</a> as it contains a list of checks that your reviewer is likely to go over when reviewing your code.</p>
-<h2 id="posting-patches-as-gists">Posting patches as gists</h2>
-<ul>
-<li>Install gist-cli: <code>npm install -g gist-cli</code></li>
-<li>In your bash profile add:<ul>
-<li>git: <code>alias gist-patch=&quot;git diff | gist -o -t patch&quot;</code></li>
-<li>hg: <code>alias gist-patch=&quot;hg diff | gist -o -t patch&quot;</code></li>
-</ul>
-</li>
-<li>Then go to a clean repo, modify the files, and run the command <code>gist-patch</code></li>
-</ul>
 
                                 
                                 </section>
@@ -953,7 +955,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Creating and sending patches","level":"1.3.2","depth":2,"next":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[]},"previous":{"title":"CSS","level":"1.3.1.2","depth":3,"path":"contributing/css.md","ref":"./contributing/css.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2017-06-21T10:41:40.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-21T10:41:43.832Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Creating and sending patches","level":"1.3.2","depth":2,"next":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[]},"previous":{"title":"CSS","level":"1.3.1.2","depth":3,"path":"contributing/css.md","ref":"./contributing/css.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2017-06-27T15:41:59.911Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-27T15:42:34.020Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
