@@ -1,0 +1,1475 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Writing efficient React code · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="../styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../tests/" />
+    
+    
+    <link rel="prev" href="performance.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../getting-started/">
+            
+                <a href="../getting-started/">
+            
+                    
+                    Getting started
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../getting-started/where-is-the-code.html">
+            
+                <a href="../getting-started/where-is-the-code.html">
+            
+                    
+                    Where is the code?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../getting-started/architecture-overview.html">
+            
+                <a href="../getting-started/architecture-overview.html">
+            
+                    
+                    Architecture overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../getting-started/build.html">
+            
+                <a href="../getting-started/build.html">
+            
+                    
+                    Set up to build DevTools
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="../getting-started/development-profiles.html">
+            
+                <a href="../getting-started/development-profiles.html">
+            
+                    
+                    Development profiles
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../contributing.html">
+            
+                <a href="../contributing.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="coding-standards.html">
+            
+                <a href="coding-standards.html">
+            
+                    
+                    Coding standards
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="javascript.html">
+            
+                <a href="javascript.html">
+            
+                    
+                    JavaScript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1.1" data-path="eslint.html">
+            
+                <a href="eslint.html">
+            
+                    
+                    ESLint
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="css.html">
+            
+                <a href="css.html">
+            
+                    
+                    CSS
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="making-prs.html">
+            
+                <a href="making-prs.html">
+            
+                    
+                    Creating and sending patches
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="code-reviews.html">
+            
+                <a href="code-reviews.html">
+            
+                    
+                    Code reviews
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="filing-good-bugs.html">
+            
+                <a href="filing-good-bugs.html">
+            
+                    
+                    Filing good bugs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="performance.html">
+            
+                <a href="performance.html">
+            
+                    
+                    Investigating performance issues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.6" data-path="react-performance-tips.html">
+            
+                <a href="react-performance-tips.html">
+            
+                    
+                    Writing efficient React code
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../tests/">
+            
+                <a href="../tests/">
+            
+                    
+                    Automated tests
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" >
+            
+                <span>
+            
+                    
+                    Running tests
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="../tests/xpcshell.html">
+            
+                <a href="../tests/xpcshell.html">
+            
+                    
+                    xpcshell
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.2" data-path="../tests/mochitest-chrome.html">
+            
+                <a href="../tests/mochitest-chrome.html">
+            
+                    
+                    Chrome mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.3" data-path="../tests/mochitest-devtools.html">
+            
+                <a href="../tests/mochitest-devtools.html">
+            
+                    
+                    DevTools mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../tests/writing-tests.html">
+            
+                <a href="../tests/writing-tests.html">
+            
+                    
+                    Writing tests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../tests/debugging-intermittents.html">
+            
+                <a href="../tests/debugging-intermittents.html">
+            
+                    
+                    Debugging intermittent failures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../tests/performance-tests.html">
+            
+                <a href="../tests/performance-tests.html">
+            
+                    
+                    Performance tests (DAMP)
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.4.1" data-path="../tests/writing-perf-tests.html">
+            
+                <a href="../tests/writing-perf-tests.html">
+            
+                    
+                    Writing a new test
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../bugs-issues.html">
+            
+                <a href="../bugs-issues.html">
+            
+                    
+                    Bugs and issue trackers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../files/">
+            
+                <a href="../files/">
+            
+                    
+                    Files and directories
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../files/adding-files.html">
+            
+                <a href="../files/adding-files.html">
+            
+                    
+                    Adding New Files
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../tools/tools.html">
+            
+                <a href="../tools/tools.html">
+            
+                    
+                    Tool Architectures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../tools/inspector.html">
+            
+                <a href="../tools/inspector.html">
+            
+                    
+                    Inspector
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="../tools/inspector-panel.html">
+            
+                <a href="../tools/inspector-panel.html">
+            
+                    
+                    Panel Architecture
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.2" data-path="../tools/highlighters.html">
+            
+                <a href="../tools/highlighters.html">
+            
+                    
+                    Highlighters
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../tools/memory-panel.html">
+            
+                <a href="../tools/memory-panel.html">
+            
+                    
+                    Memory
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="../tools/debugger-panel.html">
+            
+                <a href="../tools/debugger-panel.html">
+            
+                    
+                    Debugger
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="../tools/responsive-design-mode.html">
+            
+                <a href="../tools/responsive-design-mode.html">
+            
+                    
+                    Responsive Design Mode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="../tools/http-inspector.html">
+            
+                <a href="../tools/http-inspector.html">
+            
+                    
+                    HTTP Inspector
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="../tools/console-panel.html">
+            
+                <a href="../tools/console-panel.html">
+            
+                    
+                    Console
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../frontend/frontend.html">
+            
+                <a href="../frontend/frontend.html">
+            
+                    
+                    Frontend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../frontend/svgs.html">
+            
+                <a href="../frontend/svgs.html">
+            
+                    
+                    Panel SVGs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../frontend/react.html">
+            
+                <a href="../frontend/react.html">
+            
+                    
+                    React
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.2.1" data-path="../frontend/react-guidelines.html">
+            
+                <a href="../frontend/react-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="../frontend/redux.html">
+            
+                <a href="../frontend/redux.html">
+            
+                    
+                    Redux
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.3.1" data-path="../frontend/redux-guidelines.html">
+            
+                <a href="../frontend/redux-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="../frontend/telemetry.html">
+            
+                <a href="../frontend/telemetry.html">
+            
+                    
+                    Telemetry
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../backend/backend.html">
+            
+                <a href="../backend/backend.html">
+            
+                    
+                    Backend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../backend/protocol.html">
+            
+                <a href="../backend/protocol.html">
+            
+                    
+                    Remote Debugging Protocol
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../backend/client-api.html">
+            
+                <a href="../backend/client-api.html">
+            
+                    
+                    Client API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../backend/debugger-api.html">
+            
+                <a href="../backend/debugger-api.html">
+            
+                    
+                    Debugger API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../backend/backward-compatibility.html">
+            
+                <a href="../backend/backward-compatibility.html">
+            
+                    
+                    Backward Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" >
+            
+                <span>
+            
+                    
+                    Actors
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.5.1" data-path="../backend/actor-hierarchy.html">
+            
+                <a href="../backend/actor-hierarchy.html">
+            
+                    
+                    Actors Organization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5.2" data-path="../backend/actor-e10s-handling.html">
+            
+                <a href="../backend/actor-e10s-handling.html">
+            
+                    
+                    Handling Multi-Processes in Actors
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5.3" data-path="../backend/protocol.js.html">
+            
+                <a href="../backend/protocol.js.html">
+            
+                    
+                    Writing Actors With protocol.js
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5.4" data-path="../backend/actor-registration.html">
+            
+                <a href="../backend/actor-registration.html">
+            
+                    
+                    Registering A New Actor
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5.5" data-path="../backend/actor-best-practices.html">
+            
+                <a href="../backend/actor-best-practices.html">
+            
+                    
+                    Actor Best Practices
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../preferences.html">
+            
+                <a href="../preferences.html">
+            
+                    
+                    Preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Writing efficient React code</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="writing-efficient-react-code">Writing efficient React code</h1>
+<p>In this article we&apos;ll discuss about the various component types we can use, as
+well as discuss some tips to make your React application faster.</p>
+<h2 id="tldr-tips">TL;DR tips</h2>
+<ul>
+<li>Prefer props and state immutability and use <code>PureComponent</code> components as a default</li>
+<li>As a convention, the object reference should change <strong>if and only if</strong> the inner data
+changes.<ul>
+<li>Be careful to never use new instance of functions as props to a Component (it&apos;s fine to use
+them as props to a DOM element).</li>
+<li>Be careful to not update a reference if the inner data doesn&apos;t change.</li>
+</ul>
+</li>
+<li><a href="performance.html">Always measure before optimizing</a> to have a real impact on
+performance. And always measure <em>after</em> optimizing too, to prove your change
+had a real impact.</li>
+</ul>
+<h2 id="how-react-renders-normal-components">How React renders normal components</h2>
+<h3 id="whats-a-normal-component">What&apos;s a normal component?</h3>
+<p>As a start let&apos;s discuss about how React renders normal plain components, that
+don&apos;t use <code>shouldComponentUpdate</code>. What we call plain components here are either:</p>
+<ul>
+<li>classes that extend <a href="https://reactjs.org/docs/react-component.html" target="_blank"><code>Component</code></a><pre><code class="lang-jsx"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{this.props.content}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+}
+</code></pre>
+</li>
+<li>normal functions that take some <code>props</code> as parameter and return some JSX. We
+call these functions either Stateless Components or Functional Components.
+This is important to understand that these Stateless Components are <em>not</em>
+especially optimized in React.<pre><code class="lang-jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Application</span>(<span class="hljs-params">props</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{props.content}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+</code></pre>
+These functions are equivalent to classes extending <code>Component</code>. In
+the rest of the article we&apos;ll especially focus on the latter. Unless otherwise
+stated everything about classes extending <code>Component</code> is also true for
+Stateless/Functional Components.</li>
+</ul>
+<h4 id="notes-on-the-use-of-jsx">Notes on the use of JSX</h4>
+<p>Because we don&apos;t use a build step in mozilla-central yet, some of our
+tools don&apos;t use JSX and use <a href="https://reactjs.org/docs/react-api.html#createfactory" target="_blank">factories</a>
+instead:</p>
+<pre><code class="lang-javascript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Application</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  render() {
+    <span class="hljs-keyword">return</span> dom.div(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>.props.content);
+  }
+}
+</code></pre>
+<p>We&apos;ll use JSX in this documentation for more clarity but this is strictly
+equivalent. You can read more on <a href="https://reactjs.org/docs/react-without-jsx.html" target="_blank">React documentation</a>.</p>
+<h3 id="the-first-render">The first render</h3>
+<p>There&apos;s only one way to start a React application and trigger a first render:
+calling <code>ReactDOM.render</code>:</p>
+<pre><code class="lang-jsx">ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Application</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&apos;Hello World!&apos;</span>/&gt;</span>,
+  document.getElementById(&apos;root&apos;)
+);
+</span></code></pre>
+<p>React will call that component&apos;s <code>render</code> method, and then recursively call
+every child&apos;s <code>render</code> method, generating a rendering tree and then a virtual
+DOM tree. It will then render actual DOM elements to the specified container.</p>
+<h3 id="subsequent-rerenders">Subsequent rerenders</h3>
+<p>There are several ways to trigger a rerender:</p>
+<ol>
+<li>We call <code>ReactDOM.render</code> again with the same component.<pre><code class="lang-jsx">ReactDOM.render(
+ <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Application</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&apos;Good Bye, Cruel World!&apos;</span>/&gt;</span>,
+ document.getElementById(&apos;root&apos;)
+);
+</span></code></pre>
+</li>
+<li>One component&apos;s state changes, through the use of <a href="https://reactjs.org/docs/react-component.html#setstate" target="_blank"><code>setState</code></a>.
+If the application is using Redux, this is how Redux-connected components
+trigger updates too.</li>
+<li>One component&apos;s props change. But note that this can&apos;t happen by itself, this
+is always a consequence of the case 1 or 2 in one of its parents. So we&apos;ll
+ignore this case for this chapter.</li>
+</ol>
+<p>When one of these happens, just like the initial render, React will call that
+component&apos;s <code>render</code> method, and then recursively call every child&apos;s <code>render</code>
+method, but this time possibly with changed props compared to the previous render.</p>
+<p>These recursive calls produce a new rendering tree. That&apos;s where React uses an
+algorithm called <em>virtual diffing</em> or
+<a href="https://reactjs.org/docs/reconciliation.html" target="_blank"><em>reconciliation</em></a> to find the
+minimal set of updates to apply to the DOM. This is good because the less
+updates to the DOM the less work the browser has to do to reflow and repaint the
+application.</p>
+<h3 id="main-sources-of-performance-issues">Main sources of performance issues</h3>
+<p>From this explanation we can gather that the main performance issues can
+come from:</p>
+<ol>
+<li>triggering the render process <strong>too frequently</strong>,</li>
+<li><strong>expensive</strong> render methods,</li>
+<li>the reconciliation algorithm itself. The algorithm is O(n) according to React
+authors, which means the processing duration increases linearly with <strong>the number
+of elements in the tree</strong> we compare. So a larger tree means a longer time to
+process.</li>
+</ol>
+<p>Let&apos;s dive more into each one of these issues.</p>
+<h4 id="do-not-render-too-often">Do not render too often</h4>
+<p>A rerender will happen after calling <code>setState</code> to change the
+local state.</p>
+<p>Everything that&apos;s in the state should be used in <code>render</code>.
+Anything in the state that&apos;s not used in <code>render</code> shouldn&apos;t be in the state, but
+rather in an instance variable. This way you won&apos;t trigger an update if you
+change some internal state that you don&apos;t want to reflect in the UI.</p>
+<p>If you call <code>setState</code> from an event handler you may call it too often.
+This is usually not a problem because React is smart enough to merge close
+setState calls and trigger a rerender only once per frame. Yet if your <code>render</code>
+is expensive (see below as well) this could lead to problems and you may want to
+use <code>setTimeout</code> or other similar techniques to throttle the renders.</p>
+<h4 id="keep-render-methods-as-lean-as-possible">Keep <code>render</code> methods as lean as possible</h4>
+<p>When rendering a list, it&apos;s very common that we&apos;ll map this list to a list of
+components. This can be costly and we might want to cut this list in several
+chunks of items or to
+<a href="https://reactjs.org/docs/optimizing-performance.html#virtualize-long-lists" target="_blank">virtualize this list</a>.
+Although this is not always possible or easy.</p>
+<p>Do not do heavy computations in your <code>render</code> methods. Rather do them before
+setting the state, and set the state to the result of these computations.
+Ideally <code>render</code> should be a direct mirror of the component&apos;s props and state.</p>
+<p>Note that this rule also applies to the other methods called as part of the
+rendering process: <code>componentWillUpdate</code> and <code>componentDidUpdate</code>. In
+<code>componentDidUpdate</code> especially avoid synchronous reflows by getting DOM
+measurements, and do not call <code>setState</code> as this would trigger yet another
+update.</p>
+<h4 id="help-the-reconciliation-algorithm-be-efficient">Help the reconciliation algorithm be efficient</h4>
+<p>The smaller the tree is, the faster the algorithm is. So it&apos;s
+useful to limit the changes to a subtree of the full tree. Note that the use of
+<code>shouldComponentUpdate</code> or <code>PureComponent</code> alleviates this issue by cutting off
+entire branches from the rendering tree, <a href="shouldcomponentupdate-and-purecomponent-avoiding-renders-altogether">we discuss this in more details
+below</a>.</p>
+<p>Try to change the state as close as possible to where your UI
+should change (close in the components tree).</p>
+<p>Do not forget to <a href="https://reactjs.org/docs/lists-and-keys.html" target="_blank">set <code>key</code> attributes when rendering a list of
+things</a>, which shouldn&apos;t be the
+array&apos;s indices but something that identifies the item in a predictable, unique
+and stable way. This helps the algorithm
+a lot by skipping parts that likely haven&apos;t changed.</p>
+<h3 id="more-documentation">More documentation</h3>
+<p>The React documentation has <a href="https://reactjs.org/docs/implementation-notes.html#mounting-as-a-recursive-process" target="_blank">a very well documented page</a>
+explaining the whole render and rerender process.</p>
+<h2 id="shouldcomponentupdate-and-purecomponent-avoiding-renders-altogether"><code>shouldComponentUpdate</code> and <code>PureComponent</code>: avoiding renders altogether</h2>
+<p>React has an optimized algorithm to apply changes. But the fastest algorithm is
+an algorithm that isn&apos;t executed at all.</p>
+<p><a href="https://reactjs.org/docs/optimizing-performance.html#shouldcomponentupdate-in-action" target="_blank">React&apos;s own documentation about performance</a>
+is quite complete on this subject.</p>
+<h3 id="avoiding-rerenders-with-shouldcomponentupdate">Avoiding rerenders with <code>shouldComponentUpdate</code></h3>
+<p>As the first step of a rerender process, React calls your component&apos;s
+<a href="https://reactjs.org/docs/react-component.html#shouldcomponentupdate" target="_blank"><code>shouldComponentUpdate</code></a>
+method with 2 parameters: the new props, and the new
+state. If this method returns false, then React will skip the render process for this
+component, <strong>and its whole subtree</strong>.</p>
+<pre><code class="lang-jsx"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ComplexPanel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  <span class="hljs-comment">// Note: this syntax, new but supported by Babel, automatically binds the</span>
+  <span class="hljs-comment">// method with the object instance.</span>
+  onClick = () =&gt; {
+    <span class="hljs-keyword">this</span>.setState({ detailsOpen: <span class="hljs-literal">true</span> });
+  }
+
+  <span class="hljs-comment">// Return false to avoid a render</span>
+  shouldComponentUpdate(nextProps, nextState) {
+    <span class="hljs-comment">// Note: this works only if `summary` and `content` are primitive data</span>
+    <span class="hljs-comment">// (eg: string, number) or immutable data</span>
+    <span class="hljs-comment">// (keep reading to know more about this)</span>
+    <span class="hljs-keyword">return</span> nextProps.summary !== <span class="hljs-keyword">this</span>.props.summary
+      || nextProps.content !== <span class="hljs-keyword">this</span>.props.content
+      || nextState.detailsOpen !== <span class="hljs-keyword">this</span>.state.detailsOpen;
+  }
+
+  render() {
+    <span class="hljs-keyword">return</span> (
+      &lt;div&gt;
+        &lt;ComplexSummary summary={this.props.summary} onClick={this.onClick}/&gt;
+        {this.state.detailsOpen
+          ? &lt;ComplexContent content={this.props.content} /&gt;
+          : null}
+      &lt;/div&gt;
+    );
+  }
+}
+</code></pre>
+<p><strong>This is a very efficient way to improve your application speed</strong>, because this
+avoids everything: both calling render methods for this component <em>and</em> the
+whole subtree, and the reconciliation phase for this subtree.</p>
+<p>Note that just like the <code>render</code> method, <code>shouldComponentUpdate</code> is called once
+per render cycle, so it needs to be very lean and return as fast as possible. So
+it should execute some cheap comparisons only.</p>
+<h3 id="purecomponent-and-immutability"><code>PureComponent</code> and immutability</h3>
+<p>A very common implementation of <code>shouldComponentUpdate</code> is provided by React&apos;s
+<a href="https://reactjs.org/docs/react-api.html#reactpurecomponent" target="_blank"><code>PureComponent</code></a>:
+it will shallowly check the new props and states for reference equality.</p>
+<pre><code class="lang-jsx"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ComplexPanel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">PureComponent</span> </span>{
+  <span class="hljs-comment">// Note: this syntax, new but supported by Babel, automatically binds the</span>
+  <span class="hljs-comment">// method with the object instance.</span>
+  onClick = () =&gt; {
+    <span class="hljs-comment">// Running this repeatidly won&apos;t render more than once.</span>
+    <span class="hljs-keyword">this</span>.setState({ detailsOpen: <span class="hljs-literal">true</span> });
+  }
+
+  render() {
+    <span class="hljs-keyword">return</span> (
+      &lt;div&gt;
+        &lt;ComplexSummary summary={this.props.summary} onClick={this.onClick}/&gt;
+        {this.state.detailsOpen
+          ? &lt;ComplexContent content={this.props.content} /&gt;
+          : null}
+      &lt;/div&gt;
+    );
+  }
+}
+</code></pre>
+<p>This has a very important consequence: for non-primitive props and states, that is
+objects and arrays that can be mutated without changing the reference itself,
+PureComponent&apos;s inherited <code>shouldComponentUpdate</code> will yield wrong results and will
+skip renders where it shouldn&apos;t.</p>
+<p>So you&apos;re left with one of these two options:</p>
+<ul>
+<li>either implement your own <code>shouldComponentUpdate</code> in a <code>Component</code></li>
+<li>or (<strong>preferred</strong>) decide to make all your data structure immutable.</li>
+</ul>
+<p>The latter is recommended because:</p>
+<ul>
+<li>It&apos;s much simpler to think about.</li>
+<li>It&apos;s much faster to check for equality in <code>shouldComponentUpdate</code> and in other
+places (like Redux&apos; selectors).</li>
+</ul>
+<p>Note you could technically implement your own <code>shouldComponentUpdate</code> in a
+<code>PureComponent</code> but this is quite useless because <code>PureComponent</code> is nothing
+more than <code>Component</code> with a default implementation for <code>shouldComponentUpdate</code>.</p>
+<h3 id="about-immutability">About immutability</h3>
+<h4 id="what-it-doesnt-mean">What it doesn&apos;t mean</h4>
+<p>It doesn&apos;t mean you need to enforce the immutability using a library like
+<a href="https://github.com/facebook/immutable-js" target="_blank">Immutable</a>.</p>
+<h4 id="what-it-means">What it means</h4>
+<p>It means that once a structure exists, you don&apos;t mutate it.</p>
+<p><strong>Everytime some data changes, the object reference must change as well</strong>. This
+means a new object or a new array needs to be created. This gives the nice
+reverse guarantee: if the object reference has changed, the data has changed.</p>
+<p>It&apos;s good to go one step further to get a <strong>strict equivalence</strong>: if the data
+doesn&apos;t change, the object reference mustn&apos;t change. This isn&apos;t necessary for
+your app to work, but this is a lot better for performance as this avoids
+spurious rerenders.</p>
+<p>Keep reading to learn how to proceed.</p>
+<h4 id="keep-your-state-objects-simple">Keep your state objects simple</h4>
+<p>Updating your immutable state objects can be difficult if the objects used are
+complex. That&apos;s why it&apos;s a good idea to keep the objects simple, especially keep
+them not nested, so that you don&apos;t need to use a library like
+<a href="https://github.com/kolodny/immutability-helper" target="_blank">immutability-helper</a>,
+<a href="https://github.com/substantial/updeep" target="_blank">updeep</a>, or even
+<a href="https://github.com/facebook/immutable-js" target="_blank">Immutable</a>. Be especially careful
+with Immutable as it&apos;s easy to create performance problems by misusing
+its API.</p>
+<p>If you&apos;re using Redux (<a href="#a-few-words-about-redux">see below as well</a>) this
+advice applies to your individual reducers as well, even if Redux tools make
+it easy to have a nested/combined state.</p>
+<h4 id="how-to-update-an-object">How to update an object</h4>
+<p>Updating an object is quite easy.</p>
+<p>You must not change/add/delete inner properties directly:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Note that in the following examples we use the callback version</span>
+<span class="hljs-comment">// of `setState` everywhere, because we build the new state from</span>
+<span class="hljs-comment">// the current state.</span>
+
+<span class="hljs-comment">// Please don&apos;t do this as this will likely induce bugs.</span>
+<span class="hljs-keyword">this</span>.setState(state =&gt; {
+  state.stateObject.details = details;
+  <span class="hljs-keyword">return</span> state;
+});
+
+<span class="hljs-comment">// This is wrong too: `stateObject` is still mutated.</span>
+<span class="hljs-keyword">this</span>.setState(({ stateObject }) =&gt; {
+  stateObject.details = details;
+  <span class="hljs-keyword">return</span> { stateObject };
+});
+</code></pre>
+<p>Instead <strong>you must create a new object</strong> for this property. In this example
+we&apos;ll use the object spread operator, already implemented in Firefox, Chrome and Babel.</p>
+<p>However here we take care to return the same object if it doesn&apos;t need an update. The
+comparison happens inside the callback because it depends on the state as
+well. This is a good thing to do so that the shallow equality check doesn&apos;t
+return false if nothing changes.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Updating one property in the state</span>
+<span class="hljs-keyword">this</span>.setState(({ stateObject }) =&gt; ({
+  stateObject: stateObject.content === newContent
+    ? stateObject
+    : { ...stateObject, content: newContent },
+});
+
+<span class="hljs-comment">// This is very similar if 2 properties need an update:</span>
+<span class="hljs-keyword">this</span>.setState(({ stateObject1, stateObject2 }) =&gt; ({
+  stateObject1: stateObject1.content === newContent
+    ? stateObject1
+    : { ...stateObject1, content: newContent },
+  stateObject2: stateObject2.details === newDetails
+    ? stateObject2
+    : { ...stateObject2, details: newDetails },
+});
+
+<span class="hljs-comment">// Or if one of the properties needs to update 2 of it&apos;s own properties:</span>
+<span class="hljs-keyword">this</span>.setState(({ stateObject }) =&gt; ({
+  stateObject: stateObject.content === newContent &amp;&amp; stateObject.details === newDetails
+    ? stateObject
+    : { ...stateObject, content: newContent, details: newDetails },
+});
+</code></pre>
+<p>Note that this isn&apos;t about the returned <code>state</code> object, but its properties.
+The returned object is always merged into the current state, and React creates
+a new component&apos;s state object at each update cycle.</p>
+<h4 id="how-to-update-an-array">How to update an array</h4>
+<p>Updating an array is easy too.</p>
+<p>You must avoid methods that mutate the array like push/splice/pop/shift and you
+must not change directly an item.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Please don&apos;t do this as this will likely induce bugs.</span>
+<span class="hljs-keyword">this</span>.setState(({ stateArray }) =&gt; {
+  stateArray.push(newItem); <span class="hljs-comment">// This is wrong</span>
+  stateArray[<span class="hljs-number">1</span>] = newItem; <span class="hljs-comment">// This is wrong too</span>
+  <span class="hljs-keyword">return</span> { stateArray };
+});
+</code></pre>
+<p>Instead here again you need to <strong>create a new array instance</strong>.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Adding an element is easy.</span>
+<span class="hljs-keyword">this</span>.setState(({ stateArray }) =&gt; ({
+  stateArray: [...stateArray, newElement],
+}));
+
+<span class="hljs-keyword">this</span>.setState(({ stateArray }) =&gt; {
+  <span class="hljs-comment">// Removing an element is more involved.</span>
+  <span class="hljs-keyword">const</span> newArray = stateArray.filter(element =&gt; element !== removeElement);
+  <span class="hljs-comment">// or</span>
+  <span class="hljs-keyword">const</span> newArray = [...stateArray.slice(<span class="hljs-number">0</span>, index), ...stateArray.slice(index + <span class="hljs-number">1</span>)];
+  <span class="hljs-comment">// or do what you want on a new clone:</span>
+  <span class="hljs-keyword">const</span> newArray = stateArray.slice();
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-comment">// Because we want to keep the old array if removeElement isn&apos;t in the</span>
+    <span class="hljs-comment">// filtered array, we compare the lengths.</span>
+    <span class="hljs-comment">// We still start a render phase because we call `setState`, but thanks to</span>
+    <span class="hljs-comment">// PureComponent&apos;s shouldComponentUpdate implementation we won&apos;t actually render.</span>
+    stateArray: newArray.length === stateArray.length ? stateArray : newArray,
+  };
+
+  <span class="hljs-comment">// You can also return a falsy value to avoid the render cycle at all:</span>
+  <span class="hljs-keyword">return</span> newArray.length === stateArray.length
+    ? <span class="hljs-literal">null</span>
+    : { stateArray: newArray };
+});
+</code></pre>
+<h4 id="how-to-update-maps-and-sets">How to update Maps and Sets</h4>
+<p>The process is very similar for Maps and Sets. Here is a quick example:</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// For a Set</span>
+<span class="hljs-keyword">this</span>.setState(({ stateSet }) =&gt; {
+  <span class="hljs-keyword">if</span> (!stateSet.has(value)) {
+    stateSet = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(stateSet);
+    stateSet.add(value);
+  }
+  <span class="hljs-keyword">return</span> { stateSet };
+});
+
+<span class="hljs-comment">// For a Map</span>
+<span class="hljs-keyword">this</span>.setState(({ stateMap }) =&gt; {
+  <span class="hljs-keyword">if</span> (stateMap.get(key) !== value) {
+    stateMap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(stateMap);
+    stateMap.set(key, value);
+  }
+  <span class="hljs-keyword">return</span> { stateMap };
+}));
+</code></pre>
+<h4 id="how-to-update-primitive-values">How to update primitive values</h4>
+<p>Obviously, with primitive types like boolean, number or string, that are
+comparable with the operator <code>===</code>, it&apos;s much easier:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>.setState({
+  stateString: <span class="hljs-string">&quot;new string&quot;</span>,
+  stateNumber: <span class="hljs-number">42</span>,
+  stateBool: <span class="hljs-literal">false</span>,
+});
+</code></pre>
+<p>Note that we don&apos;t use the callback version of <code>setState</code> here. That&apos;s because
+for primitive values we don&apos;t need to use the previous state to generate a new
+state.</p>
+<h4 id="a-few-words-about-redux">A few words about Redux</h4>
+<p>When working with Redux, the rules stay the same, except all of this
+happens in your reducers instead of in your components. With Redux comes the
+function <a href="https://redux.js.org/docs/api/combineReducers.html" target="_blank"><code>combineReducers</code></a>
+that obeys all the rules we outlined before while making it possible to have a
+nested state.</p>
+<h3 id="shouldcomponentupdate-or-purecomponent"><code>shouldComponentUpdate</code> or <code>PureComponent</code>?</h3>
+<p>It is highly recommended to go the full <strong>PureComponent + immutability</strong> route,
+instead of writing custom <code>shouldComponentUpdate</code> implementations for
+components. This is more generic, more maintainable, less error-prone, faster.</p>
+<p>Of course all rules have exceptions and you&apos;re free to implement a
+<code>shouldComponentUpdate</code> method if you have specific cases to take care of.</p>
+<h3 id="some-gotchas-with-purecomponent">Some gotchas with <code>PureComponent</code></h3>
+<p>Because <code>PureComponent</code> shallowly checks props and state, you need to take care
+to not create a new reference for something that&apos;s otherwise identical. Some
+common cases are:</p>
+<ul>
+<li><p>Using a new instance for a prop at each render cycle. Especially, do not use
+a bound function or an anonymous function (both classic functions or
+arrow functions) as a prop:</p>
+<pre><code class="lang-jsx">render() {
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> <span class="hljs-attr">onUpdate</span>=<span class="hljs-string">{()</span> =&gt;</span> this.update()} /&gt;;
+}
+</span></code></pre>
+<p>Each time the <code>render</code> method runs, a new function will be created, and in
+<code>MyComponent</code>&apos;s <code>shouldComponentUpdate</code> the shallow check will always fail
+defeating its purpose.</p>
+</li>
+<li><p>Using another reference for the same data. One very common example is the empty
+array: if you use a new <code>[]</code> for each render, you won&apos;t skip render. A solution
+is to reuse a common instance. Be careful as this can very well be hidden
+within some complicated Redux reducers.</p>
+</li>
+<li><p>A similar issue can arise if you use sets or maps. If you add an element in a
+<code>Set</code> that&apos;s already in there, you don&apos;t need to return a new <code>Set</code> as it will be
+identical.</p>
+</li>
+<li><p>Be careful with array&apos;s methods, especially <code>map</code> or <code>filter</code>, as they always
+return a new array. So even with the same inputs (same input array, same
+function), you&apos;ll get a new output, even if it contains the same data. If
+you&apos;re using Redux, <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> is
+recommended.
+<a href="https://github.com/memoize-immutable/memoize-immutable" target="_blank">memoize-immutable</a>
+can be useful in some cases too.</p>
+</li>
+</ul>
+<h2 id="diagnosing-performance-issues-with-some-tooling">Diagnosing performance issues with some tooling</h2>
+<p><a href="performance.html#diagnosing-performance-issues-in-react-based-applications">You can read about it in the dedicated
+page</a>.</p>
+<h2 id="breaking-the-rules-always-measure-first">Breaking the rules: always measure first</h2>
+<p>You should generally follow these rules because they bring a consistent
+performance in most cases.</p>
+<p>However you may have specific cases that will need that you break the rules. In
+that case the first thing to do is to <strong>measure</strong> using a profiler so that you
+know where your problem are.</p>
+<p>Then and only then you can decide to break the rules by using some mutable state
+and/or custom <code>shouldComponentUpdate</code> implementation.</p>
+<p>And remember to measure again after you did your changes, to check and prove
+that your changes actually made an impact. Ideally you should always give links
+to profiles when requesting a review for a performance patch.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="performance.html" class="navigation navigation-prev " aria-label="Previous page: Investigating performance issues">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../tests/" class="navigation navigation-next " aria-label="Next page: Automated tests">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Writing efficient React code","level":"1.3.6","depth":2,"next":{"title":"Automated tests","level":"1.4","depth":1,"path":"tests/README.md","ref":"tests/README.md","articles":[{"title":"Running tests","level":"1.4.1","depth":2,"ref":"","articles":[{"title":"xpcshell","level":"1.4.1.1","depth":3,"path":"tests/xpcshell.md","ref":"tests/xpcshell.md","articles":[]},{"title":"Chrome mochitests","level":"1.4.1.2","depth":3,"path":"tests/mochitest-chrome.md","ref":"tests/mochitest-chrome.md","articles":[]},{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"path":"tests/mochitest-devtools.md","ref":"tests/mochitest-devtools.md","articles":[]}]},{"title":"Writing tests","level":"1.4.2","depth":2,"path":"tests/writing-tests.md","ref":"tests/writing-tests.md","articles":[]},{"title":"Debugging intermittent failures","level":"1.4.3","depth":2,"path":"tests/debugging-intermittents.md","ref":"tests/debugging-intermittents.md","articles":[]},{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"path":"tests/performance-tests.md","ref":"tests/performance-tests.md","articles":[{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]}]}]},"previous":{"title":"Investigating performance issues","level":"1.3.5","depth":2,"path":"contributing/performance.md","ref":"./contributing/performance.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/react-performance-tips.md","mtime":"2018-03-29T19:27:47.382Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-29T19:29:00.266Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
