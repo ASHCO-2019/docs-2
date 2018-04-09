@@ -965,14 +965,14 @@ focuses on internal architecture.</p>
 as well as in the Browser Console (for devtools and extension developers).</em></p>
 <p>The current implementation is based on React (no XUL) and some of the existing
 components should also be used when porting the Network panel to HTML.</p>
-<p>The entire feature lives in <code>devtools/client/webconsole/net</code> directory.</p>
+<p>The entire feature lives in <code>devtools/client/webconsole/old/net</code> directory.</p>
 <h2 id="general-description">General Description</h2>
 <p>The entry point for HTTP log inspection is represented by an expand/toggle
 button displayed in front a log in the Console panel:</p>
 <p>[+] GET XHR <a href="http://example.com/test-request.php" target="_blank">http://example.com/test-request.php</a></p>
 <p>Clicking on the [+] button expands the log and shows a body with HTTP details
 right underneath. The info body is rendered by:
-<code>devtools/client/webconsole/net/components/net-info-body</code> component.</p>
+<code>devtools/client/webconsole/old/net/components/net-info-body</code> component.</p>
 <p>HTTP info is divided into several tabs:</p>
 <ul>
 <li>Headers: send and received HTTP headers</li>
@@ -982,7 +982,7 @@ right underneath. The info body is rendered by:
 <li>Cookies: Sent and received cookies</li>
 </ul>
 <h3 id="headers-tab">Headers Tab</h3>
-<p><code>devtools/client/webconsole/net/components/headers-tab</code></p>
+<p><code>devtools/client/webconsole/old/net/components/headers-tab</code></p>
 <p>This is the default active tab and it&apos;s responsible for rendering
 HTTP headers. There are several header groups displayed:</p>
 <ul>
@@ -994,16 +994,16 @@ HTTP headers. There are several header groups displayed:</p>
 <p>Rendering of the groups is done by <code>NetInfoGroup</code> and <code>NetInfoGroupList</code>
 components.</p>
 <h3 id="params-tab">Params Tab</h3>
-<p><code>devtools/client/webconsole/net/components/params-tab</code></p>
+<p><code>devtools/client/webconsole/old/net/components/params-tab</code></p>
 <p>This tab is responsible for rendering URL parameters (query string)
 and it&apos;s available only if the URL has any parameters. Individual
 parameters are parsed and displayed as a list of name/value pairs.</p>
 <p>Rendering of the parameter list is done by <code>NetInfoParams</code> component.</p>
 <h3 id="post-tab">Post Tab</h3>
-<p><code>devtools/client/webconsole/net/components/post-tab</code></p>
+<p><code>devtools/client/webconsole/old/net/components/post-tab</code></p>
 <p>This tab is responsible for rendering HTTP post body sent to the server.</p>
 <h3 id="response-tab">Response Tab</h3>
-<p><code>devtools/client/webconsole/net/components/response-tab</code></p>
+<p><code>devtools/client/webconsole/old/net/components/response-tab</code></p>
 <p>This tab is responsible for rendering HTTP response body received from
 the server. There might be more than one section displaying the data
 depending on the current response mime-type.</p>
@@ -1017,9 +1017,9 @@ The response is decoded and displayed as an image.</li>
 <li>XML: this section is available in case of HTML/XML responses [3]
 The response is parsed using DOM parser and displayed as an XML markup.</li>
 </ul>
-<p>[1] List of JSON mime-types: <code>devtools/client/webconsole/net/utils/json</code>
-[2] List of Image mime-types: <code>devtools/client/webconsole/net/utils/json</code>
-[3] List of XML/HTML mime-types: <code>devtools/client/webconsole/net/utils/net</code></p>
+<p>[1] List of JSON mime-types: <code>devtools/client/webconsole/old/net/utils/json</code>
+[2] List of Image mime-types: <code>devtools/client/webconsole/old/net/utils/json</code>
+[3] List of XML/HTML mime-types: <code>devtools/client/webconsole/old/net/utils/net</code></p>
 <p>Response data are fetched using <code>LongStringClient</code>, so if data are bigger
 than defined limit (see `devtools/server/main.js - LONG_STRING_LENGTH)
 the user needs to manually require the rest (there is a link at the end
@@ -1027,7 +1027,7 @@ of incomplete response body that allows this).</p>
 <p>The raw section is collapsed by default if there is another presentation
 of the data.</p>
 <h3 id="cookies-tab">Cookies Tab</h3>
-<p><code>devtools/client/webconsole/net/components/cookies-tab</code></p>
+<p><code>devtools/client/webconsole/old/net/components/cookies-tab</code></p>
 <p>This tab is responsible for displaying HTTP cookies.
 There are two groups:</p>
 <ul>
@@ -1039,14 +1039,14 @@ components. The tab is not presented if there are no cookies.</p>
 <h2 id="architecture">Architecture</h2>
 <p>This sections describes internal architecture of HTTPi feature.</p>
 <h3 id="main">Main</h3>
-<p><code>devtools/client/webconsole/net/main</code></p>
+<p><code>devtools/client/webconsole/old/net/main</code></p>
 <p>This is the main module of HTTPi. It represents the root module
 of the feature.</p>
 <p>The main responsibility of the module is handling network logs forwarded
 from webconsole.js. This modules creates one instance of <code>NetRequest</code>
 object for every <code>NetworkEvent</code> (one object for every HTTP request).</p>
 <h3 id="netrequest">NetRequest</h3>
-<p><code>devtools/client/webconsole/net/net-request</code></p>
+<p><code>devtools/client/webconsole/old/net/net-request</code></p>
 <p>This module represents <code>NetRequest</code> object. It&apos;s the internal representation
 of HTTP request and it keeps its state. All HTTP details fetched dynamically
 from the backend are stored in this object.</p>
@@ -1061,10 +1061,10 @@ from the backend are stored in this object.</p>
 requesting HTTP details. <code>DataProvider</code> is the connection between <code>NetRequest</code>
 and the backend.</p>
 <h3 id="data-provider">Data Provider</h3>
-<p><code>devtools/client/webconsole/net/data-provider</code></p>
+<p><code>devtools/client/webconsole/old/net/data-provider</code></p>
 <p>This module is using webconsole client object to get data from the backend.</p>
 <h3 id="utils">Utils</h3>
-<p><code>devtools/client/webconsole/net/utils</code></p>
+<p><code>devtools/client/webconsole/old/net/utils</code></p>
 <p>There are also some utility modules implementing helper functions.
 The important thing is that these modules doesn&apos;t require any chrome
 privileges and are ready to run inside content scope.</p>
@@ -1134,7 +1134,7 @@ and response bodies.</li>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"HTTP Inspector","level":"1.7.5","depth":2,"next":{"title":"Console","level":"1.7.6","depth":2,"path":"tools/console-panel.md","ref":"tools/console-panel.md","articles":[]},"previous":{"title":"Responsive Design Mode","level":"1.7.4","depth":2,"path":"tools/responsive-design-mode.md","ref":"tools/responsive-design-mode.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/http-inspector.md","mtime":"2018-04-08T19:31:30.555Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-08T19:32:56.506Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"HTTP Inspector","level":"1.7.5","depth":2,"next":{"title":"Console","level":"1.7.6","depth":2,"path":"tools/console-panel.md","ref":"tools/console-panel.md","articles":[]},"previous":{"title":"Responsive Design Mode","level":"1.7.4","depth":2,"path":"tools/responsive-design-mode.md","ref":"tools/responsive-design-mode.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/http-inspector.md","mtime":"2018-04-09T19:31:30.208Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-09T19:32:32.640Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
