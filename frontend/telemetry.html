@@ -962,6 +962,7 @@
 <li>Adding the probe to Firefox</li>
 <li>Using Histograms.json probes in DevTools code</li>
 <li>Using Scalars.yaml probes in DevTools code</li>
+<li>Using Events.yaml probes in DevTools code for analysis in Amplitude.</li>
 <li>Getting approval from the data team</li>
 </ol>
 <h3 id="1-adding-the-probe-to-firefox">1. Adding the probe to Firefox</h3>
@@ -970,21 +971,23 @@
 <ul>
 <li><code>toolkit/components/telemetry/Histograms.json</code></li>
 <li><code>toolkit/components/telemetry/Scalars.yaml</code></li>
+<li><code>toolkit/components/telemetry/Events.yaml</code></li>
 </ul>
 <p>Scalars allow collection of simple values, like counts, booleans and strings and are to be used whenever possible instead of histograms.</p>
 <p>Histograms allow collection of multiple different values, but aggregate them into a number of buckets. Each bucket has a value range and a count of how many values we recorded.</p>
+<p>Events allow collection of a number of properties keyed to a category, method, object and value. Event telemetry helps us tell a story about how a user is interacting with the browser.</p>
 <p>Both scalars &amp; histograms allow recording by keys. This allows for more flexible, two-level data collection.</p>
-<h4 id="why-the-different-file-formats">Why the different file formats?</h4>
-<p>The data team chose YAML for <code>Scalars.yaml</code> because it is easy to write and provides a number of features not available in JSON including comments, extensible data types, relational anchors, strings without quotation marks, and mapping types preserving key order.</p>
+<h4 id="the-different-file-formats">The different file formats</h4>
+<p>The data team chose YAML for <code>Scalars.yaml</code> and <code>Events.yaml</code> because it is easy to write and provides a number of features not available in JSON including comments, extensible data types, relational anchors, strings without quotation marks, and mapping types preserving key order.</p>
 <p>While we previously used JSON for similar purposes in histograms.json, we have used YAML here because it allows for comments and is generally easier to write.</p>
-<p>When the YAML format is proven the data team are considering moving the histograms over to YAML format at some point.</p>
+<p>The data team are considering moving the histograms over to YAML format at some point.</p>
 <p>If it&apos;s the first time you add one of these, it&apos;s advised to follow the style of existing entries.</p>
 <p>New data types have been added over the years, so it&apos;s quite feasible that some of our probes are not the most suitable nowadays.</p>
-<p>There&apos;s more information about types (and telemetry in general) on <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Performance/Adding_a_new_Telemetry_probe" target="_blank">this page</a> and <a href="https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/collection/index.html" target="_blank">this other page</a>.</p>
+<p>There&apos;s more information about types (and telemetry in general) on <a href="https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/start/adding-a-new-probe.html" target="_blank">this page</a> and <a href="https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/collection/index.html" target="_blank">this other page</a>.</p>
 <p>And of course, in case of doubt, ask!</p>
 <h3 id="adding-probes-to-histogramsjson">Adding probes to <code>Histograms.json</code></h3>
 <p>Our entries are prefixed with <code>DEVTOOLS_</code>. For example:</p>
-<pre><code class="lang-javascript">  <span class="hljs-string">&quot;DEVTOOLS_DOM_OPENED_COUNT&quot;</span>: {
+<pre><code class="lang-json">  <span class="hljs-string">&quot;DEVTOOLS_DOM_OPENED_COUNT&quot;</span>: {
     <span class="hljs-string">&quot;alert_emails&quot;</span>: [<span class="hljs-string">&quot;dev-developer-tools@lists.mozilla.org&quot;</span>],
     <span class="hljs-string">&quot;expires_in_version&quot;</span>: <span class="hljs-string">&quot;never&quot;</span>,
     <span class="hljs-string">&quot;kind&quot;</span>: <span class="hljs-string">&quot;count&quot;</span>,
@@ -1005,60 +1008,78 @@
 <p>There are different types of probes you can use. These are specified by the <code>kind</code> field. Normally we use <code>count</code> for counting how many times the tools are opened, and <code>exponential</code> for how many times a panel is active.</p>
 <h3 id="adding-probes-to-scalarsyaml">Adding probes to <code>Scalars.yaml</code></h3>
 <p>Our entries are prefixed with <code>devtools.</code>. For example:</p>
-<pre><code class="lang-javascript">devtools.toolbar.eyedropper:
-  opened:
-    bug_numbers:
-      - <span class="hljs-number">1247985</span>
-      - <span class="hljs-number">1352115</span>
-    description: <span class="hljs-built_in">Number</span> <span class="hljs-keyword">of</span> times the DevTools Eyedropper has been opened via the inspector toolbar.
-    expires: never
-    kind: uint
-    notification_emails:
-      - dev-developer-tools@lists.mozilla.org
-    release_channel_collection: opt-out
-    record_in_processes:
-      - <span class="hljs-string">&apos;main&apos;</span>
+<pre><code class="lang-yaml">devtools.toolbar.eyedropper:
+<span class="hljs-attr">  opened:</span>
+<span class="hljs-attr">    bug_numbers:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">1247985</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">1352115</span>
+<span class="hljs-attr">    description:</span> Number of times the DevTools Eyedropper has been opened via the inspector toolbar.
+<span class="hljs-attr">    expires:</span> never
+<span class="hljs-attr">    kind:</span> uint
+<span class="hljs-attr">    notification_emails:</span>
+<span class="hljs-bullet">      -</span> dev-developer-tools@lists.mozilla.org
+<span class="hljs-attr">    release_channel_collection:</span> opt-out
+<span class="hljs-attr">    record_in_processes:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-string">&apos;main&apos;</span>
 
 devtools.copy.unique.css.selector:
-  opened:
-    bug_numbers:
-      - <span class="hljs-number">1323700</span>
-      - <span class="hljs-number">1352115</span>
-    description: <span class="hljs-built_in">Number</span> <span class="hljs-keyword">of</span> times the DevTools copy unique CSS selector has been used.
-    expires: <span class="hljs-string">&quot;57&quot;</span>
-    kind: uint
-    notification_emails:
-      - dev-developer-tools@lists.mozilla.org
-    release_channel_collection: opt-out
-    record_in_processes:
-      - <span class="hljs-string">&apos;main&apos;</span>
+<span class="hljs-attr">  opened:</span>
+<span class="hljs-attr">    bug_numbers:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">1323700</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">1352115</span>
+<span class="hljs-attr">    description:</span> Number of times the DevTools copy unique CSS selector has been used.
+<span class="hljs-attr">    expires:</span> <span class="hljs-string">&quot;57&quot;</span>
+<span class="hljs-attr">    kind:</span> uint
+<span class="hljs-attr">    notification_emails:</span>
+<span class="hljs-bullet">      -</span> dev-developer-tools@lists.mozilla.org
+<span class="hljs-attr">    release_channel_collection:</span> opt-out
+<span class="hljs-attr">    record_in_processes:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-string">&apos;main&apos;</span>
+</code></pre>
+<h3 id="adding-probes-to-eventsyaml">Adding probes to <code>Events.yaml</code></h3>
+<p>Our entries are prefixed with <code>devtools.</code>. For example:</p>
+<pre><code class="lang-yaml">devtools.main:
+<span class="hljs-attr">  open:</span>
+<span class="hljs-attr">    objects:</span> [<span class="hljs-string">&quot;tools&quot;</span>]
+<span class="hljs-attr">    bug_numbers:</span> [<span class="hljs-number">1416024</span>]
+<span class="hljs-attr">    notification_emails:</span> [<span class="hljs-string">&quot;dev-developer-tools@lists.mozilla.org&quot;</span>, <span class="hljs-string">&quot;hkirschner@mozilla.com&quot;</span>]
+<span class="hljs-attr">    record_in_processes:</span> [<span class="hljs-string">&quot;main&quot;</span>]
+<span class="hljs-attr">    description:</span> User opens devtools toolbox.
+<span class="hljs-attr">    release_channel_collection:</span> opt-out
+<span class="hljs-attr">    expiry_version:</span> never
+<span class="hljs-attr">    extra_keys:</span>
+<span class="hljs-attr">      entrypoint:</span> How was the toolbox opened? CommandLine, ContextMenu, DeveloperToolbar, HamburgerMenu, KeyShortcut, SessionRestore or SystemMenu
+<span class="hljs-attr">      first_panel:</span> The name of the first panel opened.
+<span class="hljs-attr">      host:</span> <span class="hljs-string">&quot;Toolbox host (positioning): bottom, side, window or other.&quot;</span>
+<span class="hljs-attr">      splitconsole:</span> Indicates whether the split console was open.
+<span class="hljs-attr">      width:</span> Toolbox width (px).
 </code></pre>
 <h3 id="2-using-histogramsjson-probes-in-devtools-code">2. Using Histograms.json probes in DevTools code</h3>
 <p>Once the probe has been declared in the <code>Histograms.json</code> file, you&apos;ll need to actually use it in our code.</p>
 <p>First, you need to give it an id in <code>devtools/client/shared/telemetry.js</code>. Similarly to the <code>Histograms.json</code> case, you&apos;ll want to follow the style of existing entries. For example:</p>
-<pre><code class="lang-javascript">dom: {
+<pre><code class="lang-js">dom: {
   histogram: <span class="hljs-string">&quot;DEVTOOLS_DOM_OPENED_COUNT&quot;</span>,
   timerHistogram: <span class="hljs-string">&quot;DEVTOOLS_DOM_TIME_ACTIVE_SECONDS&quot;</span>
 },
 </code></pre>
 <p>... would correspond to the probes we declared in the previous section.</p>
 <p>Then, include that module on each tool that requires telemetry:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> Telemetry = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/shared/telemetry&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> Telemetry = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/shared/telemetry&quot;</span>);
 </code></pre>
 <p>Create a telemetry instance on the tool constructor:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
 </code></pre>
 <p>And use the instance to report e.g. tool opening...</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
 </code></pre>
 <p>... or closing:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry.toolClosed(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolClosed(<span class="hljs-string">&quot;mytoolname&quot;</span>);
 </code></pre>
 <p>Note that <code>mytoolname</code> is the id we declared in the <code>telemetry.js</code> module.</p>
 <h3 id="3-using-scalarsyaml-probes-in-devtools-code">3. Using Scalars.yaml probes in DevTools code</h3>
 <p>Once the probe has been declared in the <code>Scalars.yaml</code> file, you&apos;ll need to actually use it in our code.</p>
 <p>First, you need to give it an id in <code>devtools/client/shared/telemetry.js</code>. You will want to follow the style of existing lowercase histogram entries. For example:</p>
-<pre><code class="lang-javascript">toolbareyedropper: {
+<pre><code class="lang-js">toolbareyedropper: {
   scalar: <span class="hljs-string">&quot;devtools.toolbar.eyedropper.opened&quot;</span>, <span class="hljs-comment">// Note that the scalar is lowercase</span>
 },
 copyuniquecssselector: {
@@ -1067,20 +1088,85 @@ copyuniquecssselector: {
 </code></pre>
 <p>... would correspond to the probes we declared in the previous section.</p>
 <p>Then, include that module on each tool that requires telemetry:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> Telemetry = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/shared/telemetry&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> Telemetry = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/shared/telemetry&quot;</span>);
 </code></pre>
 <p>Create a telemetry instance on the tool constructor:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
 </code></pre>
 <p>And use the instance to report e.g. tool opening...</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
 </code></pre>
 <p>Notes:</p>
 <ul>
 <li><code>mytoolname</code> is the id we declared in the <code>Scalars.yaml</code> module.</li>
 <li>Because we are not logging tool&apos;s time opened in <code>Scalars.yaml</code> we don&apos;t care
-about toolClosed. Of course, if there was an accompanying <code>timerHistogram</code> field defined
-in <code>telemetry.js</code> and <code>histograms.json</code> then <code>toolClosed</code> should also be added.</li>
+about toolClosed. Of course, if there was an accompanying <code>timerHistogram</code>
+field defined in <code>telemetry.js</code> and <code>histograms.json</code> then <code>toolClosed</code> should
+also be added.</li>
+</ul>
+<h3 id="4-using-eventsyaml-probes-in-devtools-code">4. Using Events.yaml probes in DevTools code</h3>
+<p>Once the probe has been declared in the <code>Events.yaml</code> file, you&apos;ll need to actually use it in our code.</p>
+<p>It is crucial to understand that event telemetry have a string identifier which is constructed from the <code>category</code>, <code>method</code>, <code>object</code> (name) and <code>value</code> on which the event occured. This key points to an &quot;extra&quot; object that contains further information about the event (we will give examples later in this section).</p>
+<p>Because these &quot;extra&quot; objects can be from completely independant code paths we
+can send events and leave them in a pending state until all of the expected extra properties have been received.</p>
+<p>First, include the telemetry module in each tool that requires telemetry:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">let</span> Telemetry = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/shared/telemetry&quot;</span>);
+</code></pre>
+<p>Create a telemetry instance on the tool constructor:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
+</code></pre>
+<p>And use the instance to report e.g. tool opening...</p>
+<pre><code class="lang-js"><span class="hljs-comment">// Event telemetry is disabled by default so enable it for your category.</span>
+<span class="hljs-keyword">this</span>._telemetry.setEventRecordingEnabled(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// If you already have all the properties for the event you can send the</span>
+<span class="hljs-comment">// telemetry event using:</span>
+<span class="hljs-comment">// this._telemetry.recordEvent(category, method, object, value, extra) e.g.</span>
+<span class="hljs-keyword">this</span>._telemetry.recordEvent(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
+  entrypoint: <span class="hljs-string">&quot;ContextMenu&quot;</span>,
+  first_panel: <span class="hljs-string">&quot;Inspector&quot;</span>,
+  host: <span class="hljs-string">&quot;bottom&quot;</span>,
+  splitconsole: <span class="hljs-literal">false</span>,
+  width: <span class="hljs-number">1024</span>
+});
+
+<span class="hljs-comment">// If your &quot;extra&quot; properties are in different code paths you will need to</span>
+<span class="hljs-comment">// create a &quot;pending event.&quot; These events contain a list of expected properties</span>
+<span class="hljs-comment">// that can be populated before or after creating the pending event.</span>
+
+<span class="hljs-comment">// Use the category, method, object, value combinations above to add a</span>
+<span class="hljs-comment">// property... we do this before creating the pending event simply to</span>
+<span class="hljs-comment">// demonstrate that properties can be sent before the pending event is created.</span>
+<span class="hljs-keyword">this</span>._telemetry.addEventProperty(
+  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;entrypoint&quot;</span>, <span class="hljs-string">&quot;ContextMenu&quot;</span>);
+
+<span class="hljs-comment">// In this example `&quot;devtools.main&quot;, &quot;open&quot;, &quot;tools&quot;, null` make up the</span>
+<span class="hljs-comment">// signature of the event and needs to be sent with all properties.</span>
+
+<span class="hljs-comment">// Create the pending event using</span>
+<span class="hljs-comment">// this._telemetry.preparePendingEvent(category, method, object, value, expectedPropertyNames) e.g.</span>
+<span class="hljs-keyword">this</span>._telemetry.preparePendingEvent(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>,
+  [<span class="hljs-string">&quot;entrypoint&quot;</span>, <span class="hljs-string">&quot;first_panel&quot;</span>, <span class="hljs-string">&quot;host&quot;</span>, <span class="hljs-string">&quot;splitconsole&quot;</span>, <span class="hljs-string">&quot;width&quot;</span>]
+);
+
+<span class="hljs-comment">// Use the category, method, object, value combinations above to add each</span>
+<span class="hljs-comment">// property.</span>
+<span class="hljs-keyword">this</span>._telemetry.addEventProperty(
+  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;first_panel&quot;</span>, <span class="hljs-string">&quot;inspector&quot;</span>);
+<span class="hljs-keyword">this</span>._telemetry.addEventProperty(
+  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;host&quot;</span>, <span class="hljs-string">&quot;bottom&quot;</span>);
+<span class="hljs-keyword">this</span>._telemetry.addEventProperty(
+  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;splitconsole&quot;</span>, <span class="hljs-literal">false</span>);
+<span class="hljs-keyword">this</span>._telemetry.addEventProperty(
+  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-number">1024</span>);
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li><code>mytoolname</code> is the id we declared in the <code>Scalars.yaml</code> module.</li>
+<li>Because we are not logging tool&apos;s time opened in <code>Scalars.yaml</code> we don&apos;t care
+about toolClosed. Of course, if there was an accompanying <code>timerHistogram</code>
+field defined in <code>telemetry.js</code> and <code>histograms.json</code> then <code>toolClosed</code> should
+also be added.</li>
 </ul>
 <h4 id="note-on-top-level-panels">Note on top level panels</h4>
 <p>The code for the tabs uses their ids to automatically report telemetry when you switch between panels, so you don&apos;t need to explicitly call <code>toolOpened</code> and <code>toolClosed</code> on top level panels.</p>
@@ -1089,27 +1175,72 @@ in <code>telemetry.js</code> and <code>histograms.json</code> then <code>toolClo
 <p>The telemetry module will print warnings to stdout if there are missing ids. It is strongly advisable to ensure this is working correctly, as the module will attribute usage for undeclared ids to a generic <code>custom</code> bucket. This is not good for accurate results!</p>
 <p>To see these warnings, you need to have the <code>browser.dom.window.dump.enabled</code> browser preference set to <code>true</code> in <code>about:config</code> (and restart the browser).</p>
 <p>Then, try doing things that trigger telemetry calls (e.g. opening a tool). Imagine we had a typo when reporting the tool was opened:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&apos;mytoolnmae&apos;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&apos;mytoolnmae&apos;</span>);
                                   ^^^^ typo, should be *mytoolname*
 </code></pre>
 <p>Would report an error to stdout:</p>
-<pre><code>Warning: An attempt was made to write to the mytoolnmae histogram, which is not defined in Histograms.json
-</code></pre><p>So watch out for errors.</p>
-<h4 id="compile-it">Compile it!</h4>
-<p>It&apos;s strongly recommended that you do a full Firefox build if you have edited either <code>Histograms.json</code> or <code>Scalars.yaml</code>, as they are processed at build time, and various checks will be run on it to guarantee it is valid.</p>
-<pre><code>./mach build
-</code></pre><p>If you use <code>mach build faster</code> or artifact builds, the checks will not be performed, and your try builds will fail (&quot;bust&quot;) when the checks are run there.</p>
+<pre><code class="lang-text">Warning: An attempt was made to write to the mytoolnmae histogram, which is not defined in Histograms.json
+</code></pre>
+<p>So watch out for errors.</p>
+<h4 id="testing-event-telemetry">Testing Event Telemetry</h4>
+<p>This is best shown via an example:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> OPTOUT = Ci.nsITelemetry.DATASET_RELEASE_CHANNEL_OPTOUT;
+<span class="hljs-keyword">const</span> expected = [
+  [<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
+    entrypoint: <span class="hljs-string">&quot;ContextMenu&quot;</span>,
+    first_panel: <span class="hljs-string">&quot;inspector&quot;</span>,
+    host: <span class="hljs-string">&quot;bottom&quot;</span>,
+    splitconsole: <span class="hljs-string">&quot;false&quot;</span>,
+    width: <span class="hljs-string">&quot;1440&quot;</span>
+  }],
+  [<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
+    entrypoint: <span class="hljs-string">&quot;KeyShortcut&quot;</span>,
+    first_panel: <span class="hljs-string">&quot;webconsole&quot;</span>,
+    host: <span class="hljs-string">&quot;bottom&quot;</span>,
+    splitconsole: <span class="hljs-string">&quot;false&quot;</span>,
+    width: <span class="hljs-string">&quot;1440&quot;</span>
+  }]
+];
+
+<span class="hljs-keyword">let</span> snapshot = Services.telemetry.snapshotEvents(OPTOUT, <span class="hljs-literal">true</span>);
+is(snapshot.parent.length, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;No events have been logged&quot;</span>);
+
+<span class="hljs-comment">// Do something to trigger some event telemetry.</span>
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i <span class="hljs-keyword">in</span> snapshot.parent) {
+  <span class="hljs-keyword">let</span> actual = snapshot.parent[i];
+
+  <span class="hljs-comment">// ignore timestamp</span>
+  is(actual.category, expected[i].category, <span class="hljs-string">&quot;category is correct&quot;</span>);
+  is(actual.method, expected[i].method, <span class="hljs-string">&quot;method is correct&quot;</span>);
+  is(actual.object, expected[i].object, <span class="hljs-string">&quot;object is correct&quot;</span>);
+  is(actual.value, expected[i].value, <span class="hljs-string">&quot;value is correct&quot;</span>);
+
+  is(actual.extra.entrypoint, expected[i].extra.entrypoint, <span class="hljs-string">&quot;entrypoint is correct&quot;</span>);
+  is(actual.extra.first_panel, expected[i].extra.first_panel, <span class="hljs-string">&quot;first_panel is correct&quot;</span>);
+  is(actual.extra.host, expected[i].extra.host, <span class="hljs-string">&quot;host is correct&quot;</span>);
+  is(actual.extra.splitconsole, expected[i].extra.splitconsole, <span class="hljs-string">&quot;splitconsole is correct&quot;</span>);
+  is(actual.extra.width, expected[i].extra.width, <span class="hljs-string">&quot;width is correct&quot;</span>);
+}
+</code></pre>
+<h4 id="compile-it">Compile it</h4>
+<p>You need to do a full Firefox build if you have edited either <code>Histograms.json</code> or <code>Events.yaml</code>, as they are processed at build time, and various checks will be run on them to guarantee they are valid.</p>
+<pre><code class="lang-bash">./mach build
+</code></pre>
+<p>If you use <code>mach build faster</code> or artifact builds, the checks will not be performed, and your try builds will fail (&quot;bust&quot;) when the checks are run there.</p>
 <p>Save yourself some time and run the checks locally.</p>
+<p>NOTE: Changes to <code>Scalars.yaml</code> <em>are</em> processed when doing an artifact build.</p>
 <h3 id="4-getting-approval-from-the-data-team">4. Getting approval from the data team</h3>
 <p>This is required before the changes make their way into <code>mozilla-central</code>.</p>
 <p>To get approval, attach your patch to the bug in Bugzilla, and set two flags:</p>
 <ul>
-<li>a <code>feedback?</code> flag for bsmedberg (or someone else from the data team)</li>
-<li>a <code>needinfo?</code> flag to clarkbw (our product manager, so he vouches that we&apos;re using the data)</li>
+<li>a <code>review?</code> flag for a data steward.</li>
+<li>a <code>needinfo?</code> flag to hkirschner (our product manager, so he vouches that we&apos;re using the data)</li>
 </ul>
 <p>Be sure to explain very clearly what is the new probe for. E.g. &quot;We&apos;re seeking approval for tracking opens of a new panel for debugging Web API ABCD&quot; is much better than just asking for feedback without background info.</p>
 <p>This review shouldn&apos;t take too long: if there&apos;s something wrong, they should tell you what to fix. If you see no signs of activity after a few days, you can ask in <code>#developers</code>.</p>
 <p>Note that this review is <em>in addition</em> to normal colleague reviews.</p>
+<p>Click <a href="https://wiki.mozilla.org/Firefox/Data_Collection#Requesting_Data_Collection" target="_blank">here</a> for more details.</p>
 <h2 id="accessing-existing-data">Accessing existing data</h2>
 <h3 id="local-data">Local data</h3>
 <p>Go to <a href="about:telemetry" target="_blank">about:telemetry</a> to see stats relating to your local instance.</p>
@@ -1164,7 +1295,7 @@ in <code>telemetry.js</code> and <code>histograms.json</code> then <code>toolClo
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.8.4","depth":2,"next":{"title":"Backend","level":"1.9","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.9.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.9.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.9.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.9.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.8.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2018-04-09T19:31:30.200Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-09T19:32:32.640Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.8.4","depth":2,"next":{"title":"Backend","level":"1.9","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.9.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.9.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.9.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.9.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.8.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2018-04-10T19:32:03.759Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-10T19:33:43.088Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
