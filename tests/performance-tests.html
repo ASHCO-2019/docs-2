@@ -965,12 +965,12 @@ This will run all DAMP tests, you can filter by test name with:</p>
 </code></pre>
 <p>This command will run all tests which contains &quot;console&quot; in their name.</p>
 <h2 id="how-to-run-it-on-try">How to run it on try?</h2>
-<pre><code class="lang-bash">./mach try -b o -p linux64 -u none -t g2<span class="hljs-_">-e</span>10s --rebuild-talos 6
+<pre><code class="lang-bash">./mach try -b o -p linux64 -u none -t damp<span class="hljs-_">-e</span>10s --rebuild-talos 6
 </code></pre>
 <ul>
 <li>Linux appears to build and run quickly, and offers quite stable results over the other OSes.
 The vast majority of performance issues for DevTools are OS agnostic, so it doesn&apos;t really matter which one you run them on.</li>
-<li>&quot;g2-e10s&quot; is the talos bucket in which we run DAMP.</li>
+<li>&quot;damp-e10s&quot; is the talos bucket in which we run DAMP.</li>
 <li>And 6 is the number of times we run DAMP tests. That&apos;s to do averages between all the 6 runs and helps filtering out the noise.</li>
 </ul>
 <h2 id="what-does-it-do">What does it do?</h2>
@@ -998,8 +998,8 @@ so that all next interactions will be significantly faster.</li>
 <h2 id="how-to-see-the-results-from-try">How to see the results from try?</h2>
 <p>First, open TreeHerder. A link is displayed in your console when executing <code>./mach try</code>.
 You should also receive a mail with a link to it.</p>
-<p>Look for &quot;T-e10s(+6)&quot;, click on &quot;+6&quot;, then click on &quot;g2&quot;:
-<img src="perfherder-g2.png" alt="TreeHerder jobs"></p>
+<p>Look for &quot;T-e10s(+6)&quot;, click on &quot;+6&quot;, then click on &quot;damp&quot;:
+<img src="perfherder-damp.png" alt="TreeHerder jobs"></p>
 <p>On the bottom panel that just opened, click on &quot;Compare result against another revision&quot;.
 <img src="perfherder-compare-link.png" alt="TreeHerder panel"></p>
 <p>You are now on PerfHerder, click on &quot;Compare&quot;,
@@ -1133,7 +1133,7 @@ You will get a black popup like this one:
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"next":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},"previous":{"title":"Debugging intermittent failures","level":"1.4.3","depth":2,"path":"tests/debugging-intermittents.md","ref":"tests/debugging-intermittents.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/performance-tests.md","mtime":"2018-04-17T19:35:10.622Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-17T19:36:27.570Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"next":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},"previous":{"title":"Debugging intermittent failures","level":"1.4.3","depth":2,"path":"tests/debugging-intermittents.md","ref":"tests/debugging-intermittents.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/performance-tests.md","mtime":"2018-04-18T19:35:22.071Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-18T19:36:46.458Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
