@@ -957,11 +957,7 @@
                                 <h1 id="set-up-to-build-firefox-developer-tools">Set up to build Firefox Developer Tools</h1>
 <p>These are the steps we&apos;re going to look at:</p>
 <ul>
-<li><a href="#getting-the-code">Getting the code</a><ul>
-<li><a href="#using-mercurial-hg">using Mercurial</a></li>
-<li><a href="#using-git">using Git</a></li>
-</ul>
-</li>
+<li><a href="#getting-the-code">Getting the code</a></li>
 <li><a href="#building-and-running-locally">Building and running locally</a><ul>
 <li><a href="#rebuilding">Rebuilding</a></li>
 <li><a href="#building-even-faster-with-artifact-builds">Artifact builds</a> for even faster builds</li>
@@ -970,16 +966,17 @@
 </li>
 </ul>
 <h2 id="getting-the-code">Getting the code</h2>
-<p>The code is officially hosted on <a href="https://hg.mozilla.org/mozilla-central/" target="_blank">a Mercurial repository</a>. Despair not! There are ways of accessing this via git. We will explain this too.</p>
-<p>Either way takes a long time, because the repository is <strong>B I G</strong>. So be prepared to be patient.</p>
-<h3 id="using-mercurial-hg">Using Mercurial (hg)</h3>
+<p>The code is officially hosted on <a href="https://hg.mozilla.org/mozilla-central/" target="_blank">a Mercurial repository</a>. It takes a long time to clone, because the repository is <strong>B I G</strong>. So be prepared to be patient.</p>
 <pre><code class="lang-bash">hg <span class="hljs-built_in">clone</span> http://hg.mozilla.org/mozilla-central
 </code></pre>
-<h3 id="using-git">Using git</h3>
-<p>There is a tool called <a href="https://github.com/glandium/git-cinnabar/" target="_blank">git-cinnabar</a> that lets you use git on top of a Mercurial repository. There&apos;s a bit of setup involved, so we&apos;ve written <a href="https://github.com/sole/cinnabarify" target="_blank">a script to automate</a> installing <code>git-cinnabar</code> and obtaining the code.</p>
 <h2 id="building-and-running-locally">Building and running locally</h2>
-<p>Whatever method you used to obtain the code, the build step is the same. Fortunately, the Firefox team has made a very good job of automating this with bootstrap scripts and putting <a href="https://developer.mozilla.org/En/Simple_Firefox_build" target="_blank">documentation</a> together.</p>
-<p>Run:</p>
+<p>Fortunately, the Firefox team has made a very good job of automating the building process with bootstrap scripts and putting <a href="https://developer.mozilla.org/En/Simple_Firefox_build" target="_blank">documentation</a> together.</p>
+<p>The very first time you are building Firefox, run:</p>
+<pre><code class="lang-bash">./mach bootstrap
+./mach configure
+./mach build
+</code></pre>
+<p>After that first successful build, you can just run:</p>
 <pre><code class="lang-bash">./mach build
 </code></pre>
 <p>If your system needs additional dependencies installed (for example, Python, or a compiler, etc), various diagnostic messages will be printed to your screen. Follow their advice and try building again.</p>
@@ -1024,7 +1021,7 @@ mk_add_options MOZ_OBJDIR=./objdir-frontend
 # 5. edit JS files on the `devtools` folder, save
 # 6. Back to step 2!
 ./mach run
-</code></pre><p>While not as fast as the average &quot;save file and reload the website&quot; <em>web development workflow</em>, or newer workflows such as React&apos;s reloading, this can still be quite fast. </p>
+</code></pre><p>While not as fast as the average &quot;save file and reload the website&quot; <em>web development workflow</em>, or newer workflows such as React&apos;s reloading, this can still be quite fast.</p>
 <p>And certainly faster than building each time, even with artifact builds.</p>
 
                                 
@@ -1069,7 +1066,7 @@ mk_add_options MOZ_OBJDIR=./objdir-frontend
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Set up to build DevTools","level":"1.2.3","depth":2,"next":{"title":"Development profiles","level":"1.2.4","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]},"previous":{"title":"Architecture overview","level":"1.2.2","depth":2,"path":"getting-started/architecture-overview.md","ref":"getting-started/architecture-overview.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"getting-started/build.md","mtime":"2018-04-19T19:36:07.844Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-19T19:37:25.082Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Set up to build DevTools","level":"1.2.3","depth":2,"next":{"title":"Development profiles","level":"1.2.4","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]},"previous":{"title":"Architecture overview","level":"1.2.2","depth":2,"path":"getting-started/architecture-overview.md","ref":"getting-started/architecture-overview.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"getting-started/build.md","mtime":"2018-04-20T19:36:36.056Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-20T19:37:34.749Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

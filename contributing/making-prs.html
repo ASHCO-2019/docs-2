@@ -955,27 +955,21 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="creating-and-sending-patches-">Creating and sending patches <!--TODO: (in the future: Making Pull Requests)--></h1>
-<!-- TODO: this will need to be updated in the future when we move to GitHub -->
 <h2 id="creating-a-patch">Creating a patch</h2>
 <p>To create a patch you need to first commit your changes and then export them to a patch file.</p>
-<p>With Mercurial:</p>
-<ul>
-<li><code>hg commit -m &apos;your commit message&apos;</code></li>
-<li><code>hg export &gt; /path/to/your/patch</code></li>
-</ul>
-<p>With Git, the process is similar, but you first need to add an alias to create Mercurial-style patches. Have a look at <a href="https://developer.mozilla.org/en-US/docs/Tools/Contributing#Creating_a_patch_to_check_in" target="_blank">the detailed documentation</a>.</p>
-<h2 id="commit-messages">Commit messages</h2>
-<p>Commit messages should follow the pattern <code>Bug 1234567 - change description. r=reviewer</code></p>
+<pre><code>hg commit -m &apos;your commit message&apos;
+hg export &gt; /path/to/your/patch
+</code></pre><h2 id="commit-messages">Commit messages</h2>
+<p>Commit messages should follow the pattern <code>Bug 1234567 - change description. r=reviewer</code>.</p>
 <p>First is the bug number related to the patch. Then the description should explain what the patch changes. The last part is used to keep track of the reviewer for the patch.</p>
 <h2 id="submitting-a-patch">Submitting a patch</h2>
 <p>Once you have a patch file, add it as an attachment to the Bugzilla ticket you are working on and add the <code>feedback?</code> or <code>review?</code> flag depending on if you just want feedback and confirmation you&apos;re doing the right thing or if you think the patch is ready to land respectively. Read more about <a href="https://developer.mozilla.org/en-US/docs/Developer_Guide/How_to_Submit_a_Patch" target="_blank">how to submit a patch and the Bugzilla review cycle here</a>.</p>
 <p>You can also take a look at the <a href="code-reviews.html">Code Review Checklist</a> as it contains a list of checks that your reviewer is likely to go over when reviewing your code.</p>
 <h2 id="squashing-commits">Squashing commits</h2>
-<p>Sometimes you may be asked to squash your commits. Squashing means merging multiple commits into one in case you created multiple commits while working on a bug. Squashing bugs is easy with steps listed below for both git and mercurial.</p>
-<h3 id="with-mercurial">With Mercurial:</h3>
-<p>We will use the histedit extension for squashing commits in Mercurial. You can check if this extension is enabled in your Mercurial following these steps:</p>
+<p>Sometimes you may be asked to squash your commits. Squashing means merging multiple commits into one in case you created multiple commits while working on a bug. Squashing bugs is easy!</p>
+<p>We will use the histedit extension for squashing commits in Mercurial. You can check if this extension is enabled in your Mercurial installation following these steps:</p>
 <ul>
-<li>Open <code>.hgrc</code> (default configuration file of mercurial) located in the home directory on Linux/OSX, using your favourite editor.</li>
+<li>Open <code>.hgrc</code> (Linux/OSX) or <code>Mercurial.ini</code> (Windows) &#x2013;this is the default configuration file of Mercurial&#x2013; located in your home directory, using your favourite editor.</li>
 <li>Then add <code>histedit=</code> under the <code>[extensions]</code> list present in file, if not present already.</li>
 </ul>
 <p>Then, run the following command:</p>
@@ -983,32 +977,9 @@
 <p>You will see something like this on your terminal:</p>
 <pre><code>pick 3bd22d1cc59a 0 &quot;First-Commit-Message&quot;
 pick 81c4d40e57d3 1 &quot;Second-Commit-Message&quot;
-</code></pre><p>These lines represent your commits. Suppose we want to merge 81c4d40e57d3 to 3bd22d1cc59a. Then replace <strong>pick</strong> in front of 81c4d40e57d3 with <strong>fold</strong> (or simply &apos;f&apos;). Save the changes.</p>
-<p>You will see that 81c4d40e57d3 has been combined with 3bd22d1cc59a. You can verify this using <code>hg log</code> command.</p>
-<p>You can use fold to as many commits you want and they will be combined with the first commit above them which does not use fold.</p>
-<h3 id="with-git">With Git:</h3>
-<p>To squash commits in git we will use the rebase command. Let&apos;s learn the syntax using an example:</p>
-<p><code>git rebase -i HEAD~2</code></p>
-<p>Above commands is for rebasing commits.</p>
-<ul>
-<li>The -i flag is to run rebase in interactive mode.</li>
-<li>HEAD~2 is to rebase the last two commits.</li>
-</ul>
-<p>You can use any number, depending on how many commits you want to rebase. </p>
-<p>After you run that command, an editor will open displaying contents similar to this:</p>
-<pre><code>pick 5878025 &quot;First-Commit-Message&quot;
-pick bd1efe7 &quot;Second-Commit-Message&quot;
-</code></pre><p>Suppose you want to merge <code>bd1efe7</code> to <code>5878025</code>, then replace <strong>pick</strong> with <strong>squash</strong> (or simply &apos;s&apos;) and save the changes and close the editor, then a file should open like this:</p>
-<pre><code>    # This is a combination of 2 commits.
-    # The first commit&apos;s message is:
-
-    &lt; First-Commit-Message &gt;
-
-    This is the 2nd commit message:
-
-    &lt; Second-Commit-Message &gt;
-</code></pre><p>Write a new commit message (note that this will be a new commit message used for squashed commits). Every line not starting with # above contributes to the commit message.</p>
-<p>Save your changes and you are done. You will see that your commits have been squashed and you can verify this using <code>git log</code> or <code>git reflog</code>.</p>
+</code></pre><p>These lines represent your commits. Suppose we want to merge <code>81c4d40e57d3</code> to <code>3bd22d1cc59a</code>. Then replace <strong>pick</strong> in front of <code>81c4d40e57d3</code> with <strong>fold</strong> (or simply &apos;f&apos;). Save the changes.</p>
+<p>You will see that <code>81c4d40e57d3</code> has been combined with <code>3bd22d1cc59a</code>. You can verify this using the <code>hg log</code> command.</p>
+<p>You can fold as many commits you want, and they will be combined with the first commit above them which does not use fold.</p>
 
                                 
                                 </section>
@@ -1052,7 +1023,7 @@ pick bd1efe7 &quot;Second-Commit-Message&quot;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Creating and sending patches","level":"1.3.2","depth":2,"next":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[]},"previous":{"title":"CSS","level":"1.3.1.2","depth":3,"path":"contributing/css.md","ref":"./contributing/css.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2018-04-19T19:36:07.840Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-19T19:37:25.082Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Creating and sending patches","level":"1.3.2","depth":2,"next":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[]},"previous":{"title":"CSS","level":"1.3.1.2","depth":3,"path":"contributing/css.md","ref":"./contributing/css.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2018-04-20T19:36:36.052Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-20T19:37:34.749Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
