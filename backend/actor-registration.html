@@ -958,7 +958,7 @@
 <h2 id="tab-actors-vs-global-actors">Tab actors vs. global actors</h2>
 <p>Tab actors are the most common types of actors. That&apos;s the type of actors you will most probably be adding.</p>
 <p>Tab actors target a document, this could be a tab in Firefox or a remote document in Firefox for Android.</p>
-<p>Global actors however are for the rest, for things not related to any particular document but instead for things global to the whole Firefox/Chrome/Safari intance the toolbox is connected to (e.g. the preference actor).</p>
+<p>Global actors however are for the rest, for things not related to any particular document but instead for things global to the whole Firefox/Chrome/Safari instance the toolbox is connected to (e.g. the preference actor).</p>
 <h2 id="the-debuggerserverregistermodule-function">The DebuggerServer.registerModule function</h2>
 <p>To register a tab actor:</p>
 <pre><code>DebuggerServer.registerModule(&quot;devtools/server/actors/webconsole&quot;, {
@@ -967,7 +967,7 @@
   type: { tab: true }
 });
 </code></pre><p>To register a global actor:</p>
-<pre><code>DebuggerServer.registerModule(&quot;devtools/server/actors/addons&quot;, {
+<pre><code>DebuggerServer.registerModule(&quot;devtools/server/actors/addon/addons&quot;, {
   prefix: &quot;addons&quot;,
   constructor: &quot;AddonsActor&quot;,
   type: { global: true }
@@ -1020,7 +1020,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"next":{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"previous":{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-registration.md","mtime":"2018-06-07T20:07:17.996Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-07T20:08:24.541Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"next":{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"previous":{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-registration.md","mtime":"2018-06-08T20:03:08.895Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-08T20:04:53.268Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

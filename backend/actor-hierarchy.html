@@ -953,31 +953,42 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="how-actors-are-organized">How actors are organized</h1>
-<p>To start with, actors are living within /devtools/server/actors/ folder.
-They are organized in a hierarchy for easier lifecycle/memory management:
+<p>To start with, actors are living within devtools/server/actors folder.
+They are organized in a hierarchy for easier lifecycle and memory management:
 once a parent is removed from the pool, its children are removed as well.
 (See actor-registration.md for more information about how to implement one)</p>
 <p>The overall hierarchy of actors looks like this:</p>
 <pre><code>RootActor: First one, automatically instantiated when we start connecting.
-   |         Mostly meant to instantiate new actors.
+   |       Mostly meant to instantiate new actors.
    |
-   |--&gt; Global-scoped actors:
-   |    Actors exposing features related to the main process,
-   |    that are not specific to any particular context (document, tab, app,
-   |    add-on, or worker).
-   |    A good example is the preference actor.
+   |-- Global-scoped actors:
+   |   Actors exposing features related to the main process, that are not
+   |   specific to any particular target (document, tab, add-on, or worker).
+   |   These actors are registered with `global: true` in
+   |   devtools/server/main.js.
+   |   Examples include:
+   |   PreferenceActor (for Firefox prefs)
    |
-   \--&gt; &quot;TabActor&quot; (or alike):
-          |    Actors meant to designate one context (document, tab, app,
-          |    add-on, or worker) and track its lifetime.  Generally, there is
-          |    one of these for each thing you can point a toolbox at.
-          |
-          \--&gt; Tab-scoped actors:
-               Actors exposing one particular feature set, this time,
-               specific to a given context (document, tab, app, add-on, or
-               worker).  Examples include the console and inspector actors.
-               These actors may extend this hierarchy by having their
-               own children, like LongStringActor, WalkerActor, etc.
+   \-- Target actors:
+       Actors that represent the main &quot;thing&quot; being targeted by a given toolbox,
+       such as a tab, frame, worker, add-on, etc. and track its lifetime.
+       Generally, there is a target actor for each thing you can point a
+       toolbox at.
+       Examples include:
+       FrameTargetActor (for a frame, such as a tab)
+       WorkerTargetActor (for various kind of workers)
+       |
+       \-- Tab-scoped actors:
+           Actors exposing one particular feature set. They are children of a
+           given target actor and the data they return is filtered to reflect
+           the target.
+           These actors are registered with `tab: true` in
+           devtools/server/main.js.
+           Examples include:
+           WebConsoleActor
+           InspectorActor
+           These actors may extend this hierarchy by having their own children,
+           like LongStringActor, WalkerActor, etc.
 </code></pre><h2 id="rootactor">RootActor</h2>
 <p>The root actor is special. It is automatically created when a client connects.
 It has a special <code>actorID</code> which is unique and is &quot;root&quot;.
@@ -986,94 +997,119 @@ so that you need to ask an existing actor to create an Actor
 and returns its <code>actorID</code>. That&apos;s the main role of RootActor.</p>
 <pre><code>RootActor (root.js)
    |
-   |-- BrowserTabActor (webbrowser.js)
-   |   Targets tabs living in the parent or child process. Note that this is
-   |   just a proxy for ContentActor, which is loaded via the tab&apos;s message
-   |   manager as a frame script in the process containing the tab. This proxy
-   |   via message manager is always used, even when e10s is disabled.
+   |-- FrameTargetActorProxy (frame-proxy.js)
+   |   Targets frames (such as a tab) living in the parent or child process.
+   |   Note that this is just a proxy for FrameTargetActor, which is loaded via
+   |   the frame&apos;s message manager as a frame script in the process containing
+   |   the frame content. This proxy via message manager is always used, even
+   |   when the content happens to be in the same process.
    |   Returned by &quot;listTabs&quot; or &quot;getTab&quot; requests.
    |   |
-   |   \-&gt; ContentActor (content.js)
-   |       The &quot;real&quot; actor for a tab, which runs in whichever process holds the
-   |       content.  BrowserTabActor communicates with this via the tab&apos;s
-   |       message manager.
-   |       Returned by &quot;connect&quot; on BrowserTabActor.
+   |   \-- FrameTargetActor (frame.js)
+   |       The &quot;real&quot; target actor for a frame (such as a tab) which runs in
+   |       whichever process holds the content. FrameTargetActorProxy
+   |       communicates with this via the frame&apos;s message manager.
+   |       Extends the abstract class BrowsingContextTargetActor.
+   |       Returned by &quot;connect&quot; on FrameTargetActorProxy.
    |
-   |-- WorkerActor (worker.js)
+   |-- WorkerTargetActor (worker.js)
    |   Targets a worker (applies to various kinds like web worker, service
    |   worker, etc.).
    |   Returned by &quot;listWorkers&quot; request to the root actor to get all workers.
-   |   Returned by &quot;listWorkers&quot; request to a BrowserTabActor to get workers for
-   |   a specific tab.
-   |   Returned by &quot;listWorkers&quot; request to a ChildProcessActor to get workers
-   |   for the chrome of the child process.
+   |   Returned by &quot;listWorkers&quot; request to a FrameTargetActorProxy to get
+   |   workers for a specific frame.
+   |   Returned by &quot;listWorkers&quot; request to a ContentProcessTargetActor to get
+   |   workers for the chrome of the child process.
    |
-   |-- WindowActor (window.js)
+   |-- ChromeWindowTargetActor (chrome-window.js)
    |   Targets a single window, such as a browser window in Firefox, but it can
    |   be used to reach any window in the parent process.
+   |   Extends the abstract class BrowsingContextTargetActor.
    |   Returned by &quot;getWindow&quot; request to the root actor.
    |
-   |-- ChromeActor (chrome.js)
-   |   Targets all resources in the parent process of firefox
-   |   (chrome documents, JSM, JS XPCOM, etc.).
+   |-- ParentProcessTargetActor (parent-process.js)
+   |   Targets all resources in the parent process of Firefox (chrome documents,
+   |   JSMs, JS XPCOM, etc.).
+   |   Extends the abstract class BrowsingContextTargetActor.
+   |   Extended by WebExtensionTargetActor.
    |   Returned by &quot;getProcess&quot; request without any argument.
    |
-   |-- ChildProcessActor (child-process.js)
-   |   Targets the chrome of the child process (e10s).
-   |   Returned by &quot;getProcess&quot; request with a id argument,
-   |   matching the targeted process.
+   |-- ContentProcessTargetActor (content-process.js)
+   |   Targets all resources in a content process of Firefox (chrome sandboxes,
+   |   frame scripts, documents, etc.)
+   |   Returned by &quot;getProcess&quot; request with a id argument, matching the
+   |   targeted process.
    |
-   \-- BrowserAddonActor (addon.js)
-       Targets the javascript of add-ons.
+   |-- AddonTargetActor (addon.js)
+   |   Targets a legacy (non-WebExtension) add-on.
+   |   Returned by &quot;listAddons&quot; request.
+   |
+   \-- WebExtensionTargetActor (webextension.js)
+       Targets a WebExtension add-on.
+       Extends ParentProcessTargetActor.
        Returned by &quot;listAddons&quot; request.
-</code></pre><h2 id="tabactor">&quot;TabActor&quot;</h2>
+</code></pre><h2 id="target-actors">Target Actors</h2>
 <p>Those are the actors exposed by the root actors which are meant to track the
-lifetime of a given context: tab, app, process, add-on, or worker. It also
-allows to fetch the tab-scoped actors connected to this context. Actors like
-console, inspector, thread (for debugger), styleinspector, etc. Most of them
-inherit from TabActor (defined in tab.js) which is document centric. It
-automatically tracks the lifetime of the targeted document, but it also tracks
-its iframes and allows switching the context to one of its iframes. For
-historical reasons, these actors also handle creating the ThreadActor, used to
-manage breakpoints in the debugger. All the other tab-scoped actors are created
-when we access the TabActor&apos;s grip. We return the tab-scoped actors <code>actorID</code> in
-it. Actors inheriting from TabActor expose <code>attach</code>/<code>detach</code> requests, that
-allows to start/stop the ThreadActor.</p>
-<p>The tab-scoped actors expect to find the following properties on the &quot;TabActor&quot;:</p>
+lifetime of a given target: tab, process, add-on, or worker. It also allows to
+fetch the tab-scoped actors connected to this target, which are actors like
+console, inspector, thread (for debugger), style inspector, etc.</p>
+<p>Some target actors inherit from BrowsingContextTargetActor (defined in
+browsing-context.js) which is meant for &quot;browsing contexts&quot; which present
+documents to the user. It automatically tracks the lifetime of the targeted
+browsing context, but it also tracks its iframes and allows switching the
+target to one of its iframes.</p>
+<p>For historical reasons, target actors also handle creating the ThreadActor, used
+to manage breakpoints in the debugger. Actors inheriting from
+BrowsingContextTargetActor expose <code>attach</code>/<code>detach</code> requests, that allows to
+start/stop the ThreadActor.</p>
+<p>Tab-scoped actors are accessed via the target actor&apos;s RDP form which contains
+the <code>actorID</code> for each tab-scoped actor.</p>
+<p>The tab-scoped actors expect to find the following properties on the target
+actor:</p>
 <ul>
 <li>threadActor:
-ThreadActor instance for the given context,
+ThreadActor instance for the given target,
 only defined once <code>attach</code> request is called, or on construction.</li>
 <li>isRootActor: (historical name)
-Always false, except on ChromeActor.
+Always false, except on ParentProcessTargetActor.
 Despite the attribute name, it is being used to accept all resources
 (like chrome one) instead of limiting only to content resources.</li>
 <li>makeDebugger:
-Helper function used to create Debugger object for the targeted context.
+Helper function used to create Debugger object for the target.
 (See actors/utils/make-debugger.js for more info)</li>
 </ul>
-<p>In addition to this, the actors inheriting from TabActor, expose many other
-attributes and events:</p>
+<p>In addition to this, the actors inheriting from BrowsingContextTargetActor,
+expose many other attributes and events:</p>
 <ul>
 <li>window:
 Reference to the window global object currently targeted.
-It can change over time if we switch context to an iframe, so it
+It can change over time if we switch target to an iframe, so it
 shouldn&apos;t be stored in a variable, but always retrieved from the actor.</li>
 <li>windows:
-List of all document globals including the main window object and all iframes.</li>
+List of all document globals including the main window object and all
+iframes.</li>
 <li>docShell:
-DocShell reference for the targeted context.</li>
+Primary docShell reference for the targeted document.</li>
 <li>docShells:
-List of all docshells for the targeted document and all its iframes.</li>
+List of all docShells for the targeted document and all its iframes.</li>
 <li>chromeEventHandler:
-The chrome event handler for the current context. Allows to listen to events
+The chrome event handler for the current target. Allows to listen to events
 that can be missing/cancelled on this document itself.</li>
 </ul>
-<p>See TabActor documentation for events definition.</p>
+<p>See BrowsingContextTargetActor documentation for more details.</p>
 <h2 id="tab-scoped-actors">Tab-scoped actors</h2>
-<p>Each of these actors focuses on providing one particular feature set, specific
-to one context, that can be a web page, an app, a top level firefox window, a
-process, an add-on, or a worker.</p>
+<p>Each of these actors focuses on providing one particular feature set. They are
+children of a given target actor.</p>
+<p>The data they return is filtered to reflect the target. For example, the
+InspectorActor that you fetch from a FrameTargetActor gives you information
+about the markup and styles for only that frame.</p>
+<p>These actors may extend this hierarchy by having their own children, like
+LongStringActor, WalkerActor, etc.</p>
+<p>To improve performance, tab-scoped actors are created lazily. The target actor
+lists the actor ID for each one, but the actor modules aren&apos;t actually loaded
+and instantiated at that point. Once the first request for a given tab-scoped
+actor is received by the server, that specific actor is instantiated just in
+time to service the request.</p>
 
                                 
                                 </section>
@@ -1113,7 +1149,7 @@ process, an add-on, or a worker.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Actors Organization","level":"1.9.5.1","depth":3,"next":{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"previous":{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-hierarchy.md","mtime":"2018-06-07T20:07:17.996Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-07T20:08:24.541Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Actors Organization","level":"1.9.5.1","depth":3,"next":{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"previous":{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-hierarchy.md","mtime":"2018-06-08T20:03:08.895Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-08T20:04:53.268Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
