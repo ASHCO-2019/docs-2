@@ -978,11 +978,11 @@ once a parent is removed from the pool, its children are removed as well.
        FrameTargetActor (for a frame, such as a tab)
        WorkerTargetActor (for various kind of workers)
        |
-       \-- Tab-scoped actors:
+       \-- Target-scoped actors:
            Actors exposing one particular feature set. They are children of a
            given target actor and the data they return is filtered to reflect
            the target.
-           These actors are registered with `tab: true` in
+           These actors are registered with `target: true` in
            devtools/server/main.js.
            Examples include:
            WebConsoleActor
@@ -1061,7 +1061,7 @@ and returns its <code>actorID</code>. That&apos;s the main role of RootActor.</p
 </code></pre><h2 id="target-actors">Target Actors</h2>
 <p>Those are the actors exposed by the root actors which are meant to track the
 lifetime of a given target: tab, process, add-on, or worker. It also allows to
-fetch the tab-scoped actors connected to this target, which are actors like
+fetch the target-scoped actors connected to this target, which are actors like
 console, inspector, thread (for debugger), style inspector, etc.</p>
 <p>Some target actors inherit from BrowsingContextTargetActor (defined in
 browsing-context.js) which is meant for &quot;browsing contexts&quot; which present
@@ -1072,9 +1072,9 @@ target to one of its iframes.</p>
 to manage breakpoints in the debugger. Actors inheriting from
 BrowsingContextTargetActor expose <code>attach</code>/<code>detach</code> requests, that allows to
 start/stop the ThreadActor.</p>
-<p>Tab-scoped actors are accessed via the target actor&apos;s RDP form which contains
-the <code>actorID</code> for each tab-scoped actor.</p>
-<p>The tab-scoped actors expect to find the following properties on the target
+<p>Target-scoped actors are accessed via the target actor&apos;s RDP form which contains
+the <code>actorID</code> for each target-scoped actor.</p>
+<p>The target-scoped actors expect to find the following properties on the target
 actor:</p>
 <ul>
 <li>threadActor:
@@ -1107,7 +1107,7 @@ The chrome event handler for the current target. Allows to listen to events
 that can be missing/cancelled on this document itself.</li>
 </ul>
 <p>See BrowsingContextTargetActor documentation for more details.</p>
-<h2 id="tab-scoped-actors">Tab-scoped actors</h2>
+<h2 id="target-scoped-actors">Target-scoped actors</h2>
 <p>Each of these actors focuses on providing one particular feature set. They are
 children of a given target actor.</p>
 <p>The data they return is filtered to reflect the target. For example, the
@@ -1115,11 +1115,11 @@ InspectorActor that you fetch from a FrameTargetActor gives you information
 about the markup and styles for only that frame.</p>
 <p>These actors may extend this hierarchy by having their own children, like
 LongStringActor, WalkerActor, etc.</p>
-<p>To improve performance, tab-scoped actors are created lazily. The target actor
-lists the actor ID for each one, but the actor modules aren&apos;t actually loaded
-and instantiated at that point. Once the first request for a given tab-scoped
-actor is received by the server, that specific actor is instantiated just in
-time to service the request.</p>
+<p>To improve performance, target-scoped actors are created lazily. The target
+actor lists the actor ID for each one, but the actor modules aren&apos;t actually
+loaded and instantiated at that point. Once the first request for a given
+target-scoped actor is received by the server, that specific actor is
+instantiated just in time to service the request.</p>
 
                                 
                                 </section>
@@ -1159,7 +1159,7 @@ time to service the request.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Actors Organization","level":"1.9.5.1","depth":3,"next":{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"previous":{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-hierarchy.md","mtime":"2018-06-26T20:11:54.676Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-26T20:13:09.187Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Actors Organization","level":"1.9.5.1","depth":3,"next":{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"previous":{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-hierarchy.md","mtime":"2018-06-27T20:12:57.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-27T20:24:44.633Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

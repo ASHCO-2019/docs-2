@@ -955,16 +955,16 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="how-to-register-an-actor">How to register an actor</h1>
-<h2 id="tab-actors-vs-global-actors">Tab actors vs. global actors</h2>
-<p>Tab actors are the most common types of actors. That&apos;s the type of actors you will most probably be adding.</p>
-<p>Tab actors target a document, this could be a tab in Firefox or a remote document in Firefox for Android.</p>
+<h2 id="target-scoped-actors-vs-global-actors">Target-scoped actors vs. global actors</h2>
+<p>Target-scoped actors are the most common types of actors. That&apos;s the type of actors you will most probably be adding.</p>
+<p>Target-scoped actors target a document, this could be a tab in Firefox or a remote document in Firefox for Android.</p>
 <p>Global actors however are for the rest, for things not related to any particular document but instead for things global to the whole Firefox/Chrome/Safari instance the toolbox is connected to (e.g. the preference actor).</p>
 <h2 id="the-debuggerserverregistermodule-function">The DebuggerServer.registerModule function</h2>
-<p>To register a tab actor:</p>
+<p>To register a target-scoped actor:</p>
 <pre><code>DebuggerServer.registerModule(&quot;devtools/server/actors/webconsole&quot;, {
   prefix: &quot;console&quot;,
   constructor: &quot;WebConsoleActor&quot;,
-  type: { tab: true }
+  type: { target: true }
 });
 </code></pre><p>To register a global actor:</p>
 <pre><code>DebuggerServer.registerModule(&quot;devtools/server/actors/addon/addons&quot;, {
@@ -972,8 +972,7 @@
   constructor: &quot;AddonsActor&quot;,
   type: { global: true }
 });
-</code></pre><p>If you are adding a new built-in devtools actor, you should be registering it using <code>DebuggerServer.registerModule</code> in <code>_addBrowserActors</code> or <code>addTabActors</code> in <code>/devtools/server/main.js</code>.</p>
-<p>If you are adding a new actor from an add-on, you should call <code>DebuggerServer.registerModule</code> directly from your add-on code.</p>
+</code></pre><p>If you are adding a new built-in actor, you should be registering it using <code>DebuggerServer.registerModule</code> in <code>_addBrowserActors</code> or <code>_addTargetScopedActors</code> in <code>/devtools/server/main.js</code>.</p>
 <h2 id="a-note-about-lazy-registration">A note about lazy registration</h2>
 <p>The <code>DebuggerServer</code> loads and creates all of the actors lazily to keep the initial memory usage down (which is extremely important on lower end devices).</p>
 <p>It becomes especially important when debugging pages with e10s when there are more than one process, because that&apos;s when we need to spawn a <code>DebuggerServer</code> per process (it may not be immediately obvious that the server in the main process is mostly only here for piping messages to the actors in the child process).</p>
@@ -1020,7 +1019,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"next":{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"previous":{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-registration.md","mtime":"2018-06-26T20:11:54.676Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-26T20:13:09.187Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"next":{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"previous":{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/actor-registration.md","mtime":"2018-06-27T20:12:57.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-27T20:24:44.633Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
