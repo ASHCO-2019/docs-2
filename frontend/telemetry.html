@@ -1070,10 +1070,10 @@ devtools.copy.unique.css.selector:
 <pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
 </code></pre>
 <p>And use the instance to report e.g. tool opening...</p>
-<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>, sessionId, <span class="hljs-keyword">this</span>);
 </code></pre>
 <p>... or closing:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolClosed(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolClosed(<span class="hljs-string">&quot;mytoolname&quot;</span>, sessionId, <span class="hljs-keyword">this</span>);
 </code></pre>
 <p>Note that <code>mytoolname</code> is the id we declared in the <code>telemetry.js</code> module.</p>
 <h3 id="3-using-scalarsyaml-probes-in-devtools-code">3. Using Scalars.yaml probes in DevTools code</h3>
@@ -1094,7 +1094,7 @@ copyuniquecssselector: {
 <pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry = <span class="hljs-keyword">new</span> Telemetry();
 </code></pre>
 <p>And use the instance to report e.g. tool opening...</p>
-<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&quot;mytoolname&quot;</span>, sessionId, <span class="hljs-keyword">this</span>);
 </code></pre>
 <p>Notes:</p>
 <ul>
@@ -1117,12 +1117,12 @@ can send events and leave them in a pending state until all of the expected extr
 </code></pre>
 <p>And use the instance to report e.g. tool opening...</p>
 <pre><code class="lang-js"><span class="hljs-comment">// Event telemetry is disabled by default so enable it for your category.</span>
-<span class="hljs-keyword">this</span>._telemetry.setEventRecordingEnabled(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-keyword">this</span>._telemetry.setEventRecordingEnabled(<span class="hljs-literal">true</span>);
 
 <span class="hljs-comment">// If you already have all the properties for the event you can send the</span>
 <span class="hljs-comment">// telemetry event using:</span>
-<span class="hljs-comment">// this._telemetry.recordEvent(category, method, object, value, extra) e.g.</span>
-<span class="hljs-keyword">this</span>._telemetry.recordEvent(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
+<span class="hljs-comment">// this._telemetry.recordEvent(method, object, value, extra) e.g.</span>
+<span class="hljs-keyword">this</span>._telemetry.recordEvent(<span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
   <span class="hljs-string">&quot;entrypoint&quot;</span>: <span class="hljs-string">&quot;ContextMenu&quot;</span>,
   <span class="hljs-string">&quot;first_panel&quot;</span>: <span class="hljs-string">&quot;Inspector&quot;</span>,
   <span class="hljs-string">&quot;host&quot;</span>: <span class="hljs-string">&quot;bottom&quot;</span>,
@@ -1139,31 +1139,31 @@ can send events and leave them in a pending state until all of the expected extr
 <span class="hljs-comment">// property... we do this before creating the pending event simply to</span>
 <span class="hljs-comment">// demonstrate that properties can be sent before the pending event is created.</span>
 <span class="hljs-keyword">this</span>._telemetry.addEventProperty(
-  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;entrypoint&quot;</span>, <span class="hljs-string">&quot;ContextMenu&quot;</span>);
+  <span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;entrypoint&quot;</span>, <span class="hljs-string">&quot;ContextMenu&quot;</span>);
 
-<span class="hljs-comment">// In this example `&quot;devtools.main&quot;, &quot;open&quot;, &quot;tools&quot;, null` make up the</span>
+<span class="hljs-comment">// In this example `&quot;open&quot;, &quot;tools&quot;, null` make up the</span>
 <span class="hljs-comment">// signature of the event and needs to be sent with all properties.</span>
 
 <span class="hljs-comment">// Create the pending event using</span>
-<span class="hljs-comment">// this._telemetry.preparePendingEvent(category, method, object, value,</span>
+<span class="hljs-comment">// this._telemetry.preparePendingEvent(this, method, object, value,</span>
 <span class="hljs-comment">// expectedPropertyNames) e.g.</span>
-<span class="hljs-keyword">this</span>._telemetry.preparePendingEvent(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>,
+<span class="hljs-keyword">this</span>._telemetry.preparePendingEvent(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>,
   [<span class="hljs-string">&quot;entrypoint&quot;</span>, <span class="hljs-string">&quot;first_panel&quot;</span>, <span class="hljs-string">&quot;host&quot;</span>, <span class="hljs-string">&quot;splitconsole&quot;</span>, <span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-string">&quot;session_id&quot;</span>]
 );
 
 <span class="hljs-comment">// Use the category, method, object, value combinations above to add each</span>
 <span class="hljs-comment">// property.</span>
 <span class="hljs-keyword">this</span>._telemetry.addEventProperty(
-  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;first_panel&quot;</span>, <span class="hljs-string">&quot;inspector&quot;</span>);
+  <span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;first_panel&quot;</span>, <span class="hljs-string">&quot;inspector&quot;</span>);
 <span class="hljs-keyword">this</span>._telemetry.addEventProperty(
-  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;host&quot;</span>, <span class="hljs-string">&quot;bottom&quot;</span>);
+  <span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;host&quot;</span>, <span class="hljs-string">&quot;bottom&quot;</span>);
 <span class="hljs-keyword">this</span>._telemetry.addEventProperty(
-  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;splitconsole&quot;</span>, <span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;splitconsole&quot;</span>, <span class="hljs-literal">false</span>);
 <span class="hljs-keyword">this</span>._telemetry.addEventProperty(
-  <span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-number">1024</span>);
+  <span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-number">1024</span>);
 
 <span class="hljs-comment">// You can also add properties in batches using e.g.:</span>
-<span class="hljs-keyword">this</span>._telemetry.addEventProperties(<span class="hljs-string">&quot;devtools.main&quot;</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
+<span class="hljs-keyword">this</span>._telemetry.addEventProperties(<span class="hljs-keyword">this</span>, <span class="hljs-string">&quot;open&quot;</span>, <span class="hljs-string">&quot;tools&quot;</span>, <span class="hljs-literal">null</span>, {
   <span class="hljs-string">&quot;first_panel&quot;</span>: <span class="hljs-string">&quot;inspector&quot;</span>,
   <span class="hljs-string">&quot;host&quot;</span>: <span class="hljs-string">&quot;bottom&quot;</span>,
   <span class="hljs-string">&quot;splitconsole&quot;</span>: <span class="hljs-literal">false</span>,
@@ -1185,7 +1185,7 @@ also be added.</li>
 <p>The telemetry module will print warnings to stdout if there are missing ids. It is strongly advisable to ensure this is working correctly, as the module will attribute usage for undeclared ids to a generic <code>custom</code> bucket. This is not good for accurate results!</p>
 <p>To see these warnings, you need to have the <code>browser.dom.window.dump.enabled</code> browser preference set to <code>true</code> in <code>about:config</code> (and restart the browser).</p>
 <p>Then, try doing things that trigger telemetry calls (e.g. opening a tool). Imagine we had a typo when reporting the tool was opened:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&apos;mytoolnmae&apos;</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">this</span>._telemetry.toolOpened(<span class="hljs-string">&apos;mytoolnmae&apos;</span>, sessionId, <span class="hljs-keyword">this</span>);
                                   ^^^^ typo, should be *mytoolname*
 </code></pre>
 <p>Would report an error to stdout:</p>
@@ -1348,7 +1348,7 @@ add_task(<span class="hljs-keyword">async</span> <span class="hljs-function"><sp
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.8.4","depth":2,"next":{"title":"Backend","level":"1.9","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.9.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.9.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.9.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.9.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.8.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2018-09-27T21:01:38.706Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-27T21:02:42.683Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.8.4","depth":2,"next":{"title":"Backend","level":"1.9","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.9.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.9.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.9.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.9.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.9.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.9.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.9.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.9.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.9.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.9.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.8.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2018-09-28T21:03:58.190Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-28T21:05:51.707Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
