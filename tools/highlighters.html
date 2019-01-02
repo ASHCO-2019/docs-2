@@ -969,11 +969,7 @@
 </ul>
 <h2 id="using-highlighters">Using highlighters</h2>
 <p>Highlighters run on the debuggee side, not on the toolbox side. This is so that it&apos;s possible to highlight elements on a remote device for instance. This means you need to go through the <a href="protocol.md">Remote Debugging Protocol</a> to use a highlighter.</p>
-<h3 id="the-highlighter-utils">The highlighter utils</h3>
-<p>The easiest way to access the highlighters from toolbox-side DevTools code is by using the highlighter utils, which is conveniently available on the toolbox object. Here is how you can access the utils:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">let</span> hUtils = toolbox.highlighterUtils;
-</code></pre>
-<p>Since the box-model highlighter is the most used type of highlighter (for instance it&apos;s displayed when you move your mouse over nodes in the inspector), the utils provides a set of methods to interact with it:</p>
+<p>Since the box-model highlighter (HighlighterFront) is the most used type of highlighter (for instance it&apos;s displayed when you move your mouse over nodes in the inspector), the HighlighterFront provides a custom set of methods to interact with it:</p>
 <table>
 <thead>
 <tr>
@@ -1004,7 +1000,24 @@
 </tr>
 </tbody>
 </table>
-<p>But the box-model highlighter isn&apos;t the only type of highlighter, so the highlighter utils provides the following method:</p>
+<p>Not all methods that are related to highlighters are present on the HighlighterFront. The
+<code>highlightDomValueGrip</code> method also requires the WalkerFront in order to transform a Grip into a
+NodeFront. Therefore, methods that access other Fronts are available on the InspectorFront.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>highlightDomValueGrip(valueGrip)</code></td>
+<td>Display the box-model highlighter on a given node, represented by a debugger object value grip.</td>
+</tr>
+</tbody>
+</table>
+<p>But the box-model highlighter isn&apos;t the only type of highlighter, so the InspectorFront also provides the following method:</p>
 <table>
 <thead>
 <tr>
@@ -1020,7 +1033,7 @@
 </tbody>
 </table>
 <h3 id="the-highlighter-api">The highlighter API</h3>
-<p>When getting a highlighter via <code>toolbox.highlighterUtils.getHighlighterByType(typeName)</code>, the right type of highlighter will be instantiated on the server-side and will be wrapped into a <code>CustomHighlighterActor</code> and that&apos;s what will be returned to the caller. This means that all types of highlighters share the same following API:</p>
+<p>When getting a highlighter via <code>toolbox.inspector.getHighlighterByType(typeName)</code>, the right type of highlighter will be instantiated on the server-side and will be wrapped into a <code>CustomHighlighterActor</code> and that&apos;s what will be returned to the caller. This means that all types of highlighters share the same following API:</p>
 <table>
 <thead>
 <tr>
@@ -1253,7 +1266,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Highlighters","level":"1.7.1.2","depth":3,"next":{"title":"Memory","level":"1.7.2","depth":2,"path":"tools/memory-panel.md","ref":"tools/memory-panel.md","articles":[]},"previous":{"title":"Panel Architecture","level":"1.7.1.1","depth":3,"path":"tools/inspector-panel.md","ref":"tools/inspector-panel.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/highlighters.md","mtime":"2019-01-01T21:53:28.699Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-01T21:54:45.452Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Highlighters","level":"1.7.1.2","depth":3,"next":{"title":"Memory","level":"1.7.2","depth":2,"path":"tools/memory-panel.md","ref":"tools/memory-panel.md","articles":[]},"previous":{"title":"Panel Architecture","level":"1.7.1.1","depth":3,"path":"tools/inspector-panel.md","ref":"tools/inspector-panel.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/highlighters.md","mtime":"2019-01-02T21:56:25.312Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-02T21:57:34.384Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
