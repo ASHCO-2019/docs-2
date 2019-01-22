@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Coding standards · GitBook</title>
+        <title>How to fix a bug · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="javascript.html" />
+    <link rel="next" href="code-reviews.html" />
     
     
-    <link rel="prev" href="levelling-up.html" />
+    <link rel="prev" href="find-bugs.html" />
     
 
     </head>
@@ -189,7 +189,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2" data-path="fixing-bugs.html">
+        <li class="chapter active" data-level="1.3.2" data-path="fixing-bugs.html">
             
                 <a href="fixing-bugs.html">
             
@@ -299,7 +299,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.6" data-path="coding-standards.html">
+        <li class="chapter " data-level="1.3.6" data-path="coding-standards.html">
             
                 <a href="coding-standards.html">
             
@@ -1023,7 +1023,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Coding standards</a>
+        <a href=".." >How to fix a bug</a>
     </h1>
 </div>
 
@@ -1038,14 +1038,100 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="coding-standards">Coding standards</h1>
-<p>Our code base is quite large, and a lot of different people contribute to it all the time. Therefore, it&apos;s important to share standards to keep the code consistent and written in a predictable style. This also helps avoid common mistakes.</p>
-<p>We have pages defining standards, best practices and tips for various languages used in our tools:</p>
+                                <h1 id="how-to-fix-a-bug">How to fix a bug</h1>
+<h2 id="make-sure-you-understand-what-needs-to-be-done">Make sure you understand what needs to be done</h2>
+<p>If you&apos;re not quite sure of this, please add a comment requesting more information in the bug itself. It is absolutely fine to also talk to someone via other means (e.g. irc, email, in the office kitchen...), but it is good to come back to the bug and add the extra information, just in case you stop working on the bug at some point and someone else has to pick work where you left it.</p>
+<h2 id="find-out-where-are-the-files-that-need-changing">Find out where are the files that need changing</h2>
+<p>In an ideal world, the bug has this information from the start, but very often it doesn&apos;t.</p>
+<p>If you&apos;re not yet familiar with the codebase, the <a href="../files/">files and directories overview</a> might help you find where things are.</p>
+<p>If you know what you&apos;re looking for (e.g. a string that has a typo and needs correcting, or a function name that needs modifying), you can use a source code search engine:</p>
 <ul>
-<li><a href="javascript.html">JavaScript</a></li>
-<li><a href="css.html">CSS</a></li>
-<li><a href="../frontend/svgs.html">SVG</a></li>
+<li><a href="http://searchfox.org/mozilla-central/source" target="_blank">Searchfox</a> (updated most frequently)</li>
+<li><a href="http://dxr.mozilla.org/mozilla-central/source/" target="_blank">DXR</a> (less often)</li>
 </ul>
+<p>It is a good idea to <a href="https://support.mozilla.org/en-US/kb/how-search-from-address-bar" target="_blank">add smart keyword searches</a> for Searchfox or DXR to search faster.</p>
+<p>You can also use your operating system&apos;s command line. For example, let&apos;s search for occurrences of <code>TODO</code> in the code base.</p>
+<p>Within your command line prompt, <code>cd</code> to the <code>devtools</code> directory:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">cd</span> ~/mozilla-central/devtools <span class="hljs-comment"># use your actual folder name!</span>
+grep -r <span class="hljs-string">&apos;TODO&apos;</span> .
+</code></pre>
+<p>This will list all the places in the DevTools code that contain the <code>TODO</code> string. If there are too many instances, you can combine the above with <code>less</code>, to scroll and paginate the output of <code>grep</code>:</p>
+<pre><code class="lang-bash">grep -r <span class="hljs-string">&apos;TODO&apos;</span> . | less
+</code></pre>
+<p>Press <code>q</code> to exit.</p>
+<p>If after all of this you still can&apos;t find your bearings, add a comment in the bug asking for more information.</p>
+<h2 id="how-do-you-know-that-you-have-found-what-you-were-looking-for">How do you know that you have found what you were looking for?</h2>
+<p>There are a few options to confirm that you found the right files:</p>
+<h3 id="if-this-is-about-changing-a-string">If this is about changing a string...</h3>
+<p>Edit the file(s), and change the string (e.g. fix a typo). Rebuild, and run again:</p>
+<pre><code class="lang-bash">./mach build
+./mach run
+</code></pre>
+<p>Then go to the panel that displays the string you wanted to change.</p>
+<p>Does the typo still occur? Or is the string being displayed the correct one now?</p>
+<h3 id="if-this-is-about-changing-javascript-code">If this is about changing JavaScript code...</h3>
+<p>If you think you found the right file to edit, add some logging statement on a place of the code which is likely to be executed (for example, on a class constructor):</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// For front-end code</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;hello friends\n&apos;</span>);
+</code></pre>
+<p>Or...</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// For server code</span>
+dump(<span class="hljs-string">&apos;hello friends\n&apos;</span>);
+</code></pre>
+<p>TIP: Whether to use one or another depends on the type of bug you&apos;re working on, but if you&apos;ve just started in DevTools, it&apos;s highly likely you&apos;ll take a front-end bug first.</p>
+<p>Then rebuild and run again:</p>
+<pre><code class="lang-bash">./mach build
+./mach run
+</code></pre>
+<p>Go to the panel or initiate the action that is likely to result on the code being executed, and pay close attention to the output in your console.</p>
+<p>Can you see <code>hello friends</code>? Then you found the file that you were looking for.</p>
+<p>It&apos;s possible that you&apos;ll get a lot of other messages you don&apos;t care about now, but we can use <code>grep</code> to filter:</p>
+<pre><code class="lang-bash">./mach run | grep hello friends
+</code></pre>
+<p>This will only show lines that contain <code>hello friends</code>. If you get an empty output after trying to get the code to execute, maybe this isn&apos;t the right file, or maybe you didn&apos;t trigger the action.</p>
+<p>And that means it&apos;s time to ask for more information in the bug or from your colleagues. Tell them what you tried, so they don&apos;t have to figure that out themselves (saves everyone some time!).</p>
+<h3 id="if-this-is-about-changing-css-code">If this is about changing CSS code...</h3>
+<p>If you think you have found the right file and the right CSS selector, you could try to edit the file to insert some outrageously colourful rule (for example, a really thick bright blue border), then restart DevTools to see if the changes show up.</p>
+<pre><code class="lang-css"><span class="hljs-selector-tag">border</span>: 4<span class="hljs-selector-tag">px</span> <span class="hljs-selector-tag">solid</span> <span class="hljs-selector-tag">blue</span>;
+</code></pre>
+<h2 id="next-do-whatever-needs-doing">NEXT: do whatever needs doing</h2>
+<p>This will always depend on the specific bug you&apos;re working on, so it&apos;s hard to provide guidance here.</p>
+<p>The key aspect here is that if you have questions, you should not hesitate to ask. Ask your mentor, your manager, or <a href="https://firefox-dev.tools/#getting-in-touch" target="_blank">get in touch</a>. <strong>You should just not get stuck</strong>.</p>
+<p>Some people find it difficult to recognise or even admit they&apos;re in such a situation, so some ways to describe &apos;stuck&apos; could be:</p>
+<ul>
+<li>you&apos;ve tried everything you could think of, nothing works, and do not know what else to do.</li>
+<li>you have various ideas for things that can be done, and do not know which one to go for.</li>
+<li>you have not learned anything new about the problem in the last one or two days.</li>
+<li>you&apos;re starting to think about abandoning this bug and doing something else instead.</li>
+<li>you don&apos;t know what to do, but are afraid of asking for help.</li>
+</ul>
+<p>If you think <em>any</em> of the above describes you, ask for help!</p>
+<p>Another tip you can use if you&apos;re afraid that you&apos;re wasting people&apos;s time is to timebox. For example, give yourself 2 hours to investigate. If you can&apos;t figure anything after that time has elapsed, stop and ask for help. It might be that you needed a key piece of information that was missing in the bug description, or you misunderstood something, or maybe even that you found a bug and that&apos;s why things didn&apos;t work even if they should! This is why it&apos;s important to call for help sooner rather than later.</p>
+<h3 id="useful-references">Useful references</h3>
+<h4 id="coding-standards">Coding standards</h4>
+<p>If it&apos;s your first time contributing, the documentation on <a href="coding-standards.html">coding standards</a> might have answers to questions such as what style of code to use, how to name new files (if you have to add any), tools we use to run automated checks, etc.</p>
+<h4 id="specialised-guides">Specialised guides</h4>
+<p>We also have a few guides explaining how to work on specific types of problems, for example: <a href="performance.html">investigating performance issues</a>, or <a href="react-performance-tips.html">writing efficient React code</a>. Please have a look at the sidebar or use the search box on top of the sidebar to see if there&apos;s something written about the type of bug you&apos;re working on.</p>
+<p>If not, maybe you&apos;ll be able to contribute with one by the time you fix your bug!</p>
+<h4 id="mdn">MDN</h4>
+<p><a href="http://developer.mozilla.org/" target="_blank">MDN Web Docs</a> (also known as <em>MDN</em>) has a lot of information about HTML, CSS, JS, DOM, Web APIs, Gecko-specific APIs, and more.</p>
+<h2 id="run-tests">Run tests</h2>
+<p>We have several types of automated tests to help us when developing.</p>
+<p>Some, like the linting tests, address coding style; others address functionality, such as unit and integration tests. This page has more <a href="../tests.md">details on types of tests and how to run them</a>.</p>
+<p>You might want to run the unit and integration types of tests quite frequently, to confirm you&apos;re not breaking anything else. Depending on what you&apos;re doing, it might be even possible to run just one test file which addresses the specific change you&apos;re implementing:</p>
+<pre><code class="lang-bash">./mach <span class="hljs-built_in">test</span> devtools/path/to/test.js
+</code></pre>
+<p>Sometimes you might want to run a number of tests which are related to the bug you&apos;re fixing:</p>
+<pre><code class="lang-bash">./mach <span class="hljs-built_in">test</span> devtools/path/to/<span class="hljs-built_in">test</span>-thing-*.js
+</code></pre>
+<p>At the beginning, it is entirely possible that you have no idea of where the tests are for the thing you&apos;re working on. Please ask for help! You will eventually learn your way around.</p>
+<p>It is good etiquette to ensure the tests pass locally before asking for a code review. This includes linting tests. To run them, please <a href="eslint.html">configure your system to run ESlint</a>, and then you can execute:</p>
+<pre><code class="lang-bash">./mach eslint devtools/path/to/files/you/changed
+</code></pre>
+<p>Our tool for code review will run the linter automatically as well, but if you run this locally you&apos;ll get instant feedback, and avoid having to send an updated commit again.</p>
+<h2 id="time-for-a-review">Time for a review</h2>
+<p>When you think you have fixed the bug, first let&apos;s celebrate a bit! Yay! Well done &#x1F600;</p>
+<p>And now it&apos;s time to <a href="code-reviews.html">get your code reviewed</a>.</p>
 
                                 
                                 </section>
@@ -1073,12 +1159,12 @@
 
             
                 
-                <a href="levelling-up.html" class="navigation navigation-prev " aria-label="Previous page: Levelling up">
+                <a href="find-bugs.html" class="navigation navigation-prev " aria-label="Previous page: Find bugs to work on">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="javascript.html" class="navigation navigation-next " aria-label="Next page: JavaScript">
+                <a href="code-reviews.html" class="navigation navigation-next " aria-label="Next page: Code reviews">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1089,7 +1175,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Coding standards","level":"1.3.6","depth":2,"next":{"title":"JavaScript","level":"1.3.6.1","depth":3,"path":"contributing/javascript.md","ref":"./contributing/javascript.md","articles":[{"title":"ESLint","level":"1.3.6.1.1","depth":4,"path":"contributing/eslint.md","ref":"./contributing/eslint.md","articles":[]}]},"previous":{"title":"Levelling up","level":"1.3.5","depth":2,"path":"contributing/levelling-up.md","ref":"./contributing/levelling-up.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/coding-standards.md","mtime":"2019-01-22T22:06:28.078Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-22T22:07:46.183Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"How to fix a bug","level":"1.3.2","depth":2,"next":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[{"title":"Set up for code reviews","level":"1.3.3.1","depth":3,"path":"contributing/code-reviews-setup.md","ref":"./contributing/code-reviews-setup.md","articles":[]},{"title":"Find a reviewer","level":"1.3.3.2","depth":3,"path":"contributing/code-reviews-find-reviewer.md","ref":"./contributing/code-reviews-find-reviewer.md","articles":[]},{"title":"Send your code for review","level":"1.3.3.3","depth":3,"path":"contributing/making-prs.md","ref":"./contributing/making-prs.md","articles":[]},{"title":"Reviews checklist","level":"1.3.3.4","depth":3,"path":"contributing/code-reviews-checklist.md","ref":"./contributing/code-reviews-checklist.md","articles":[]}]},"previous":{"title":"Find bugs to work on","level":"1.3.1","depth":2,"path":"contributing/find-bugs.md","ref":"./contributing/find-bugs.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/fixing-bugs.md","mtime":"2019-01-22T22:06:28.086Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-22T22:07:46.183Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

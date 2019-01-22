@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Coding standards · GitBook</title>
+        <title>Set up for code reviews · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -59,10 +59,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="javascript.html" />
+    <link rel="next" href="code-reviews-find-reviewer.html" />
     
     
-    <link rel="prev" href="levelling-up.html" />
+    <link rel="prev" href="code-reviews.html" />
     
 
     </head>
@@ -216,7 +216,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.3.1" data-path="code-reviews-setup.html">
+        <li class="chapter active" data-level="1.3.3.1" data-path="code-reviews-setup.html">
             
                 <a href="code-reviews-setup.html">
             
@@ -299,7 +299,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.6" data-path="coding-standards.html">
+        <li class="chapter " data-level="1.3.6" data-path="coding-standards.html">
             
                 <a href="coding-standards.html">
             
@@ -1023,7 +1023,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Coding standards</a>
+        <a href=".." >Set up for code reviews</a>
     </h1>
 </div>
 
@@ -1038,14 +1038,25 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="coding-standards">Coding standards</h1>
-<p>Our code base is quite large, and a lot of different people contribute to it all the time. Therefore, it&apos;s important to share standards to keep the code consistent and written in a predictable style. This also helps avoid common mistakes.</p>
-<p>We have pages defining standards, best practices and tips for various languages used in our tools:</p>
+                                <h1 id="set-up-for-code-reviews">Set up for code reviews</h1>
+<p>There are two things you need to do before you can get a code review, although you only need to do this once &#x1F603;</p>
+<h2 id="set-up-to-get-code-reviews-in-phabricator">Set up to get code reviews in Phabricator</h2>
+<p>We use an online tool called Phabricator for code reviews. To create an account in Phabricator, you first need the Bugzilla account that you created earlier. If you don&apos;t have one, <a href="../getting-started/bugzilla.html">create it now</a>.</p>
+<hr>
+<p>&#x26A0;&#xFE0F; <em>IMPORTANT:</em>  &#x26A0;&#xFE0F;&#xFE0F;&#xFE0F;</p>
+<p>It&apos;s helpful to have the same user name in both Bugzilla and Phabricator, so that people always know how to find you.</p>
+<p>Bugzilla&apos;s <code>Real name</code> field can be edited after the fact, but you cannot change Phabricator&apos;s username once the account has been created.</p>
+<p>If you added an <code>:ircnickname</code> in your Bugzilla&apos;s <code>Real name</code>, Phabricator will use that to pre-fill the username field when you create the account. <strong>Please double check you like the proposed username, and make any corrections before you register</strong>.</p>
+<hr>
+<p>Once you understand the above, please <a href="https://moz-conduit.readthedocs.io/en/latest/phabricator-user.html#creating-an-account" target="_blank">create a Phabricator account</a>. </p>
+<h2 id="set-up-to-send-code-for-review">Set up to send code for review</h2>
+<p>There are two ways of doing this (sorry, let us explain!):</p>
 <ul>
-<li><a href="javascript.html">JavaScript</a></li>
-<li><a href="css.html">CSS</a></li>
-<li><a href="../frontend/svgs.html">SVG</a></li>
+<li>you can use <a href="https://moz-conduit.readthedocs.io/en/latest/arcanist-user.html" target="_blank">Arcanist</a>, which is the official command line tool that accompanies Phabricator, and should be enough for most of the cases.</li>
+<li>or you could use <a href="https://moz-conduit.readthedocs.io/en/latest/phabricator-user.html#using-moz-phab" target="_blank">moz-phab</a>, which is a Mozilla-developed wrapper for Arcanist that makes it work better with the &quot;Mozilla workflow&quot;.</li>
 </ul>
+<p><strong>We recommend you use Arcanist</strong> for now, unless you are more experienced and know what you&apos;re doing, or want to take advantage of <code>moz-phab</code>&apos;s features. You need to install Arcanist for <code>moz-phab</code> to work anyway.</p>
+<p>If you decide to use <code>moz-phab</code>, please be aware that we started using this new tool quite recently, and you might find bugs (or things that don&apos;t feel quite right), in which case you could either <a href="https://bugzilla.mozilla.org/buglist.cgi?product=Conduit&amp;component=Review%20Wrapper&amp;resolution=---" target="_blank">have a look at the existing bugs</a> to see if someone else has encountered this again, or simply <a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Conduit&amp;component=Review%20Wrapper" target="_blank">file a bug</a> using your fancy new Bugzilla account &#x1F600;</p>
 
                                 
                                 </section>
@@ -1073,12 +1084,12 @@
 
             
                 
-                <a href="levelling-up.html" class="navigation navigation-prev " aria-label="Previous page: Levelling up">
+                <a href="code-reviews.html" class="navigation navigation-prev " aria-label="Previous page: Code reviews">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="javascript.html" class="navigation navigation-next " aria-label="Next page: JavaScript">
+                <a href="code-reviews-find-reviewer.html" class="navigation navigation-next " aria-label="Next page: Find a reviewer">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1089,7 +1100,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Coding standards","level":"1.3.6","depth":2,"next":{"title":"JavaScript","level":"1.3.6.1","depth":3,"path":"contributing/javascript.md","ref":"./contributing/javascript.md","articles":[{"title":"ESLint","level":"1.3.6.1.1","depth":4,"path":"contributing/eslint.md","ref":"./contributing/eslint.md","articles":[]}]},"previous":{"title":"Levelling up","level":"1.3.5","depth":2,"path":"contributing/levelling-up.md","ref":"./contributing/levelling-up.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/coding-standards.md","mtime":"2019-01-22T22:06:28.078Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-22T22:07:46.183Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Set up for code reviews","level":"1.3.3.1","depth":3,"next":{"title":"Find a reviewer","level":"1.3.3.2","depth":3,"path":"contributing/code-reviews-find-reviewer.md","ref":"./contributing/code-reviews-find-reviewer.md","articles":[]},"previous":{"title":"Code reviews","level":"1.3.3","depth":2,"path":"contributing/code-reviews.md","ref":"./contributing/code-reviews.md","articles":[{"title":"Set up for code reviews","level":"1.3.3.1","depth":3,"path":"contributing/code-reviews-setup.md","ref":"./contributing/code-reviews-setup.md","articles":[]},{"title":"Find a reviewer","level":"1.3.3.2","depth":3,"path":"contributing/code-reviews-find-reviewer.md","ref":"./contributing/code-reviews-find-reviewer.md","articles":[]},{"title":"Send your code for review","level":"1.3.3.3","depth":3,"path":"contributing/making-prs.md","ref":"./contributing/making-prs.md","articles":[]},{"title":"Reviews checklist","level":"1.3.3.4","depth":3,"path":"contributing/code-reviews-checklist.md","ref":"./contributing/code-reviews-checklist.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/code-reviews-setup.md","mtime":"2019-01-22T22:06:28.078Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-22T22:07:46.183Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
