@@ -1379,28 +1379,7 @@ changeC: function (newC) {
 childFront.changeC(&apos;hello&apos;).then(ret =&gt; { assert(ret === childFront); assert(childFront.c === &quot;hello&quot;) });
 </code></pre><p>Now our response will look like:</p>
 <pre><code>{ from: &lt;childActorID&gt;, self: { actor: &lt;childActorID&gt;, greeting: &lt;id&gt;, a: &lt;a&gt;, b: &lt;b&gt;, c: &quot;hello&quot;, d: &lt;d&gt; }
-</code></pre><p>But that&apos;s wasteful.  Only c changed.  So we can provide a <em>detail</em> to the type using <code>#</code>:</p>
-<pre><code>response: { self: RetVal(&quot;childActor#changec&quot;) }
-</code></pre><p>and update our form methods to make use of that data:</p>
-<pre><code>// In ChildActor:
-form: function (detail) {
-    if (detail === &quot;changec&quot;) {
-        return { actor: this.actorID, c: this.c }
-    }
-    // ... the rest of the form method stays the same.
-}
-
-// In ChildFront:
-form: function (form, detail) {
-    if (detail === &quot;changec&quot;) {
-        this.actorID = form.actor;
-        this.c = form.c;
-        return;
-    }
-    // ... the rest of the form method stays the same.
-}
-</code></pre><p>Now the packet looks like a much more reasonable <code>{ from: &lt;childActorID&gt;, self: { actor: &lt;childActorID&gt;, c: &quot;hello&quot; } }</code></p>
-<h2 id="lifetimes">Lifetimes</h2>
+</code></pre><h2 id="lifetimes">Lifetimes</h2>
 <p>No, I don&apos;t want to talk about lifetimes quite yet.</p>
 <h2 id="events">Events</h2>
 <p>Your actor has great news!</p>
@@ -1592,7 +1571,7 @@ clearTemporaryChildren: protocol.custom(function (id) {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2019-01-28T22:07:45.471Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-28T22:08:58.634Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2019-01-29T22:06:49.254Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-01-29T22:08:02.661Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
