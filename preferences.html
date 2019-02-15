@@ -1074,7 +1074,7 @@ this service at:</p>
 </ul>
 <p>If you are using Launchpad, note that only a subset of nsIPrefService methods are
 implemented (addObserver and removeObserver). Launchpad relies on a Services shim file
-provided by devtools-module (<a href="https://github.com/devtools-html/devtools-core/blob/master/packages/devtools-modules/src/Services.js" target="_blank">code on GitHub</a>).</p>
+provided by devtools-module (<a href="https://github.com/firefox-devtools/devtools-core/blob/master/packages/devtools-modules/src/Services.js" target="_blank">code on GitHub</a>).</p>
 <h3 id="requiring-servicespref">Requiring Services.pref</h3>
 <p>To require Services and use Services.pref, you can normally use the following snippet:</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Services = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;Services&quot;</span>);
@@ -1110,7 +1110,7 @@ sequence, it should go in devtools/startup/preferences/devtools-startup.js.</p>
 <p>At the time of writing this doc, projects using Launchpad have to duplicate the default
 definition of a preference.</p>
 <ul>
-<li>debugger.html: update <a href="https://github.com/devtools-html/debugger.html/blob/master/src/utils/prefs.js" target="_blank">src/utils/prefs.js</a></li>
+<li>debugger.html: update <a href="https://github.com/firefox-devtools/debugger.html/blob/master/src/utils/prefs.js" target="_blank">src/utils/prefs.js</a></li>
 <li>netmonitor: update <a href="http://searchfox.org/mozilla-central/source/devtools/client/netmonitor/index.js" target="_blank">index.js</a></li>
 <li>webconsole: update <a href="http://searchfox.org/mozilla-central/source/devtools/client/webconsole/local-dev/index.js" target="_blank">local-dev/index.js</a></li>
 </ul>
@@ -1165,7 +1165,7 @@ has overridden the default value.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Preferences","level":"1.9","depth":1,"next":{"title":"About this documentation","level":"1.10","depth":1,"path":"about-documentation.md","ref":"about-documentation.md","articles":[]},"previous":{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"preferences.md","mtime":"2019-02-14T22:14:55.744Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-14T22:16:10.891Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Preferences","level":"1.9","depth":1,"next":{"title":"About this documentation","level":"1.10","depth":1,"path":"about-documentation.md","ref":"about-documentation.md","articles":[]},"previous":{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"preferences.md","mtime":"2019-02-15T22:15:32.568Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-15T22:16:44.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
