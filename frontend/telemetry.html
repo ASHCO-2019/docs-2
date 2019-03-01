@@ -1297,31 +1297,29 @@ also be added.</li>
 &quot;use strict&quot;</span>;
 
 <span class="hljs-keyword">const</span> { Toolbox } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/client/framework/toolbox&quot;</span>);
+<span class="hljs-keyword">const</span> { TelemetryTestUtils } = ChromeUtils.import(<span class="hljs-string">&quot;resource://testing-common/TelemetryTestUtils.jsm&quot;</span>);
 
 <span class="hljs-keyword">const</span> URL = <span class="hljs-string">&quot;data:text/html;charset=utf8,browser_toolbox_telemetry_close.js&quot;</span>;
-<span class="hljs-keyword">const</span> OPTOUT = Ci.nsITelemetry.DATASET_RELEASE_CHANNEL_OPTOUT;
-<span class="hljs-keyword">const</span> { SIDE, BOTTOM } = Toolbox.HostType;
-<span class="hljs-keyword">const</span> TELEMETRY_DATA = [
+<span class="hljs-keyword">const</span> { RIGHT, BOTTOM } = Toolbox.HostType;
+<span class="hljs-keyword">const</span> DATA = [
   {
-    timestamp: <span class="hljs-literal">null</span>,
     category: <span class="hljs-string">&quot;devtools.main&quot;</span>,
     method: <span class="hljs-string">&quot;close&quot;</span>,
     object: <span class="hljs-string">&quot;tools&quot;</span>,
     value: <span class="hljs-literal">null</span>,
     extra: {
       host: <span class="hljs-string">&quot;right&quot;</span>,
-      width: <span class="hljs-string">&quot;1440&quot;</span>
+      width: w =&gt; w &gt; <span class="hljs-number">0</span>,
     }
   },
   {
-    timestamp: <span class="hljs-literal">null</span>,
     category: <span class="hljs-string">&quot;devtools.main&quot;</span>,
     method: <span class="hljs-string">&quot;close&quot;</span>,
     object: <span class="hljs-string">&quot;tools&quot;</span>,
     value: <span class="hljs-literal">null</span>,
     extra: {
       host: <span class="hljs-string">&quot;bottom&quot;</span>,
-      width: <span class="hljs-string">&quot;1440&quot;</span>
+      width: w =&gt; w &gt; <span class="hljs-number">0</span>,
     }
   }
 ];
@@ -1331,8 +1329,7 @@ add_task(<span class="hljs-keyword">async</span> <span class="hljs-function"><sp
   Services.telemetry.clearEvents();
 
   <span class="hljs-comment">// Ensure no events have been logged</span>
-  <span class="hljs-keyword">const</span> snapshot = Services.telemetry.snapshotEvents(OPTOUT, <span class="hljs-literal">true</span>);
-  ok(!snapshot.parent, <span class="hljs-string">&quot;No events have been logged for the main process&quot;</span>);
+  TelemetryTestUtils.assertNumberOfEvents(<span class="hljs-number">0</span>);
 
   <span class="hljs-keyword">await</span> openAndCloseToolbox(<span class="hljs-string">&quot;webconsole&quot;</span>, SIDE);
   <span class="hljs-keyword">await</span> openAndCloseToolbox(<span class="hljs-string">&quot;webconsole&quot;</span>, BOTTOM);
@@ -1350,27 +1347,7 @@ add_task(<span class="hljs-keyword">async</span> <span class="hljs-function"><sp
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkResults</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">const</span> snapshot = Services.telemetry.snapshotEvents(OPTOUT, <span class="hljs-literal">true</span>);
-  <span class="hljs-keyword">const</span> events = snapshot.parent.filter(event =&gt; event[<span class="hljs-number">1</span>] === <span class="hljs-string">&quot;devtools.main&quot;</span> &amp;&amp;
-                                                 event[<span class="hljs-number">2</span>] === <span class="hljs-string">&quot;close&quot;</span> &amp;&amp;
-                                                 event[<span class="hljs-number">3</span>] === <span class="hljs-string">&quot;tools&quot;</span> &amp;&amp;
-                                                 event[<span class="hljs-number">4</span>] === <span class="hljs-literal">null</span>
-  );
-
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> i <span class="hljs-keyword">in</span> TELEMETRY_DATA) {
-    <span class="hljs-keyword">const</span> [ timestamp, category, method, object, value, extra ] = events[i];
-    <span class="hljs-keyword">const</span> expected = TELEMETRY_DATA[i];
-
-    <span class="hljs-comment">// ignore timestamp</span>
-    ok(timestamp &gt; <span class="hljs-number">0</span>, <span class="hljs-string">&quot;timestamp is greater than 0&quot;</span>);
-    is(category, expected.category, <span class="hljs-string">&quot;category is correct&quot;</span>);
-    is(method, expected.method, <span class="hljs-string">&quot;method is correct&quot;</span>);
-    is(object, expected.object, <span class="hljs-string">&quot;object is correct&quot;</span>);
-    is(value, expected.value, <span class="hljs-string">&quot;value is correct&quot;</span>);
-
-    is(extra.host, expected.extra.host, <span class="hljs-string">&quot;host is correct&quot;</span>);
-    ok(extra.width &gt; <span class="hljs-number">0</span>, <span class="hljs-string">&quot;width is greater than 0&quot;</span>);
-  }
+  TelemetryTestUtils.assertEvents(DATA, {category: <span class="hljs-string">&quot;devtools.main&quot;</span>, method: <span class="hljs-string">&quot;close&quot;</span>, object: <span class="hljs-string">&quot;tools&quot;</span>});
 }
 </code></pre>
 <h4 id="compile-it">Compile it</h4>
@@ -1445,7 +1422,7 @@ add_task(<span class="hljs-keyword">async</span> <span class="hljs-function"><sp
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.7.4","depth":2,"next":{"title":"Backend","level":"1.8","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.8.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.8.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.8.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.8.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.7.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2019-02-28T22:20:21.777Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-28T22:21:41.308Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Telemetry","level":"1.7.4","depth":2,"next":{"title":"Backend","level":"1.8","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.8.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.8.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.8.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.8.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Guidelines","level":"1.7.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/telemetry.md","mtime":"2019-03-01T22:20:20.489Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-01T22:21:30.844Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
