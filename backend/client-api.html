@@ -1150,8 +1150,6 @@ client.attachThread(response.threadActor).then(<span class="hljs-function"><span
   threadClient.addListener(<span class="hljs-string">&quot;paused&quot;</span>, onPause);
   threadClient.addListener(<span class="hljs-string">&quot;resumed&quot;</span>, fooListener);
   threadClient.addListener(<span class="hljs-string">&quot;detached&quot;</span>, fooListener);
-  threadClient.addListener(<span class="hljs-string">&quot;framesadded&quot;</span>, onFrames);
-  threadClient.addListener(<span class="hljs-string">&quot;framescleared&quot;</span>, fooListener);
 
   <span class="hljs-comment">// Resume the thread.</span>
   threadClient.resume();
@@ -1211,8 +1209,6 @@ Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/d
         threadClient.addListener(<span class="hljs-string">&quot;paused&quot;</span>, onPause);
         threadClient.addListener(<span class="hljs-string">&quot;resumed&quot;</span>, fooListener);
         threadClient.addListener(<span class="hljs-string">&quot;detached&quot;</span>, fooListener);
-        threadClient.addListener(<span class="hljs-string">&quot;framesadded&quot;</span>, onFrames);
-        threadClient.addListener(<span class="hljs-string">&quot;framescleared&quot;</span>, fooListener);
 
         <span class="hljs-comment">// Resume the thread.</span>
         threadClient.resume();
@@ -1234,28 +1230,6 @@ Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/d
       debugTab();
     });
   });
-}
-
-<span class="hljs-comment">/**
- * Handler for entering pause state.
- */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onPause</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-comment">// Get the top 20 frames in the server&apos;s frame stack cache.</span>
-  client.activeThread.fillFrames(<span class="hljs-number">20</span>);
-  <span class="hljs-comment">// Get the scripts loaded in the server&apos;s source script cache.</span>
-  client.activeThread.fillScripts();
-}
-
-<span class="hljs-comment">/**
- * Handler for framesadded events.
- */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onFrames</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-comment">// Get the list of frames in the server.</span>
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> frame <span class="hljs-keyword">of</span> client.activeThread.cachedFrames) {
-    <span class="hljs-comment">// frame is a Debugger.Frame grip.</span>
-    dump(<span class="hljs-string">&quot;frame: &quot;</span> + frame.toSource() + <span class="hljs-string">&quot;\n&quot;</span>);
-    inspectFrame(frame);
-  }
 }
 
 <span class="hljs-comment">/**
@@ -1361,7 +1335,7 @@ startDebugger();
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2019-03-01T22:20:20.477Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-01T22:21:30.844Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2019-03-02T22:20:19.243Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-02T22:21:34.558Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
