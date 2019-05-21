@@ -1061,6 +1061,26 @@ This will run all DAMP tests, you can filter by test name with:</p>
 <pre><code class="lang-bash">./mach talos-test --activeTests damp --subtests console
 </code></pre>
 <p>This command will run all tests which contains &quot;console&quot; in their name.</p>
+<h3 id="command-line-options">Command line options</h3>
+<h4 id="running-tests-only-once">Running tests only once</h4>
+<pre><code class="lang-bash">./mach talos-test --activeTests damp --cycles 1 --tppagecycles 1
+</code></pre>
+<p><code>--cycles</code> will limit the number of Firefox restart to only one, while
+<code>--tppagecycles</code> will limit the number of test re-run in each firefox start to one.
+This is often helpful when debugging one particular subtest.</p>
+<h4 id="taking-screenshots">Taking screenshots</h4>
+<pre><code class="lang-bash">DEBUG_DEVTOOLS_SCREENSHOTS=1 ./mach talos-test --activeTests damp
+</code></pre>
+<p>When passing <code>DEBUG_DEVTOOLS_SCREENSHOTS</code> env variable, screenshots will be taken after each subtest
+was run. The screenshot will be opened in new tabs and their title
+includes the subtest label. Firefox won&apos;t automatically close so that you can view the screenshots.</p>
+<h4 id="recording-a-profile">Recording a profile</h4>
+<pre><code class="lang-bash">./mach talos-test --activeTests damp --geckoProfile --geckoProfileEntries 100000000
+</code></pre>
+<p>This will automatically record the tests and open the profile. You may use the following command in order
+to focus on just one subtest run:</p>
+<pre><code class="lang-bash">./mach talos-test --activeTests damp --subtests custom.webconsole --cycles 1 --tppagecycles 1 --geckoProfile --geckoProfileEntries 100000000
+</code></pre>
 <h2 id="how-to-run-it-on-try">How to run it on try?</h2>
 <pre><code class="lang-bash">./mach try -b o -p linux64 -u none -t damp --rebuild-talos 6
 </code></pre>
@@ -1149,7 +1169,7 @@ The <a href="http://searchfox.org/mozilla-central/source/testing/talos/talos/tes
 <h2 id="how-to-see-the-performance-trends">How to see the performance trends?</h2>
 <p>You can find the dedicated performance dashboard for DevTools at <a href="http://firefox-dev.tools/performance-dashboard" target="_blank">http://firefox-dev.tools/performance-dashboard</a>. You will find links to trend charts for various tools:</p>
 <ul>
-<li><a href="firefox-dev.tools/performance-dashboard/tools/inspector.html">Inspector dashboard</a></li>
+<li><a href="http://firefox-dev.tools/performance-dashboard/tools/inspector.html?days=60&amp;filterstddev=true" target="_blank">Inspector dashboard</a></li>
 <li><a href="http://firefox-dev.tools/performance-dashboard/tools/console.html?days=60&amp;filterstddev=true" target="_blank">Console dashboard</a></li>
 <li><a href="http://firefox-dev.tools/performance-dashboard/tools/netmonitor.html?days=60&amp;filterstddev=true" target="_blank">Netmonitor dashboard</a></li>
 <li><a href="http://firefox-dev.tools/performance-dashboard/tools/debugger.html?days=60&amp;filterstddev=true" target="_blank">Debugger dashboard</a></li>
@@ -1225,7 +1245,7 @@ You will get a black popup like this one:
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"next":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},"previous":{"title":"Debugging intermittent failures","level":"1.4.3","depth":2,"path":"tests/debugging-intermittents.md","ref":"tests/debugging-intermittents.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/performance-tests.md","mtime":"2019-05-20T23:01:12.982Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-20T23:02:39.923Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"next":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},"previous":{"title":"Debugging intermittent failures","level":"1.4.3","depth":2,"path":"tests/debugging-intermittents.md","ref":"tests/debugging-intermittents.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/performance-tests.md","mtime":"2019-05-21T23:02:00.440Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-21T23:03:29.439Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
