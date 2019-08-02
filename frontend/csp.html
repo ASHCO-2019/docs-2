@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Panel SVGs · GitBook</title>
+        <title>Content Security Policy · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="react.html" />
+    <link rel="next" href="../backend/backend.html" />
     
     
-    <link rel="prev" href="frontend.html" />
+    <link rel="prev" href="telemetry.html" />
     
 
     </head>
@@ -734,7 +734,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.7.1" data-path="svgs.html">
+        <li class="chapter " data-level="1.7.1" data-path="svgs.html">
             
                 <a href="svgs.html">
             
@@ -824,7 +824,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7.5" data-path="csp.html">
+        <li class="chapter active" data-level="1.7.5" data-path="csp.html">
             
                 <a href="csp.html">
             
@@ -1053,7 +1053,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Panel SVGs</a>
+        <a href=".." >Content Security Policy</a>
     </h1>
 </div>
 
@@ -1068,46 +1068,38 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="panel-svgs">Panel SVGs</h1>
-<p>These are the guidelines for creating devtools SVGs to make sure they&apos;re as small and neatly formatted as possible. The Mozilla Developer SVG guidelines can be found <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/SVG_Guidelines" target="_blank">here</a>.</p>
-<h2 id="explanation-of-pixel-grid">Explanation of Pixel Grid</h2>
-<p>Since so many of our SVGs appear so small, designing them on the pixel grid will help them not appear fuzzy when they&apos;re sized down to 16x16 pixels. There is program-specific documentation in both the <a href="#illustrator">Illustrator</a> and <a href="#sketch">Sketch</a> sections.</p>
-<h2 id="panel-icon-requirements">Panel Icon Requirements</h2>
-<p>The devtools panel icons do a couple of things in a specific way; following these guidelines will help stick your patch:</p>
-<ol>
-<li><strong>Inline fill colors.</strong> Devtools panel icons all use <code>fill=&quot;#0b0b0b&quot;</code> in the <code>&lt;svg&gt;</code> tag.</li>
-<li><strong>Inline opacities.</strong> Devtools panel icons also inline opacities on their relevant path.</li>
-</ol>
-<h2 id="illustrator">Illustrator</h2>
-<p>For Illustrator you&apos;ll want the following document settings:</p>
+                                <p>The DevTools toolbox is loaded in an iframe pointing to about:devtools-toolbox. This iframe has a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank">Content Security Policy</a> (CSP) applied, which will mitigate potential attacks. However this may limit the resources that can be loaded in the toolbox documenth.</p>
+<h1 id="current-devtools-csp">Current DevTools CSP</h1>
+<p>The current policy for about:devtools-toolbox is:</p>
+<pre><code>default-src chrome: resource:; img-src chrome: resource: data:;
+</code></pre><p>This means:</p>
 <ul>
-<li><strong>Document settings</strong>: <code>Units: pixels</code>, <code>Advanced</code> &gt; check <code>Align New Objects to Pixel Grid</code></li>
-<li><strong>Transform Panel</strong>: for existing artwork not on pixel grid, select shape and then within <code>Transform</code> &gt; <code>Advanced</code> &gt; check <code>Align to Pixel Grid</code></li>
+<li><code>chrome://</code> and <code>resource://</code> are allowed for any resource</li>
+<li><code>chrome://</code> and <code>resource://</code> and <code>data://</code> are allowed for images</li>
 </ul>
-<p>You can get a more detailed breakdown with images <a href="http://medialoot.com/blog/3-valuable-pixel-perfect-illustrator-techniques/" target="_blank">here</a>.</p>
-<p>You can download a sample Illustrator file <a href="https://www.dropbox.com/home/Mozilla_MobileUX_Share/Internal%20Assets/Templates/Firefox?preview=pixel-grid-illustrator.ai" target="_blank">here</a>.</p>
-<h3 id="tips-for-object-creation">Tips for Object Creation</h3>
-<p>When you&apos;re designing your icons in a graphics editor like Adobe Illustrator, there are a lot of things you can do that will bring down the size of the file and make your SVGs easier for the developers to work with. Here are some of them:</p>
+<p>For more information about which resources and requests are in scope of the CSP, you can read the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src" target="_blank">default-src documentation on MDN</a>.</p>
+<h1 id="scope-of-the-devtools-csp">Scope of the DevTools CSP</h1>
+<p>This content security policy only applies to the toolbox document for now. If you are working within the document of a panel or if you are working on the server, those limitations should not apply.</p>
+<p>Note that even when working in the document of a panel, we are sometimes interacting with the toolbox document, for instance to show tooltips. So typically any resource created for a tooltip will be subject to the CSP limitations.</p>
+<h1 id="recognizing-csp-issues">Recognizing CSP issues</h1>
+<p>Open the Browser Toolbox, if you see errors such as</p>
+<pre><code>JavaScript Error: &quot;Content Security Policy: The page&#x2019;s settings blocked the loading of a resource [...]&quot;
+</code></pre><p>it means you are trying to load a resource with a forbidden scheme.</p>
+<h1 id="fixing-csp-issues">Fixing CSP issues</h1>
+<p>If your implementation hits a CSP issue, the first suggestion is to try to use a supported scheme. If this is not an option, check if you can perform your request or load your resource outside of the toolbox document. For instance if the resource you are loading is related to the debugged target, the request can (and probably should) be made from an actor in the DevTools server and then forwarded from the server to the client. Requests made by the server will not be impacted by the CSP.</p>
+<p>If it seems like the only solution is to update the CSP, get in touch with security peers in order to discuss about your use case. You can <a href="https://bugzilla.mozilla.org/enter_bug.cgi?product=Core&amp;component=DOM%3A%20Security" target="_blank">file a bug in Core/DOM: security</a>.</p>
+<h1 id="fixing-csp-issues-in-tests">Fixing CSP issues in tests</h1>
+<p>If the issue comes from test code, it should be possible to update the test to use a supported scheme. A typical issue might be trying to load an iframe inside of the toolbox with a data-uri. Instead, you can create an HTML support file and load it from either a chrome:// or a resource:// URL.</p>
+<p>In general once a support file is added you can access it via:</p>
 <ul>
-<li><strong>Expand paths</strong>: Instead of having multiple shapes overlapping each other, expand shapes using the pathfinder.
-<img src="../resources/pathfinder.gif" alt="Use pathfinder to expand shapes"></li>
-<li>Simplify paths (<code>Object</code> &gt; <code>Path</code> &gt; <code>Simplify</code>)</li>
-<li>Expand objects so that strokes become objects. This has the added benefit of keeping the stroke size intact as the SVG is resized.
-<img src="../resources/expand-strokes.gif" alt="Expand strokes to make them objects"></li>
+<li><code>https://example.com/browser/[path_to_file]</code></li>
+<li>or <code>chrome://mochitests/content/browser/[path_to_file]</code></li>
 </ul>
-<h2 id="sketch">Sketch</h2>
-<p>Sketch vector work is a little different but the fundamentals (keeping your SVG small, expanding all paths) is the same. Here&apos;s what we&apos;ve found helps to build clean icons:</p>
-<ul>
-<li><p><strong>Build your icon at 16x16 with the Pixel Grid turned on.</strong> You can turn the pixel grid on at <code>View &gt; Canvas &gt; Show Pixels</code></p>
-</li>
-<li><p><strong>Make sure that all x/y coordinates are full pixels for lines/rectangles.</strong> Sub-pixels = not on pixel grid.
-<img src="../resources/sketch-position.png" alt="Position in the upper right hand corner of Sketch"></p>
-</li>
-<li><p><strong>Expand all your paths so strokes expand properly as the SVG gets resized.</strong> You can do this at <code>Layer &gt; Paths &gt; Vectorize Stroke</code>.</p>
-</li>
-<li><p><strong>Align anything that isn&apos;t boxy to the pixel grid with item selected then <code>Layer &gt; Round to Nearest Pixel Edge</code>.</strong></p>
-</li>
-</ul>
+<p>For instance <a href="https://searchfox.org/mozilla-central/source/devtools/client/aboutdebugging-new/test/browser/resources/service-workers/controlled-sw.html" target="_blank">devtools/client/aboutdebugging-new/test/browser/resources/service-workers/controlled-sw.html</a> is accessed in tests via <code>http://example.com/browser/devtools/client/aboutdebugging-new/test/browser/resources/service-workers/controlled-sw.html</code>.</p>
+<p>If you absolutely have to use an unsupported scheme, you can turn off CSPs for the test only. To do so, you need to temporarily update two preferences:</p>
+<pre><code>await pushPref(&quot;security.csp.enable&quot;, false);
+await pushPref(&quot;csp.skip_about_page_has_csp_assert&quot;, true);
+</code></pre><p>The <code>pushPref</code> helper will ensure the preferences come back to their initial value at the end of the test.</p>
 
                                 
                                 </section>
@@ -1135,12 +1127,12 @@
 
             
                 
-                <a href="frontend.html" class="navigation navigation-prev " aria-label="Previous page: Frontend">
+                <a href="telemetry.html" class="navigation navigation-prev " aria-label="Previous page: Telemetry">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="react.html" class="navigation navigation-next " aria-label="Next page: React">
+                <a href="../backend/backend.html" class="navigation navigation-next " aria-label="Next page: Backend">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1151,7 +1143,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Panel SVGs","level":"1.7.1","depth":2,"next":{"title":"React","level":"1.7.2","depth":2,"path":"frontend/react.md","ref":"frontend/react.md","articles":[{"title":"Guidelines","level":"1.7.2.1","depth":3,"path":"frontend/react-guidelines.md","ref":"frontend/react-guidelines.md","articles":[]}]},"previous":{"title":"Frontend","level":"1.7","depth":1,"path":"frontend/frontend.md","ref":"frontend/frontend.md","articles":[{"title":"Panel SVGs","level":"1.7.1","depth":2,"path":"frontend/svgs.md","ref":"frontend/svgs.md","articles":[]},{"title":"React","level":"1.7.2","depth":2,"path":"frontend/react.md","ref":"frontend/react.md","articles":[{"title":"Guidelines","level":"1.7.2.1","depth":3,"path":"frontend/react-guidelines.md","ref":"frontend/react-guidelines.md","articles":[]}]},{"title":"Redux","level":"1.7.3","depth":2,"path":"frontend/redux.md","ref":"frontend/redux.md","articles":[{"title":"Guidelines","level":"1.7.3.1","depth":3,"path":"frontend/redux-guidelines.md","ref":"frontend/redux-guidelines.md","articles":[]}]},{"title":"Telemetry","level":"1.7.4","depth":2,"path":"frontend/telemetry.md","ref":"frontend/telemetry.md","articles":[]},{"title":"Content Security Policy","level":"1.7.5","depth":2,"path":"frontend/csp.md","ref":"frontend/csp.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/svgs.md","mtime":"2019-08-02T23:38:26.409Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-02T23:39:57.874Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Content Security Policy","level":"1.7.5","depth":2,"next":{"title":"Backend","level":"1.8","depth":1,"path":"backend/backend.md","ref":"backend/backend.md","articles":[{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},{"title":"Client API","level":"1.8.2","depth":2,"path":"backend/client-api.md","ref":"backend/client-api.md","articles":[]},{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},{"title":"Backward Compatibility","level":"1.8.4","depth":2,"path":"backend/backward-compatibility.md","ref":"backend/backward-compatibility.md","articles":[]},{"title":"Actors","level":"1.8.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.8.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]}]},"previous":{"title":"Telemetry","level":"1.7.4","depth":2,"path":"frontend/telemetry.md","ref":"frontend/telemetry.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"frontend/csp.md","mtime":"2019-08-02T23:38:26.409Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-02T23:39:57.874Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
