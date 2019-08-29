@@ -63,7 +63,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../files/" />
+    <link rel="next" href="writing-perf-tests-example.html" />
     
     
     <link rel="prev" href="performance-tests.html" />
@@ -555,6 +555,32 @@
             
                     
                     Writing a new test
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.2" data-path="writing-perf-tests-example.html">
+            
+                <a href="writing-perf-tests-example.html">
+            
+                    
+                    Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.3" data-path="writing-perf-tests-tips.html">
+            
+                <a href="writing-perf-tests-tips.html">
+            
+                    
+                    Avanced tips
             
                 </a>
             
@@ -1083,106 +1109,89 @@
                                 
                                 <h1 id="writing-new-performance-test">Writing new performance test</h1>
 <p>See <a href="performance-tests.html">Performance tests (DAMP)</a> for an overall description of our performance tests.
-Here, we will describe how to write a new test with an example: track the performance of clicking inside the inspector panel.</p>
-<h2 id="consider-modifying-existing-tests-first">Consider modifying existing tests first</h2>
+Here, we will describe how to write a new test and register it to run in DAMP.</p>
+<p><div class="alert alert-success hints-alert"><div class="hints-icon"><i class="fa fa-mortar-board"></i></div><div class="hints-container"><p><strong>Reuse existing tests if possible!</strong></p>
 <p>If a <code>custom</code> page already exists for the tool you are testing, try to modify the existing <code>custom</code> test rather than adding a new individual test.</p>
 <p>New individual tests run separately, in new tabs, and make DAMP slower than just modifying existing tests. Complexifying <code>custom</code> test pages should also help cover more scenarios and catch more regressions. For those reasons, modifying existing tests should be the preferred way of extending DAMP coverage.</p>
 <p><code>custom</code> tests are using complex documents that should stress a particular tool in various ways. They are all named <code>custom.${tool}</code> (for instance <code>custom.inspector</code>). The test pages for those tests can be found in <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/pages/custom" target="_blank">pages/custom</a>.</p>
 <p>If your test case requires a dedicated document or can&apos;t run next to the other tests in the current <code>custom</code> test, follow the instructions below to add a new individual test.</p>
-<h2 id="where-is-the-code-for-the-test">Where is the code for the test?</h2>
-<p>For now, all the tests live in a single file <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/damp.js" target="_blank">damp.js</a>.</p>
-<p>There are two kinds of tests:</p>
+</div></div></p>
+<p>This page contains the general documentation for writing DAMP tests. See also:</p>
 <ul>
-<li><p>The first kind is being run against two documents:</p>
+<li><a href="writing-perf-tests-example.html">Performance test writing example</a> for a practical example of creating a new test</li>
+<li><a href="writing-perf-tests-tips.html">Performance test writing tips</a> for detailed tips on how to write a good and efficient test</li>
+</ul>
+<h2 id="test-location">Test location</h2>
+<p>Tests are located in <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests" target="_blank">testing/talos/talos/tests/devtools/addon/content/tests</a>. You will find subfolders for panels already tested in DAMP (debugger, inspector, &#x2026;) as well as other subfolders for tests not specific to a given panel (server, toolbox).</p>
+<p>Tests are isolated in dedicated files. Some examples of tests:</p>
+<ul>
+<li><a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/netmonitor/simple.js" target="_blank">tests/netmonitor/simple.js</a></li>
+<li><a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/inspector/mutations.js" target="_blank">tests/inspector/mutations.js</a></li>
+</ul>
+<h2 id="basic-test">Basic test</h2>
+<p>The basic skeleton of a test is:</p>
+<pre><code>const {
+  testSetup,
+  testTeardown,
+  SIMPLE_URL,
+} = require(&quot;../head&quot;);
+
+module.exports = async function() {
+  await testSetup(SIMPLE_URL);
+
+  // Run some measures here
+
+  await testTeardown();
+};
+</code></pre><ul>
+<li>always start the test by calling <code>testSetup(url)</code>, with the <code>url</code> of the document to use</li>
+<li>always end the test with <code>testTeardown()</code></li>
+</ul>
+<h2 id="test-documents">Test documents</h2>
+<p>DevTools performance heavily depends on the document against which DevTools are opened. There are two &quot;historical&quot; documents you can use for tests for any panel:</p>
 <ul>
 <li>&quot;Simple&quot;, an empty webpage. This one helps highlighting the load time of panels,</li>
 <li>&quot;Complicated&quot;, a copy of bild.be, a German newspaper website. This allows us to examine the performance of the tools when inspecting complicated, big websites.</li>
 </ul>
-<p>To run your test against these two documents, add it to <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.js#563-673" target="_blank">this function</a>.</p>
-<p>Look for <code>_getToolLoadingTests</code> function. There is one method per tool. Since we want to test how long does it take to click on the inspector, we will find the <code>inspector</code> method, and add the new test code there, like this:</p>
-<pre><code>_getToolLoadingTests(url, label, { expectedMessages, expectedSources }) {
-  let tests = {
-    async inspector() {
-      await this.testSetup(url);
-      let toolbox = await this.openToolboxAndLog(label + &quot;.inspector&quot;, &quot;inspector&quot;);
-      await this.reloadInspectorAndLog(label, toolbox);
-
-      // &lt;== here we are going to add some code to test &quot;click&quot; performance,
-      //     after the inspector is opened and after the page is reloaded.
-
-      await this.closeToolboxAndLog(label + &quot;.inspector&quot;);
-      await this.testTeardown();
-    },
-</code></pre></li>
-<li><p>The second kind isn&apos;t specific to any document. You can come up with your own test document, or not involve any document if you don&apos;t need one.
-If that better fits your needs, you should introduce an independent test function. Like <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.js#330-348" target="_blank">this one</a> or <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.js#350-402" target="_blank">this other one</a>. You also have to register the new test function you just introduced in this <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.js#863-864" target="_blank"><code>tests</code> object within <code>startTest</code> function</a>.</p>
-<p>You could also use extremely simple documents specific to your test case like this:</p>
-<pre><code>/**
- * Measure the time necessary to click in the inspector panel
- */
-async _inspectorClickTest() {
-  // Define here your custom document via a data URI:
-  let url = &quot;data:text/html,custom test document&quot;;
-  let tab = await this.testSetup(url);
-  let messageManager = tab.linkedBrowser.messageManager;
-  let toolbox = await this.openToolbox(&quot;inspector&quot;);
-
-  // &lt;= Here, you would write your test actions,
-  // after opening the inspector against a custom document
-
-  await this.closeToolbox();
-  await this.testTeardown();
-},
-...
-startTest(doneCallback, config) {
-  ...
-  // And you have to register the test in `startTest` function
-  // `tests` object is keyed by test names. So our test is named &quot;inspector.click&quot; here.
-  tests[&quot;inspector.click&quot;] = this._inspectorClickTest;
-  ...
-}
-</code></pre></li>
+<p>The URL of those documents are exposed by <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/head.js" target="_blank">tests/head.js</a>. The Simple page can be found at <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/pages/simple.html" target="_blank">testing/talos/talos/tests/devtools/addon/content/pages/simple.html</a>. The Complicated page is downloaded via <a href="https://wiki.mozilla.org/ReleaseEngineering/Applications/Tooltool" target="_blank">tooltool</a> automatically the first time you run the DAMP tests.</p>
+<p>You can create also new test documents under <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/pages" target="_blank">testing/talos/talos/tests/devtools/addon/content/pages</a>. See the pages in the <code>custom</code> subfolder for instance. If you create a document in <code>pages/custom/mypanel/index.html</code>, the URL of the document in your tests should be <code>PAGES_BASE_URL + &quot;custom/mypanel/index.html&quot;</code>. The constant <code>PAGES_BASE_URL</code> is exposed by head.js.</p>
+<p>Note that modifying any existing test document will most likely impact the baseline for existing tests.</p>
+<p>Finally you can also create very simple test documents using data urls. Test documents don&apos;t have to contain any specific markup or script to be valid DAMP test documents, so something as simple as <code>testSetup(&quot;data:text/html,my test document&quot;);</code> is valid.</p>
+<h2 id="test-helpers">Test helpers</h2>
+<p>Helper methods have been extracted in shared modules:</p>
+<ul>
+<li><a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/head.js" target="_blank">tests/head.js</a> for the most common ones</li>
+<li>tests/{subfolder}/{subfolder}-helpers.js for folder-specific helpers (<a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/inspector/inspector-helpers.js" target="_blank">example</a>)</li>
 </ul>
-<h2 id="how-to-name-your-test-and-register-it">How to name your test and register it?</h2>
+<p>To measure something which is not covered by an existing helper, you should use <code>runTest</code>, exposed by head.js.</p>
+<pre><code>module.exports = async function() {
+  await testSetup(SIMPLE_URL);
+
+  // Calling `runTest` will immediately start recording your action duration.
+  // You can execute any necessary setup action you don&apos;t want to record before calling it.
+  const test = runTest(`mypanel.mytest.mymeasure`);
+
+  await doSomeThings(); // &lt;== Do an action you want to record here
+
+  // Once your action is completed, call `runTest` returned object&apos;s `done` method.
+  // It will automatically record the action duration and appear in PerfHerder as a new subtest.
+  // It also creates markers in the profiler so that you can better inspect this action in
+  // profiler.firefox.com.
+  test.done();
+
+  await testTeardown();
+};
+</code></pre><p>If your measure is not simply the time spent by an asynchronous call (for instance computing an average, counting things&#x2026;) there is a lower level helper called <code>logTestResult</code> which will directly log a value. See <a href="https://searchfox.org/mozilla-central/rev/325c1a707819602feff736f129cb36055ba6d94f/testing/talos/talos/tests/devtools/addon/content/tests/webconsole/streamlog.js#62" target="_blank">this example</a>.</p>
+<h2 id="test-runner">Test runner</h2>
+<p>If you need to dive into the internals of the DAMP runner, most of the logic is in <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/damp.js" target="_blank">testing/talos/talos/tests/devtools/addon/content/damp.js</a>.</p>
+<h1 id="how-to-name-your-test-and-register-it">How to name your test and register it?</h1>
+<p>If a new test file was created, it needs to be registered in the test suite. To register the new test, add it in <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/damp-tests.js" target="_blank">damp-tests.js</a>. This file acts as the manifest for the DAMP test suite.</p>
 <p>If your are writing a test executing against Simple and Complicated documents, your test name will look like: <code>(simple|complicated).${tool-name}.${test-name}</code>.
 So for our example, it would be <code>simple.inspector.click</code> and <code>complicated.inspector.click</code>.
 For independent tests that don&apos;t use the Simple or Complicated documents, the test name only needs to start with the tool name, if the test is specific to that tool
 For the example, it would be <code>inspector.click</code>.</p>
-<p>Once you come up with a name, you will have to register your test <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.html#12-42" target="_blank">here</a> and <a href="https://searchfox.org/mozilla-central/rev/cd742d763809089925a38178dd2ba5a9069fa855/testing/talos/talos/tests/devtools/addon/content/damp.html#44-71" target="_blank">here</a> with a short description of it.</p>
-<h2 id="how-to-write-a-performance-test">How to write a performance test?</h2>
-<p>When you write a performance test, in most cases, you only care about the time it takes to complete a very precise action.
-There is a <code>runTest</code> helper method that helps recording a precise action duration:</p>
-<pre><code>// Calling `runTest` will immediately start recording your action duration.
-// You can execute any necessary setup action you don&apos;t want to record before calling it.
-let test = this.runTest(&quot;my.test.name&quot;); // `runTest` expects the test name as argument
-
-// &lt;== Do an action you want to record here
-
-// Once your action is completed, call `runTest` returned object&apos;s `done` method.
-// It will automatically record the action duration and appear in PerfHerder as a new subtest.
-// It also creates markers in the profiler so that you can better inspect this action in
-// profiler.firefox.com.
-test.done();
-</code></pre><p>So for our click example it would be:</p>
-<pre><code>async inspector() {
-  await this.testSetup(url);
-  let toolbox = await this.openToolboxAndLog(label + &quot;.inspector&quot;, &quot;inspector&quot;);
-  await this.reloadInspectorAndLog(label, toolbox);
-
-  let inspector = toolbox.getPanel(&quot;inspector&quot;);
-  let window = inspector.panelWin; // Get inspector&apos;s panel window object
-  let body = window.document.body;
-
-  await new Promise(resolve =&gt; {
-    let test = this.runTest(&quot;inspector.click&quot;);
-    body.addEventListener(&quot;click&quot;, function () {
-      test.done();
-      resolve();
-    }, { once: true });
-    body.click();
-  });
-}
-</code></pre><h2 id="how-to-run-your-new-test">How to run your new test?</h2>
+<p>In general, the test name should try to match the path of the test file. As you can see in damp-tests.js this naming convention is not consistently followed. We have discrepancies for simple/complicated/custom tests, as well as for webconsole tests. This is largely for historical reasons.</p>
+<h1 id="how-to-run-your-new-test">How to run your new test?</h1>
 <p>You can run any performance test with this command:</p>
 <pre><code>./mach talos-test --activeTests damp --subtest ${your-test-name}
 </code></pre><p>By default, it will run the test 25 times. In order to run it just once, do:</p>
@@ -1196,36 +1205,6 @@ test.done();
 <p>Once it is done executing, the profile lives in a zip file you have to uncompress like this:</p>
 <pre><code>unzip testing/mozharness/build/blobber_upload_dir/profile_damp.zip
 </code></pre><p>Then you have to open <a href="https://profiler.firefox.com/" target="_blank">https://profiler.firefox.com/</a> and manually load the profile file that lives here: <code>profile_damp/page_0_pagecycle_1/cycle_0.profile</code></p>
-<h2 id="how-to-write-a-good-performance-test">How to write a good performance test?</h2>
-<h3 id="verify-that-you-wait-for-all-asynchronous-code">Verify that you wait for all asynchronous code</h3>
-<p>If your test involves asynchronous code, which is very likely given the DevTools codebase, please review carefully your test script.
-You should ensure that <em>any</em> code ran directly or indirectly by your test is completed.
-You should not only wait for the functions related to the very precise feature you are trying to measure.</p>
-<p>This is to prevent introducing noise in the test run after yours. If any asynchronous code is pending,
-it is likely to run in parallel with the next test and increase its variance.
-Noise in the tests makes it hard to detect small regressions.</p>
-<p>You should typically wait for:</p>
-<ul>
-<li>All RDP requests to finish,</li>
-<li>All DOM Events to fire,</li>
-<li>Redux action to be dispatched,</li>
-<li>React updates,</li>
-<li>...</li>
-</ul>
-<h3 id="ensure-that-its-results-change-when-regressingfixing-the-code-or-feature-you-want-to-watch">Ensure that its results change when regressing/fixing the code or feature you want to watch.</h3>
-<p>If you are writing the new test to cover a recent regression and you have a patch to fix it, push your test to try without <em>and</em> with the regression fix.
-Look at the try push and confirm that your fix actually reduces the duration of your perf test significantly.
-If you are introducing a test without any patch to improve the performance, try slowing down the code you are trying to cover with a fake slowness like <code>setTimeout</code> for asynchronous code, or very slow <code>for</code> loop for synchronous code. This is to ensure your test would catch a significant regression.</p>
-<p>For our click performance test, we could do this from the inspector codebase:</p>
-<pre><code>window.addEventListener(&quot;click&quot;, function () {
-
-  // This for loop will fake a hang and should slow down the duration of our test
-  for (let i = 0; i &lt; 100000000; i++) {}
-
-}, true); // pass `true` in order to execute before the test click listener
-</code></pre><h3 id="keep-your-test-execution-short">Keep your test execution short.</h3>
-<p>Running performance tests is expensive. We are currently running them 25 times for each changeset landed in Firefox.
-Aim to run tests in less than a second on try.</p>
 
                                 
                                 </section>
@@ -1258,7 +1237,7 @@ Aim to run tests in less than a second on try.</p>
                 </a>
                 
                 
-                <a href="../files/" class="navigation navigation-next " aria-label="Next page: Files and directories">
+                <a href="writing-perf-tests-example.html" class="navigation navigation-next " aria-label="Next page: Example">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1269,7 +1248,7 @@ Aim to run tests in less than a second on try.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"next":{"title":"Files and directories","level":"1.5","depth":1,"path":"files/README.md","ref":"files/README.md","articles":[{"title":"Adding New Files","level":"1.5.1","depth":2,"path":"files/adding-files.md","ref":"files/adding-files.md","articles":[]}]},"previous":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"path":"tests/performance-tests.md","ref":"tests/performance-tests.md","articles":[{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/writing-perf-tests.md","mtime":"2019-08-28T23:51:53.536Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-28T23:53:24.299Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"next":{"title":"Example","level":"1.4.4.2","depth":3,"path":"tests/writing-perf-tests-example.md","ref":"tests/writing-perf-tests-example.md","articles":[]},"previous":{"title":"Performance tests (DAMP)","level":"1.4.4","depth":2,"path":"tests/performance-tests.md","ref":"tests/performance-tests.md","articles":[{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},{"title":"Example","level":"1.4.4.2","depth":3,"path":"tests/writing-perf-tests-example.md","ref":"tests/writing-perf-tests-example.md","articles":[]},{"title":"Avanced tips","level":"1.4.4.3","depth":3,"path":"tests/writing-perf-tests-tips.md","ref":"tests/writing-perf-tests-tips.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/writing-perf-tests.md","mtime":"2019-08-29T23:52:12.950Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-29T23:53:47.595Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

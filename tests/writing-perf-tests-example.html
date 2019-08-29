@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>DevTools mochitests · GitBook</title>
+        <title>Example · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="node-tests.html" />
+    <link rel="next" href="writing-perf-tests-tips.html" />
     
     
-    <link rel="prev" href="mochitest-chrome.html" />
+    <link rel="prev" href="writing-perf-tests.html" />
     
 
     </head>
@@ -465,7 +465,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.1.3" data-path="mochitest-devtools.html">
+        <li class="chapter " data-level="1.4.1.3" data-path="mochitest-devtools.html">
             
                 <a href="mochitest-devtools.html">
             
@@ -562,7 +562,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.4.2" data-path="writing-perf-tests-example.html">
+        <li class="chapter active" data-level="1.4.4.2" data-path="writing-perf-tests-example.html">
             
                 <a href="writing-perf-tests-example.html">
             
@@ -1092,7 +1092,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >DevTools mochitests</a>
+        <a href=".." >Example</a>
     </h1>
 </div>
 
@@ -1107,27 +1107,62 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="automated-tests-devtools-mochitests">Automated tests: DevTools mochitests</h1>
-<p>To run the whole suite of browser mochitests for DevTools (sit back and relax):</p>
-<pre><code class="lang-bash">./mach mochitest --subsuite devtools --tag devtools
-</code></pre>
-<p>To run a specific tool&apos;s suite of browser mochitests:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/&lt;tool&gt;
-</code></pre>
-<p>For example, run all of the debugger browser mochitests:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/debugger
-</code></pre>
-<p>To run a specific DevTools mochitest:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/path/to/the/<span class="hljs-built_in">test</span>_you_want_to_run.js
-</code></pre>
-<p>Note that the mochitests <em>must</em> have focus while running. The tests run in the browser which looks like someone is magically testing your code by hand. If the browser loses focus, the tests will stop and fail after some time. (Again, sit back and relax)</p>
-<p>In case you&apos;d like to run the mochitests without having to care about focus and be able to touch your computer while running:</p>
-<pre><code class="lang-bash">./mach mochitest --headless devtools/client/&lt;tool&gt;
-</code></pre>
-<p>You can also run just a single test:</p>
-<pre><code class="lang-bash">./mach mochitest --headless devtools/client/path/to/the/<span class="hljs-built_in">test</span>_you_want_to_run.js
-</code></pre>
+                                <h1 id="performance-test-example-performance-of-click-event-in-the-inspector">Performance test example: performance of click event in the inspector</h1>
+<p>Let&apos;s look at a trivial but practical example and add a simple test to measure the performance of a click in the inspector.</p>
+<p>First we create a file under <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/tests/inspector" target="_blank">tests/inspector</a> since we are writing an inspector test. We call the file <code>click.js</code>.</p>
+<p>We will use a dummy test document here: <code>data:text/html,click test document</code>.</p>
+<p>We prepare the imports needed to write the test, from head.js and inspector-helper.js:</p>
+<ul>
+<li><code>testSetup</code>, <code>testTeardown</code>, <code>openToolbox</code> and <code>runTest</code> from head.js</li>
+<li><code>reloadInspectorAndLog</code> from inspector-helper.js</li>
+</ul>
+<p>The full code for the test looks as follows:</p>
+<pre><code>const {
+  reloadInspectorAndLog,
+} = require(&quot;./inspector-helpers&quot;);
 
+const {
+  openToolbox,
+  runTest,
+  testSetup,
+  testTeardown,
+} = require(&quot;../head&quot;);
+
+module.exports = async function() {
+  // Define here your custom document via a data URI:
+  const url = &quot;data:text/html,click test document&quot;;
+
+  await testSetup(url);
+  const toolbox = await openToolbox(&quot;inspector&quot;);
+
+  const inspector = toolbox.getPanel(&quot;inspector&quot;);
+  const window = inspector.panelWin; // Get inspector&apos;s panel window object
+  const body = window.document.body;
+
+  await new Promise(resolve =&gt; {
+    const test = runTest(&quot;inspector.click&quot;);
+    body.addEventListener(&quot;click&quot;, function () {
+      test.done();
+      resolve();
+    }, { once: true });
+    body.click();
+  });
+
+  // Check if the inspector reload is impacted by click
+  await reloadInspectorAndLog(&quot;click&quot;, toolbox);
+
+  await testTeardown();
+}
+</code></pre><p>Finally we add an entry in <a href="https://searchfox.org/mozilla-central/source/testing/talos/talos/tests/devtools/addon/content/damp-tests.js" target="_blank">damp-tests.js</a>:</p>
+<pre><code>  {
+    name: &quot;inspector.click&quot;,
+    path: &quot;inspector/click.js&quot;,
+    description:
+      &quot;Measure the time to click in the inspector, and reload the inspector&quot;,
+  },
+</code></pre><p>Then we can run our test with:</p>
+<pre><code>./mach talos-test --activeTests damp --subtest inspector.click
+</code></pre>
                                 
                                 </section>
                             
@@ -1154,12 +1189,12 @@
 
             
                 
-                <a href="mochitest-chrome.html" class="navigation navigation-prev " aria-label="Previous page: Chrome mochitests">
+                <a href="writing-perf-tests.html" class="navigation navigation-prev " aria-label="Previous page: Writing a new test">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="node-tests.html" class="navigation navigation-next " aria-label="Next page: Node tests">
+                <a href="writing-perf-tests-tips.html" class="navigation navigation-next " aria-label="Next page: Avanced tips">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1170,7 +1205,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"next":{"title":"Node tests","level":"1.4.1.4","depth":3,"path":"tests/node-tests.md","ref":"tests/node-tests.md","articles":[]},"previous":{"title":"Chrome mochitests","level":"1.4.1.2","depth":3,"path":"tests/mochitest-chrome.md","ref":"tests/mochitest-chrome.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/mochitest-devtools.md","mtime":"2019-08-29T23:52:12.942Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-29T23:53:47.595Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Example","level":"1.4.4.2","depth":3,"next":{"title":"Avanced tips","level":"1.4.4.3","depth":3,"path":"tests/writing-perf-tests-tips.md","ref":"tests/writing-perf-tests-tips.md","articles":[]},"previous":{"title":"Writing a new test","level":"1.4.4.1","depth":3,"path":"tests/writing-perf-tests.md","ref":"tests/writing-perf-tests.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/writing-perf-tests-example.md","mtime":"2019-08-29T23:52:12.950Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-29T23:53:47.595Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

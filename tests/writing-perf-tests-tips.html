@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>DevTools mochitests · GitBook</title>
+        <title>Avanced tips · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="node-tests.html" />
+    <link rel="next" href="../files/" />
     
     
-    <link rel="prev" href="mochitest-chrome.html" />
+    <link rel="prev" href="writing-perf-tests-example.html" />
     
 
     </head>
@@ -465,7 +465,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.1.3" data-path="mochitest-devtools.html">
+        <li class="chapter " data-level="1.4.1.3" data-path="mochitest-devtools.html">
             
                 <a href="mochitest-devtools.html">
             
@@ -575,7 +575,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.4.3" data-path="writing-perf-tests-tips.html">
+        <li class="chapter active" data-level="1.4.4.3" data-path="writing-perf-tests-tips.html">
             
                 <a href="writing-perf-tests-tips.html">
             
@@ -1092,7 +1092,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >DevTools mochitests</a>
+        <a href=".." >Avanced tips</a>
     </h1>
 </div>
 
@@ -1107,26 +1107,36 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="automated-tests-devtools-mochitests">Automated tests: DevTools mochitests</h1>
-<p>To run the whole suite of browser mochitests for DevTools (sit back and relax):</p>
-<pre><code class="lang-bash">./mach mochitest --subsuite devtools --tag devtools
-</code></pre>
-<p>To run a specific tool&apos;s suite of browser mochitests:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/&lt;tool&gt;
-</code></pre>
-<p>For example, run all of the debugger browser mochitests:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/debugger
-</code></pre>
-<p>To run a specific DevTools mochitest:</p>
-<pre><code class="lang-bash">./mach mochitest devtools/client/path/to/the/<span class="hljs-built_in">test</span>_you_want_to_run.js
-</code></pre>
-<p>Note that the mochitests <em>must</em> have focus while running. The tests run in the browser which looks like someone is magically testing your code by hand. If the browser loses focus, the tests will stop and fail after some time. (Again, sit back and relax)</p>
-<p>In case you&apos;d like to run the mochitests without having to care about focus and be able to touch your computer while running:</p>
-<pre><code class="lang-bash">./mach mochitest --headless devtools/client/&lt;tool&gt;
-</code></pre>
-<p>You can also run just a single test:</p>
-<pre><code class="lang-bash">./mach mochitest --headless devtools/client/path/to/the/<span class="hljs-built_in">test</span>_you_want_to_run.js
-</code></pre>
+                                <h1 id="how-to-write-a-good-performance-test">How to write a good performance test?</h1>
+<h2 id="verify-that-you-wait-for-all-asynchronous-code">Verify that you wait for all asynchronous code</h2>
+<p>If your test involves asynchronous code, which is very likely given the DevTools codebase, please review carefully your test script.
+You should ensure that <em>any</em> code ran directly or indirectly by your test is completed.
+You should not only wait for the functions related to the very precise feature you are trying to measure.</p>
+<p>This is to prevent introducing noise in the test run after yours. If any asynchronous code is pending,
+it is likely to run in parallel with the next test and increase its variance.
+Noise in the tests makes it hard to detect small regressions.</p>
+<p>You should typically wait for:</p>
+<ul>
+<li>All RDP requests to finish,</li>
+<li>All DOM Events to fire,</li>
+<li>Redux action to be dispatched,</li>
+<li>React updates,</li>
+<li>...</li>
+</ul>
+<h2 id="ensure-that-its-results-change-when-regressingfixing-the-code-or-feature-you-want-to-watch">Ensure that its results change when regressing/fixing the code or feature you want to watch.</h2>
+<p>If you are writing the new test to cover a recent regression and you have a patch to fix it, push your test to try without <em>and</em> with the regression fix.
+Look at the try push and confirm that your fix actually reduces the duration of your perf test significantly.
+If you are introducing a test without any patch to improve the performance, try slowing down the code you are trying to cover with a fake slowness like <code>setTimeout</code> for asynchronous code, or very slow <code>for</code> loop for synchronous code. This is to ensure your test would catch a significant regression.</p>
+<p>For our click performance test, we could do this from the inspector codebase:</p>
+<pre><code>window.addEventListener(&quot;click&quot;, function () {
+
+  // This for loop will fake a hang and should slow down the duration of our test
+  for (let i = 0; i &lt; 100000000; i++) {}
+
+}, true); // pass `true` in order to execute before the test click listener
+</code></pre><h2 id="keep-your-test-execution-short">Keep your test execution short.</h2>
+<p>Running performance tests is expensive. We are currently running them 25 times for each changeset landed in Firefox.
+Aim to run tests in less than a second on try.</p>
 
                                 
                                 </section>
@@ -1154,12 +1164,12 @@
 
             
                 
-                <a href="mochitest-chrome.html" class="navigation navigation-prev " aria-label="Previous page: Chrome mochitests">
+                <a href="writing-perf-tests-example.html" class="navigation navigation-prev " aria-label="Previous page: Example">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="node-tests.html" class="navigation navigation-next " aria-label="Next page: Node tests">
+                <a href="../files/" class="navigation navigation-next " aria-label="Next page: Files and directories">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1170,7 +1180,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"next":{"title":"Node tests","level":"1.4.1.4","depth":3,"path":"tests/node-tests.md","ref":"tests/node-tests.md","articles":[]},"previous":{"title":"Chrome mochitests","level":"1.4.1.2","depth":3,"path":"tests/mochitest-chrome.md","ref":"tests/mochitest-chrome.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/mochitest-devtools.md","mtime":"2019-08-29T23:52:12.942Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-29T23:53:47.595Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Avanced tips","level":"1.4.4.3","depth":3,"next":{"title":"Files and directories","level":"1.5","depth":1,"path":"files/README.md","ref":"files/README.md","articles":[{"title":"Adding New Files","level":"1.5.1","depth":2,"path":"files/adding-files.md","ref":"files/adding-files.md","articles":[]}]},"previous":{"title":"Example","level":"1.4.4.2","depth":3,"path":"tests/writing-perf-tests-example.md","ref":"tests/writing-perf-tests-example.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/writing-perf-tests-tips.md","mtime":"2019-08-29T23:52:12.950Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-08-29T23:53:47.595Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
