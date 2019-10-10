@@ -1478,15 +1478,23 @@ giveGoodNews: function (news) {
   console.log(`Got some good news: ${news}\n`);
 });
 front.giveGoodNews().then(() =&gt; { console.log(&quot;request returned.&quot;) });
-</code></pre><p>You might want to update your front&apos;s state when an event is fired, before emitting it against the front.  You can use <code>preEvent</code> in the front definition for that:</p>
-<pre><code>countGoodNews: protocol.preEvent(&quot;good-news&quot;, function (news) {
-    this.amountOfGoodNews++;
+</code></pre><p>If you want to modify the argument that will be passed to event listeners callbacks, you
+can use <code>before(eventName, fn)</code> in the front definition. This can only be used once for a
+given <code>eventName</code>. The <code>fn</code> function will be called before emitting the event via
+the EventEmitter API on the Front, and its return value will be passed to the event 
+listener callbacks. If <code>fn</code> is async, the event will only be emitted after <code>fn</code> call resolves.</p>
+<pre><code>// In front file, most probably in the constructor:
+this.before(&quot;good-news&quot;, function(news) {
+  return news.join(&quot; - &quot;);
 });
-</code></pre><p>You can have events wait until an asynchronous action completes before firing by returning a promise. If you have multiple preEvents defined for a specific event, and at least one fires asynchronously, then all preEvents most resolve before all events are fired.</p>
-<pre><code>countGoodNews: protocol.preEvent(&quot;good-news&quot;, function (news) {
-    return this.updateGoodNews().then(() =&gt; this.amountOfGoodNews++);
+
+// In any consumer
+front.on(&quot;good-news&quot;, function(news) {
+  console.log(news);
 });
-</code></pre><p>On a somewhat related note, not every method needs to be request/response.  Just like an actor can emit a one-way event, a method can be marked as a one-way request.  Maybe we don&apos;t care about giveGoodNews returning anything:</p>
+</code></pre><p>So if the server sent the following array: <code>[1, 2, 3]</code>, the console.log in the consumer
+would print <code>1 - 2 - 3</code>.</p>
+<p>On a somewhat related note, not every method needs to be request/response.  Just like an actor can emit a one-way event, a method can be marked as a one-way request.  Maybe we don&apos;t care about giveGoodNews returning anything:</p>
 <pre><code>// spec:
 methods: {
   giveGoodNews: {
@@ -1640,7 +1648,7 @@ clearTemporaryChildren: protocol.custom(function (id) {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2019-10-09T00:11:22.597Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-09T00:13:08.490Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2019-10-10T00:11:38.137Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-10T00:13:18.996Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
