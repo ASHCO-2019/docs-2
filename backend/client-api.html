@@ -1111,8 +1111,8 @@
 <p>DevTools has a client module that allows applications to be written that debug or inspect web pages using the <a href="protocol.html">Remote Debugging Protocol</a>.</p>
 <h2 id="starting-communication">Starting communication</h2>
 <p>In order to communicate, a client and a server instance must be created and a protocol connection must be established. The connection can be either over a TCP socket or an nsIPipe. The <code>start</code> function displayed below establishes an nsIPipe-backed connection:</p>
-<pre><code class="lang-javascript">Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-server.jsm&quot;</span>);
-Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-client.jsm&quot;</span>);
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> { DebuggerServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/debugger-server&quot;</span>);
+<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// Start the server.</span>
@@ -1132,8 +1132,8 @@ Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/d
 }
 </code></pre>
 <p>If a TCP socket is required, the function should be split in two parts, a server-side and a client-side, like this:</p>
-<pre><code class="lang-javascript">Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-server.jsm&quot;</span>);
-Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-client.jsm&quot;</span>);
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> { DebuggerServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/debugger-server&quot;</span>);
+<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startServer</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// Start the server.</span>
@@ -1220,8 +1220,8 @@ client.attachThread(response.threadActor).then(<span class="hljs-function"><span
  * Try it in Scratchpad with Environment -&gt; Browser, using
  * http://htmlpad.org/debugger/ as the current page.
  */</span>
-Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-server.jsm&quot;</span>);
-Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/devtools/dbg-client.jsm&quot;</span>);
+<span class="hljs-keyword">const</span> { DebuggerServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/debugger-server&quot;</span>);
+<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
 
 <span class="hljs-keyword">let</span> client;
 <span class="hljs-keyword">let</span> threadFront;
@@ -1391,7 +1391,7 @@ startDebugger();
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2019-10-21T00:17:47.560Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-21T00:19:24.740Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2019-10-22T00:18:45.960Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-22T00:20:22.199Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
