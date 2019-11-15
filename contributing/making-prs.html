@@ -1108,8 +1108,6 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="sending-your-code-for-review-also-known-as-sending-patches">Sending your code for review (also known as &quot;sending patches&quot;)</h1>
-<p>There are two ways of doing this. We&apos;ll first explain the recommended version, and then the alternative, which is older, and we don&apos;t recommend, but might be handy in some circumstances.</p>
-<h2 id="using-phabricator--differential-recommended">Using Phabricator + Differential (RECOMMENDED)</h2>
 <p>First, commit your changes. For example:</p>
 <pre><code class="lang-bash">hg add /path/to/file/changed
 hg commit -m <span class="hljs-string">&quot;Bug 1234567 - Implement feature XYZ. r=name,name2!&quot;</span>
@@ -1118,44 +1116,31 @@ hg commit -m <span class="hljs-string">&quot;Bug 1234567 - Implement feature XYZ
 <ul>
 <li><code>Bug 1234567</code> - The number of the bug in bugzilla.</li>
 <li><code>- Implement feature XYZ.</code> - The commit message.</li>
-<li><code>r=name</code> - The short form to request a review.</li>
-<li><p><code>,name2!</code> - You can have more than one reviewer. The <code>!</code> makes the review a <em>blocking</em> review (Patch can not land without accepted review). You will also need to add it to the name in the popup after you ran <code>arc diff</code>.</p>
-<p>Please note your first commit message will be also the title of your patch in Phabricator. (Don&apos;t worry, if something goes wrong. You can still change things in the UI later).</p>
-</li>
+<li><code>r=name</code> - The short form to request a review. Enter the name you found using the 
+instructions in the <a href="code-reviews-find-reviewer.html">previous step</a>.</li>
+<li><code>,name2!</code> - You can have more than one reviewer. The <code>!</code> makes the review a <em>blocking</em> review (Patch can not land without accepted review).</li>
 </ul>
-<p>Then create a revision in Differential, using Arcanist (or <code>moz-phab</code>):</p>
-<pre><code class="lang-bash">arc diff
+<p>Then create a revision in Phabricator using <code>moz-phab</code>:</p>
+<pre><code class="lang-bash">moz-phab submit
 </code></pre>
-<p>You&apos;ll be taken to an editor to add extra details, although some of them might be prepopulated using the data in the commit message. Make sure the bug number is filled with the right value. You&apos;ll also be able to set reviewers here: enter the names you found using the instructions in the <a href="code-reviews-find-reviewer.html">previous step</a>.</p>
-<p>Save the changes and quit the editor. A revision will be created including those data and also the difference in code between your changes and the point in the repository where you based your work (this difference is sometimes called &quot;a patch&quot;, as it&apos;s what you&apos;d need to apply on the repository to get to the final state).</p>
+<p>A revision will be created including that information and the difference in code between your changes and the point in the repository where you based your work (this difference is sometimes called &quot;a patch&quot;, as it&apos;s what you&apos;d need to apply on the repository to get to the final state).</p>
 <p>If you click on the provided URL for the revision, it&apos;ll bring you to Phabricator&apos;s interface, which the reviewer will visit as well in order to review the code. They will look at your changes and decide if they need any additional work, based on whether the changes do fix what the bug describes or not. To get a better idea of the types of things they will look at and verify, read the <a href="code-reviews-checklist.html">code reviews checklist</a>.</p>
+<p>For more information on using moz-phab, you can run:</p>
+<pre><code class="lang-bash">moz-phab -h
+</code></pre>
+<p>or to get information on a specific command (here <code>submit</code>):</p>
+<pre><code class="lang-bash">moz-phab submit -h
+</code></pre>
 <p>The reviewer might suggest you do additional changes. For example, they might recommend using a helper that already exists (but you were not aware of), or they might recommend renaming things to make things clearer. Or they might recommend you do <em>less</em> things (e.g. if you changed other things that are out of scope for the bug). Or they might simply ask questions if things aren&apos;t clear. You can also ask questions if the comments are unclear or if you&apos;re unsure about parts of the code you&apos;re interacting with. Something that looks very obvious to one person might confuse others.</p>
-<p>Hence, you might need to go back to the code and do some edits to address the issues and recommendations. Once you have done this, we want to amend the existing commit:</p>
+<p>Hence, you might need to go back to the code and do some edits to address the issues and recommendations. Once you have done this, you must update the existing commit:</p>
 <pre><code class="lang-bash">hg commit --amend -m <span class="hljs-string">&apos;Address revision issues: rewrite to use helper helpfulHelper()&apos;</span>
 </code></pre>
 <p>And submit the change again:</p>
-<pre><code class="lang-bash">arc diff
+<pre><code class="lang-bash">moz-phab submit
 </code></pre>
-<p>This time, the editor that opens should have filled most of the information already. Add any missing information, save and quit the editor.</p>
-<p>You might have to go through this cycle of uploading a diff and getting it reviewed several times, depending on the complexity of the bug.</p>
-<p><strong>NOTE</strong>: by default, Arcanist opens nano, which can be a bit confusing if you&apos;re not a nano user. You can override this by setting the <code>EDITOR</code> env variable. For instance, you could add this to your <code>.bash_profile</code> to set Vim as your preferred editor:</p>
-<pre><code class="lang-bash"><span class="hljs-built_in">export</span> EDITOR=<span class="hljs-string">&quot;/usr/local/bin/vim&quot;</span>
-</code></pre>
-<p>Once your code fixes the bug, and there are no more blocking issues, the reviewer will approve the review, and the code can be landed in the repository now.</p>
-<p>For more information on using Arcanist, please refer to <a href="https://moz-conduit.readthedocs.io/en/latest/arcanist-user.html#submitting-and-updating-patches" target="_blank">their user guide</a>.</p>
-<h2 id="using-mercurial-not-recommended">Using Mercurial (not recommended)</h2>
-<p>We don&apos;t recommend to use this method as it&apos;s more manual and makes reviewing and landing code a bit more tedious.</p>
-<h3 id="creating-a-patch">Creating a patch</h3>
-<p>To create a patch you need to first commit your changes and then export them to a patch file.</p>
-<pre><code>hg commit -m &apos;your commit message&apos;
-hg export &gt; /path/to/your/patch
-</code></pre><h3 id="commit-messages">Commit messages</h3>
-<p>Commit messages should follow the pattern <code>Bug 1234567 - change description. r=reviewer</code>.</p>
-<p>First is the bug number related to the patch. Then the description should explain what the patch changes. The last part is used to keep track of the reviewer for the patch.</p>
-<h3 id="submitting-a-patch">Submitting a patch</h3>
-<p>Once you have a patch file, add it as an attachment to the Bugzilla ticket you are working on and add the <code>feedback?</code> or <code>review?</code> flag depending on if you just want feedback and confirmation you&apos;re doing the right thing or if you think the patch is ready to land respectively. Read more about <a href="https://developer.mozilla.org/en-US/docs/Developer_Guide/How_to_Submit_a_Patch" target="_blank">how to submit a patch and the Bugzilla review cycle here</a>.</p>
-<p>You can also take a look at the <a href="code-reviews-checklist.html">Code Review Checklist</a> as it contains a list of checks that your reviewer is likely to go over when reviewing your code.</p>
-<h3 id="squashing-commits">Squashing commits</h3>
+<p>You might have to go through this cycle of submitting changes and getting it reviewed several times, depending on the complexity of the bug.</p>
+<p>Once your code fixes the bug, and there are no more blocking issues, the reviewer will approve the changes, and the code can be landed in the repository now.</p>
+<h1 id="squashing-commits">Squashing commits</h1>
 <p>Sometimes you may be asked to squash your commits. Squashing means merging multiple commits into one in case you created multiple commits while working on a bug. Squashing bugs is easy!</p>
 <p>We will use the histedit extension for squashing commits in Mercurial. You can check if this extension is enabled in your Mercurial installation following these steps:</p>
 <ul>
@@ -1213,7 +1198,7 @@ pick 81c4d40e57d3 1 &quot;Second-Commit-Message&quot;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Send your code for review","level":"1.3.3.3","depth":3,"next":{"title":"Reviews checklist","level":"1.3.3.4","depth":3,"path":"contributing/code-reviews-checklist.md","ref":"./contributing/code-reviews-checklist.md","articles":[]},"previous":{"title":"Find a reviewer","level":"1.3.3.2","depth":3,"path":"contributing/code-reviews-find-reviewer.md","ref":"./contributing/code-reviews-find-reviewer.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2019-11-14T00:30:29.169Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-11-14T00:32:20.169Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Send your code for review","level":"1.3.3.3","depth":3,"next":{"title":"Reviews checklist","level":"1.3.3.4","depth":3,"path":"contributing/code-reviews-checklist.md","ref":"./contributing/code-reviews-checklist.md","articles":[]},"previous":{"title":"Find a reviewer","level":"1.3.3.2","depth":3,"path":"contributing/code-reviews-find-reviewer.md","ref":"./contributing/code-reviews-find-reviewer.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/making-prs.md","mtime":"2019-11-15T00:31:44.265Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-11-15T00:33:15.641Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
