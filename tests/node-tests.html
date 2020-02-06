@@ -1,0 +1,1199 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Node tests · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="../styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="writing-tests.html" />
+    
+    
+    <link rel="prev" href="mochitest-devtools.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../getting-started/">
+            
+                <a href="../getting-started/">
+            
+                    
+                    Getting started
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../getting-started/bugzilla.html">
+            
+                <a href="../getting-started/bugzilla.html">
+            
+                    
+                    Get a Bugzilla account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../getting-started/build.html">
+            
+                <a href="../getting-started/build.html">
+            
+                    
+                    Get and build the code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../getting-started/development-profiles.html">
+            
+                <a href="../getting-started/development-profiles.html">
+            
+                    
+                    Create a development profile
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../contributing.html">
+            
+                <a href="../contributing.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../contributing/find-bugs.html">
+            
+                <a href="../contributing/find-bugs.html">
+            
+                    
+                    Find bugs to work on
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../contributing/fixing-bugs.html">
+            
+                <a href="../contributing/fixing-bugs.html">
+            
+                    
+                    How to fix a bug
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../contributing/code-reviews.html">
+            
+                <a href="../contributing/code-reviews.html">
+            
+                    
+                    Code reviews
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.3.1" data-path="../contributing/code-reviews-setup.html">
+            
+                <a href="../contributing/code-reviews-setup.html">
+            
+                    
+                    Set up for code reviews
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.2" data-path="../contributing/code-reviews-find-reviewer.html">
+            
+                <a href="../contributing/code-reviews-find-reviewer.html">
+            
+                    
+                    Find a reviewer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.3" data-path="../contributing/making-prs.html">
+            
+                <a href="../contributing/making-prs.html">
+            
+                    
+                    Send your code for review
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.4" data-path="../contributing/code-reviews-checklist.html">
+            
+                <a href="../contributing/code-reviews-checklist.html">
+            
+                    
+                    Reviews checklist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="../contributing/landing-code.html">
+            
+                <a href="../contributing/landing-code.html">
+            
+                    
+                    Landing code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="../contributing/levelling-up.html">
+            
+                <a href="../contributing/levelling-up.html">
+            
+                    
+                    Levelling up
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="../contributing/coding-standards.html">
+            
+                <a href="../contributing/coding-standards.html">
+            
+                    
+                    Coding standards
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1" data-path="../contributing/javascript.html">
+            
+                <a href="../contributing/javascript.html">
+            
+                    
+                    JavaScript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1.1" data-path="../contributing/eslint.html">
+            
+                <a href="../contributing/eslint.html">
+            
+                    
+                    ESLint
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.2" data-path="../contributing/css.html">
+            
+                <a href="../contributing/css.html">
+            
+                    
+                    CSS
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="../contributing/filing-good-bugs.html">
+            
+                <a href="../contributing/filing-good-bugs.html">
+            
+                    
+                    Filing good bugs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="../contributing/performance.html">
+            
+                <a href="../contributing/performance.html">
+            
+                    
+                    Investigating performance issues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="../contributing/react-performance-tips.html">
+            
+                <a href="../contributing/react-performance-tips.html">
+            
+                    
+                    Writing efficient React code
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Automated tests
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" >
+            
+                <span>
+            
+                    
+                    Running tests
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="xpcshell.html">
+            
+                <a href="xpcshell.html">
+            
+                    
+                    xpcshell
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.2" data-path="mochitest-chrome.html">
+            
+                <a href="mochitest-chrome.html">
+            
+                    
+                    Chrome mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.3" data-path="mochitest-devtools.html">
+            
+                <a href="mochitest-devtools.html">
+            
+                    
+                    DevTools mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.1.4" data-path="node-tests.html">
+            
+                <a href="node-tests.html">
+            
+                    
+                    Node tests
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="writing-tests.html">
+            
+                <a href="writing-tests.html">
+            
+                    
+                    Writing tests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="debugging-intermittents.html">
+            
+                <a href="debugging-intermittents.html">
+            
+                    
+                    Debugging intermittent failures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="performance-tests.html">
+            
+                <a href="performance-tests.html">
+            
+                    
+                    Performance tests (DAMP)
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.4.1" data-path="writing-perf-tests.html">
+            
+                <a href="writing-perf-tests.html">
+            
+                    
+                    Writing a new test
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.2" data-path="writing-perf-tests-example.html">
+            
+                <a href="writing-perf-tests-example.html">
+            
+                    
+                    Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.3" data-path="writing-perf-tests-tips.html">
+            
+                <a href="writing-perf-tests-tips.html">
+            
+                    
+                    Avanced tips
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../files/">
+            
+                <a href="../files/">
+            
+                    
+                    Files and directories
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../files/adding-files.html">
+            
+                <a href="../files/adding-files.html">
+            
+                    
+                    Adding New Files
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../tools/tools.html">
+            
+                <a href="../tools/tools.html">
+            
+                    
+                    Tool Architectures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../tools/inspector.html">
+            
+                <a href="../tools/inspector.html">
+            
+                    
+                    Inspector
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../tools/inspector-panel.html">
+            
+                <a href="../tools/inspector-panel.html">
+            
+                    
+                    Panel Architecture
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.2" data-path="../tools/highlighters.html">
+            
+                <a href="../tools/highlighters.html">
+            
+                    
+                    Highlighters
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../tools/memory-panel.html">
+            
+                <a href="../tools/memory-panel.html">
+            
+                    
+                    Memory
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../tools/debugger-panel.html">
+            
+                <a href="../tools/debugger-panel.html">
+            
+                    
+                    Debugger
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../tools/responsive-design-mode.html">
+            
+                <a href="../tools/responsive-design-mode.html">
+            
+                    
+                    Responsive Design Mode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../tools/console-panel.html">
+            
+                <a href="../tools/console-panel.html">
+            
+                    
+                    Console
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../frontend/frontend.html">
+            
+                <a href="../frontend/frontend.html">
+            
+                    
+                    Frontend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../frontend/svgs.html">
+            
+                <a href="../frontend/svgs.html">
+            
+                    
+                    Panel SVGs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../frontend/react.html">
+            
+                <a href="../frontend/react.html">
+            
+                    
+                    React
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.2.1" data-path="../frontend/react-guidelines.html">
+            
+                <a href="../frontend/react-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="../frontend/redux.html">
+            
+                <a href="../frontend/redux.html">
+            
+                    
+                    Redux
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.3.1" data-path="../frontend/redux-guidelines.html">
+            
+                <a href="../frontend/redux-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="../frontend/telemetry.html">
+            
+                <a href="../frontend/telemetry.html">
+            
+                    
+                    Telemetry
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="../frontend/csp.html">
+            
+                <a href="../frontend/csp.html">
+            
+                    
+                    Content Security Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../backend/backend.html">
+            
+                <a href="../backend/backend.html">
+            
+                    
+                    Backend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../backend/protocol.html">
+            
+                <a href="../backend/protocol.html">
+            
+                    
+                    Remote Debugging Protocol
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../backend/client-api.html">
+            
+                <a href="../backend/client-api.html">
+            
+                    
+                    Client API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="../backend/debugger-api.html">
+            
+                <a href="../backend/debugger-api.html">
+            
+                    
+                    Debugger API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="../backend/backward-compatibility.html">
+            
+                <a href="../backend/backward-compatibility.html">
+            
+                    
+                    Backward Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5" >
+            
+                <span>
+            
+                    
+                    Actors
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.5.1" data-path="../backend/actor-hierarchy.html">
+            
+                <a href="../backend/actor-hierarchy.html">
+            
+                    
+                    Actors Organization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.2" data-path="../backend/actor-e10s-handling.html">
+            
+                <a href="../backend/actor-e10s-handling.html">
+            
+                    
+                    Handling Multi-Processes in Actors
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.3" data-path="../backend/protocol.js.html">
+            
+                <a href="../backend/protocol.js.html">
+            
+                    
+                    Writing Actors With protocol.js
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.4" data-path="../backend/actor-registration.html">
+            
+                <a href="../backend/actor-registration.html">
+            
+                    
+                    Registering A New Actor
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.5" data-path="../backend/actor-best-practices.html">
+            
+                <a href="../backend/actor-best-practices.html">
+            
+                    
+                    Actor Best Practices
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../preferences.html">
+            
+                <a href="../preferences.html">
+            
+                    
+                    Preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../about-documentation.html">
+            
+                <a href="../about-documentation.html">
+            
+                    
+                    About this documentation
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Node tests</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="devtools-node-tests">DevTools node tests</h1>
+<p>In addition to mochitests and xpcshell tests, some panels in DevTools are using node test libraries to run unit tests. For instance, several panels are using <a href="https://jestjs.io/" target="_blank">Jest</a> to run React component unit tests.</p>
+<h2 id="find-the-node-tests-on-try">Find the node tests on Try</h2>
+<p>The DevTools node tests are split in two different test suites on try:</p>
+<ul>
+<li><code>node(devtools)</code>: all the DevTools node tests, except the ones for the debugger</li>
+<li><code>node(debugger)</code>: only the Debugger node tests</li>
+</ul>
+<p>They are running on the <code>Linux 64 opt</code> platform. They are both tier 1 jobs, which means that any failure will lead to a backout.</p>
+<h2 id="run-tests-on-try">Run Tests On Try</h2>
+<p>To run the DevTools node tests on try, you can use <code>./mach try fuzzy</code> and look for the jobs named <code>source-test-node-debugger-tests</code> and <code>source-test-node-devtools-tests</code>.</p>
+<p>They are also run when using the &quot;devtools&quot; preset: <code>./mach try --preset devtools</code>.</p>
+<h3 id="node-tests-try-job-definition">Node tests try job definition</h3>
+<p>The definition of those try jobs can be found at <a href="https://searchfox.org/mozilla-central/source/taskcluster/ci/source-test/node.yml" target="_blank">taskcluster/ci/source-test/node.yml</a>.</p>
+<p>The definition also contains the list of files that will trigger the node test jobs. Currently the debugger tests run when any file is modified under <code>devtools/client/debugger</code>, the devtools tests run when any file is modified under <code>devtools/client</code> or <code>devtools/shared</code>.</p>
+<h2 id="run-tests-locally">Run Tests Locally</h2>
+<h3 id="prerequisite-yarn">Prerequisite: yarn</h3>
+<p>You will need yarn to be installed in order to run both the debugger and the DevTools tests. See <a href="https://yarnpkg.com/docs/install/" target="_blank">https://yarnpkg.com/docs/install/</a>.</p>
+<h3 id="debugger">Debugger</h3>
+<p>To run the debugger node tests:</p>
+<pre><code>&gt; cd devtools/client/debugger/
+&gt; yarn &amp;&amp; node bin/try-runner.js
+</code></pre><p>Note that the debugger is running other tasks than just unit tests: <code>flow</code>, <code>eslint</code>, <code>stylelint</code> etc...
+Using <code>yarn &amp;&amp; yarn test</code> would only run the Jest tests, while <code>node bin/try-runner</code> will run the same tests and scripts as the ones used on try.</p>
+<h3 id="devtools">DevTools</h3>
+<p>To run the other (non-debugger) DevTools tests, the easiest is to rely on the same script as the one used to run the tests on try:</p>
+<pre><code>&gt; node devtools/client/bin/devtools-node-test-runner.js --suite={suitename}
+</code></pre><p>At the moment of writing, the supported suites for this script are: <code>aboutdebugging</code>, <code>accessibility</code>, <code>application</code>, <code>compatibility</code>, <code>framework</code>, <code>netmonitor</code>, <code>webconsole</code>.</p>
+<p>Alternatively, you can also locate the <code>package.json</code> corresponding to a given suite, and run <code>yarn &amp;&amp; yarn test</code>.</p>
+<h2 id="updating-snapshots">Updating snapshots</h2>
+<p>Some of the node tests are snapshot tests, which means they compare the output of a given component to a previous text snapshot. They might break if you are legitimately modifying a component and it means the snapshots need to be updated.</p>
+<p>A snapshot failure will show up as follows:</p>
+<pre><code>&#x203A; 1 snapshot failed from 1 test suite
+</code></pre><p>It should also mention the command you can run to update the snapshots:</p>
+<pre><code>Inspect your code changes or run `yarn run test-ci -u` to update them.
+</code></pre><p>For example, if you need to update snapshots in a specific panel, first locate the package.json corresponding to the node test folder of the panel. In theory it should be under <code>devtools/client/{panelname}/test/node/</code> but it might be slightly different depending on each panel. Then run <code>yarn run test-ci -u</code> in this folder and add the snapshot changes to your commit.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="mochitest-devtools.html" class="navigation navigation-prev " aria-label="Previous page: DevTools mochitests">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="writing-tests.html" class="navigation navigation-next " aria-label="Next page: Writing tests">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Node tests","level":"1.4.1.4","depth":3,"next":{"title":"Writing tests","level":"1.4.2","depth":2,"path":"tests/writing-tests.md","ref":"tests/writing-tests.md","articles":[]},"previous":{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"path":"tests/mochitest-devtools.md","ref":"tests/mochitest-devtools.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/node-tests.md","mtime":"2020-02-06T01:15:45.076Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

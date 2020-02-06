@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>Contributing · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,8 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="getting-started/" />
+    <link rel="next" href="contributing/find-bugs.html" />
     
+    
+    <link rel="prev" href="getting-started/development-profiles.html" />
     
 
     </head>
@@ -93,7 +95,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -164,7 +166,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="contributing.html">
+        <li class="chapter active" data-level="1.3" data-path="contributing.html">
             
                 <a href="contributing.html">
             
@@ -1064,7 +1066,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Introduction</a>
+        <a href="." >Contributing</a>
     </h1>
 </div>
 
@@ -1079,15 +1081,34 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="firefox-developer-tools-contributor-docs">Firefox Developer Tools: Contributor Docs</h1>
-<p>Note: This is a guide to working on code contributions to DevTools. If you&apos;re looking for help with using the tools, view the <a href="https://developer.mozilla.org/en-US/docs/Tools" target="_blank">user docs</a> instead. For other ways to get involved, see our <a href="https://firefox-dev.tools" target="_blank">community site</a>.</p>
+                                <h1 id="contributing">Contributing</h1>
+<p>Thank you for taking the time to contribute! There are several areas where you can help: code, UX, bugs, talking about the DevTools, etc...</p>
 <hr>
-<p><strong>Hello,</strong> and thanks for your interest in contributing to Firefox DevTools! </p>
-<p>DevTools is a complex web app, but if you&apos;re familiar with either HTML/CSS or JavaScript, you can create a patch!</p>
-<p>The initial setup process of building Firefox can take a while. If you get stuck at any point, you can ask for help on the <a href="https://devtools-html-slack.herokuapp.com/" target="_blank">DevTools Slack</a>. </p>
-<p>We all make lots of errors when we get started, so don&apos;t worry about that&#x2014;there are safeguards in place to ensure that any commits that land in the Firefox repository are peer-reviewed, can be built, and pass the tests in multiple configurations and operating systems.</p>
-<p>(Note: You can navigate these docs with the arrow keys.)</p>
-<p><a href="getting-started">Let&apos;s get started!</a></p>
+<h2 id="&#x1F449;-code-of-conduct-&#x1F448;">&#x1F449; Code of conduct &#x1F448;</h2>
+<p>We strive for collaboration with <a href="https://searchfox.org/mozilla-central/source/devtools/CODE_OF_CONDUCT.md" target="_blank">mutual respect</a> for each other. Mozilla also has a set of <a href="https://www.mozilla.org/en-US/about/governance/policies/participation/" target="_blank">participation guidelines</a> which goes into greater detail specific to Mozilla employees and contributors.</p>
+<p>Please read the two links above before getting involved. <strong>Contributions that don&apos;t abide by the code of conduct and participation guidelines will be rejected</strong>.</p>
+<hr>
+<h2 id="help-with-code">Help with code</h2>
+<p>Whether you&apos;re an external contributor or a Mozilla employee, the process to get your code into the repository is essentially the same:</p>
+<ul>
+<li>You <a href="contributing/find-bugs.html">find a bug to work on</a> (<em>note: we use bugs to track &apos;broken&apos; things, new features and even discussions</em>).</li>
+<li><a href="contributing/fixing-bugs.html">Work on the bug</a>.</li>
+<li><a href="contributing/making-prs.html">Request a review</a> for your code.</li>
+<li>Land the code in the repository.</li>
+<li>And you&apos;ve contributed&#x2014;well done &#x1F600;</li>
+</ul>
+<h2 id="help-with-design-and-ux">Help with design and UX</h2>
+<p>If you&apos;re more interested in user experience (think: wireframes, workflows, navigations... and not necessarily implementation details), please have a look at the <a href="https://github.com/firefox-devtools/ux" target="_blank">UX</a> repository&#x2014;our friendly designers will be more than happy to welcome you onboard. You can also have a look at the <a href="https://github.com/firefox-devtools/ux/issues" target="_blank">issues</a> they are considering right now, to get an idea of how it works.</p>
+<h2 id="help-with-bugs-&#x1F41B;&#x1F41E;-">Help with BUGS! &#x1F41B;&#x1F41E; <!--TODO: we might want to split this out to another page with more detail, in addition to this introductory section--></h2>
+<p>Not less importantly, we also love <strong>when people file bugs</strong>. They help us a lot and are very valuable (specially when they come with reproducible steps, e.g. in the case of crashes or malfunctions). Here is a short <a href="filing-good-bugs.md">guide on how to file good bugs</a> if you&apos;ve never done it before (or if you need a reminder).</p>
+<p>Another thing that is super valuable is <strong>reproducing</strong> bugs (to validate they&apos;re happening in more than one environment), and also <strong>completing</strong> bugs, i.e. ensuring the bug has steps to reproduce, a test case, etc, as <a href="filing-good-bugs.md">mentioned on the guide</a>. This saves time for the person(s) who will work on the bug, as then they can jump straight to fixing or implementing whatever is needed, instead of doing research work. If you can do any of these for a given bug, add a comment with the additional data that you found out.</p>
+<p>Likewise, if you think that a bug is solved, because you can&apos;t reproduce it and doesn&apos;t happen any more, this is also useful to know. We can always do with closing more bugs, so please leave a comment detailing as much information as you can provide &#x1F600;</p>
+<h2 id="talking-about-the-tools-">Talking about the tools <!--TODO: same as above, might want a separate page on talking and maybe collecting talks?--></h2>
+<p>We really love when people talk about our work. Be it in a blog post, or in your favourite social media network, or user group, conference, you name it! We&apos;d love to read/watch your article/talk, so please get in touch if you do.</p>
+<p>Answering other people&apos;s questions in <a href="https://discourse.mozilla.org/c/devtools" target="_blank">our Discourse forum</a> or <a href="https://groups.google.com/forum/#!forum/mozilla.dev.developer-tools" target="_blank">developer mailing list</a> is also helpful.</p>
+<h2 id="other-areas">Other areas</h2>
+<p>The above is not a comprehensive list; if you think you can help some other way that is not here, feel free to do it!</p>
+<p><strong>Whatever you choose to do, thank you so much for helping us</strong> &#x2764;&#xFE0F;</p>
 
                                 
                                 </section>
@@ -1115,8 +1136,12 @@
 
             
                 
+                <a href="getting-started/development-profiles.html" class="navigation navigation-prev " aria-label="Previous page: Create a development profile">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="getting-started/" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting started">
+                
+                <a href="contributing/find-bugs.html" class="navigation navigation-next " aria-label="Next page: Find bugs to work on">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1127,7 +1152,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Getting started","level":"1.2","depth":1,"path":"getting-started/README.md","ref":"getting-started/README.md","articles":[{"title":"Get a Bugzilla account","level":"1.2.1","depth":2,"path":"getting-started/bugzilla.md","ref":"getting-started/bugzilla.md","articles":[]},{"title":"Get and build the code","level":"1.2.2","depth":2,"path":"getting-started/build.md","ref":"getting-started/build.md","articles":[]},{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Contributing","level":"1.3","depth":1,"next":{"title":"Find bugs to work on","level":"1.3.1","depth":2,"path":"contributing/find-bugs.md","ref":"./contributing/find-bugs.md","articles":[]},"previous":{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

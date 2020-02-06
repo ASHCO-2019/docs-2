@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>Preferences · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,8 +63,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="getting-started/" />
+    <link rel="next" href="about-documentation.html" />
     
+    
+    <link rel="prev" href="backend/actor-best-practices.html" />
     
 
     </head>
@@ -93,7 +95,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -1008,7 +1010,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="preferences.html">
+        <li class="chapter active" data-level="1.9" data-path="preferences.html">
             
                 <a href="preferences.html">
             
@@ -1064,7 +1066,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Introduction</a>
+        <a href="." >Preferences</a>
     </h1>
 </div>
 
@@ -1079,15 +1081,82 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="firefox-developer-tools-contributor-docs">Firefox Developer Tools: Contributor Docs</h1>
-<p>Note: This is a guide to working on code contributions to DevTools. If you&apos;re looking for help with using the tools, view the <a href="https://developer.mozilla.org/en-US/docs/Tools" target="_blank">user docs</a> instead. For other ways to get involved, see our <a href="https://firefox-dev.tools" target="_blank">community site</a>.</p>
-<hr>
-<p><strong>Hello,</strong> and thanks for your interest in contributing to Firefox DevTools! </p>
-<p>DevTools is a complex web app, but if you&apos;re familiar with either HTML/CSS or JavaScript, you can create a patch!</p>
-<p>The initial setup process of building Firefox can take a while. If you get stuck at any point, you can ask for help on the <a href="https://devtools-html-slack.herokuapp.com/" target="_blank">DevTools Slack</a>. </p>
-<p>We all make lots of errors when we get started, so don&apos;t worry about that&#x2014;there are safeguards in place to ensure that any commits that land in the Firefox repository are peer-reviewed, can be built, and pass the tests in multiple configurations and operating systems.</p>
-<p>(Note: You can navigate these docs with the arrow keys.)</p>
-<p><a href="getting-started">Let&apos;s get started!</a></p>
+                                <h1 id="preferences">Preferences</h1>
+<p>This documentation aims at giving an overview of the preferences API used in DevTools, it
+is not an actual documentation about the list of preferences available in DevTools.</p>
+<h2 id="overview">Overview</h2>
+<p>Preferences allows you to save and read strings, numbers, booleans to the preferences
+store, which is tied to a profile. A preference can also have a default value.</p>
+<p>The technical solution for handling preferences differs depending whether you are
+testing DevTools as Firefox panel, or a standalone tool running with Launchpad.</p>
+<h2 id="preference-types">Preference types</h2>
+<p>DevTools relies on nsIPrefBranch for preferences, which supports different types of
+preferences:</p>
+<ul>
+<li><code>Int</code></li>
+<li><code>Boolean</code></li>
+<li><code>Char</code></li>
+<li><code>String</code></li>
+</ul>
+<p>Choose the appropriate type depending on the data you need to store. If you need to store
+a JavaScript object or array, the recommended way is to:</p>
+<ul>
+<li>use a <code>String</code> type preference</li>
+<li>use JSON.stringify to save</li>
+<li>use JSON.parse to read</li>
+</ul>
+<p>Note that nsIPrefBranch also supports a <code>Complex</code> type, but this type is not supported
+when running in Launchpad.</p>
+<h2 id="reading-and-updating-preferences">Reading and updating preferences</h2>
+<h3 id="api-docs-for-nsiprefbranch-and-nsiprefservice">API docs for nsIPrefBranch and nsIPrefService</h3>
+<p>DevTools relies on Services.pref to handle preferences. You can access the API docs for
+this service at:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIPrefBranch" target="_blank">API docs for nsIPrefBranch</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIPrefService" target="_blank">API docs for nsIPrefService</a></li>
+</ul>
+<p>If you are using Launchpad, note that only a subset of nsIPrefService methods are
+implemented (addObserver and removeObserver). Launchpad relies on a Services shim file
+provided by devtools-module (<a href="https://github.com/firefox-devtools/devtools-core/blob/master/packages/devtools-modules/src/Services.js" target="_blank">code on GitHub</a>).</p>
+<h3 id="requiring-servicespref">Requiring Services.pref</h3>
+<p>To require Services and use Services.pref, you can normally use the following snippet:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Services = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;Services&quot;</span>);
+</code></pre>
+<p>In the rare event where you don&apos;t have access to the DevTools&apos; require method, you can use</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> { Services } = Components.utils.import(<span class="hljs-string">&quot;resource://gre/modules/Services.jsm&quot;</span>);
+</code></pre>
+<h3 id="servicesprefget-and-servicesprefset">Services.pref.get<em> and Services.pref.set</em></h3>
+<p>The main APIs you will have to know and use are getters and setters.</p>
+<ul>
+<li><code>Services.pref.getIntPref(prefName, defaultValue);</code> This method will throw if the
+preference cannot be found and you didn&apos;t pass a default value!</li>
+<li><code>Services.pref.setIntPref(prefName, prefValue)</code> This method will throw if the provided
+value does not match the preference type!</li>
+</ul>
+<p>These APIs are very similar for each preference type.</p>
+<h2 id="create-a-new-preference">Create a new preference</h2>
+<p>Debugger-specific preferences should go in
+devtools/client/preferences/debugger.js. Beyond that, most new preferences
+should go in browser/app/profile/firefox.js, which is for desktop Firefox only.
+If a preference should be available even when the client for DevTools is not
+shipped (for instance on Fennec) it should go in modules/libpref/init/all.js,
+which is for preferences that go in all products.</p>
+<h3 id="projects-using-launchpad">Projects using Launchpad</h3>
+<p>At the time of writing this doc, projects using Launchpad have to duplicate the default
+definition of a preference.</p>
+<ul>
+<li>debugger.html: update <a href="https://github.com/firefox-devtools/debugger.html/blob/master/src/utils/prefs.js" target="_blank">src/utils/prefs.js</a></li>
+<li>netmonitor: update <a href="http://searchfox.org/mozilla-central/source/devtools/client/netmonitor/index.js" target="_blank">index.js</a></li>
+<li>webconsole: update <a href="http://searchfox.org/mozilla-central/source/devtools/client/webconsole/local-dev/index.js" target="_blank">local-dev/index.js</a></li>
+</ul>
+<h2 id="inspect-preferences">Inspect preferences</h2>
+<p>Depending on the project you are working on, preferences are stored differently but can
+always be inspected.</p>
+<p>In Firefox, you can open a tab to about:config and search by preference name.</p>
+<p>In Launchpad, preferences are actually saved to localStorage. Open DevTools on your
+Launchpad application and inspect the local storage content. You should see entries
+prefixed by <code>Services.prefs:</code>. You will only see preferences where a user-specific value
+has overridden the default value.</p>
 
                                 
                                 </section>
@@ -1115,8 +1184,12 @@
 
             
                 
+                <a href="backend/actor-best-practices.html" class="navigation navigation-prev " aria-label="Previous page: Actor Best Practices">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="getting-started/" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting started">
+                
+                <a href="about-documentation.html" class="navigation navigation-next " aria-label="Next page: About this documentation">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1127,7 +1200,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Getting started","level":"1.2","depth":1,"path":"getting-started/README.md","ref":"getting-started/README.md","articles":[{"title":"Get a Bugzilla account","level":"1.2.1","depth":2,"path":"getting-started/bugzilla.md","ref":"getting-started/bugzilla.md","articles":[]},{"title":"Get and build the code","level":"1.2.2","depth":2,"path":"getting-started/build.md","ref":"getting-started/build.md","articles":[]},{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Preferences","level":"1.9","depth":1,"next":{"title":"About this documentation","level":"1.10","depth":1,"path":"about-documentation.md","ref":"about-documentation.md","articles":[]},"previous":{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"preferences.md","mtime":"2020-02-06T01:15:45.076Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

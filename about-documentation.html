@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>About this documentation · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,8 +63,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="getting-started/" />
     
+    <link rel="prev" href="preferences.html" />
     
 
     </head>
@@ -93,7 +93,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -1021,7 +1021,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.10" data-path="about-documentation.html">
+        <li class="chapter active" data-level="1.10" data-path="about-documentation.html">
             
                 <a href="about-documentation.html">
             
@@ -1064,7 +1064,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Introduction</a>
+        <a href="." >About this documentation</a>
     </h1>
 </div>
 
@@ -1079,15 +1079,28 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="firefox-developer-tools-contributor-docs">Firefox Developer Tools: Contributor Docs</h1>
-<p>Note: This is a guide to working on code contributions to DevTools. If you&apos;re looking for help with using the tools, view the <a href="https://developer.mozilla.org/en-US/docs/Tools" target="_blank">user docs</a> instead. For other ways to get involved, see our <a href="https://firefox-dev.tools" target="_blank">community site</a>.</p>
-<hr>
-<p><strong>Hello,</strong> and thanks for your interest in contributing to Firefox DevTools! </p>
-<p>DevTools is a complex web app, but if you&apos;re familiar with either HTML/CSS or JavaScript, you can create a patch!</p>
-<p>The initial setup process of building Firefox can take a while. If you get stuck at any point, you can ask for help on the <a href="https://devtools-html-slack.herokuapp.com/" target="_blank">DevTools Slack</a>. </p>
-<p>We all make lots of errors when we get started, so don&apos;t worry about that&#x2014;there are safeguards in place to ensure that any commits that land in the Firefox repository are peer-reviewed, can be built, and pass the tests in multiple configurations and operating systems.</p>
-<p>(Note: You can navigate these docs with the arrow keys.)</p>
-<p><a href="getting-started">Let&apos;s get started!</a></p>
+                                <h1 id="about-this-documentation">About this documentation</h1>
+<p>This guide is built with MarkDown files and <a href="https://github.com/GitbookIO/gitbook" target="_blank">GitBook</a>.</p>
+<p>The source code for this documentation is distributed with the source code for the tools, in the <code>docs/</code> folder.</p>
+<p>If you want to contribute to the documentation, <a href="getting-started/build.html#getting-the-code">clone the repository</a>, make your changes locally, and then regenerate the book to see how it looks like before submitting a patch:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># Install GitBook locally</span>
+npm install -g gitbook-cli
+
+<span class="hljs-comment"># Go into the docs directory</span>
+<span class="hljs-built_in">cd</span> /path/to/mozilla-central/devtools/docs/
+
+<span class="hljs-comment"># Install plugins</span>
+gitbook install
+
+<span class="hljs-comment"># Generate the docs and start a local server</span>
+gitbook serve
+
+<span class="hljs-comment"># You can now navigate to localhost:4000 in your browser to see the output</span>
+open http://localhost:4000 <span class="hljs-comment"># this would work in MacOS</span>
+
+<span class="hljs-comment"># Or build the book only (this places the output into `docs/_book`)</span>
+gitbook build
+</code></pre>
 
                                 
                                 </section>
@@ -1115,10 +1128,10 @@
 
             
                 
-                
-                <a href="getting-started/" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting started">
-                    <i class="fa fa-angle-right"></i>
+                <a href="preferences.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Preferences">
+                    <i class="fa fa-angle-left"></i>
                 </a>
+                
                 
             
         
@@ -1127,7 +1140,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Getting started","level":"1.2","depth":1,"path":"getting-started/README.md","ref":"getting-started/README.md","articles":[{"title":"Get a Bugzilla account","level":"1.2.1","depth":2,"path":"getting-started/bugzilla.md","ref":"getting-started/bugzilla.md","articles":[]},{"title":"Get and build the code","level":"1.2.2","depth":2,"path":"getting-started/build.md","ref":"getting-started/build.md","articles":[]},{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"About this documentation","level":"1.10","depth":1,"previous":{"title":"Preferences","level":"1.9","depth":1,"path":"preferences.md","ref":"preferences.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"about-documentation.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

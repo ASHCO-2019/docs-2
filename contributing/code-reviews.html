@@ -1,0 +1,1224 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Code reviews · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-hints/plugin-hints.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="../styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="code-reviews-setup.html" />
+    
+    
+    <link rel="prev" href="fixing-bugs.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../getting-started/">
+            
+                <a href="../getting-started/">
+            
+                    
+                    Getting started
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../getting-started/bugzilla.html">
+            
+                <a href="../getting-started/bugzilla.html">
+            
+                    
+                    Get a Bugzilla account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../getting-started/build.html">
+            
+                <a href="../getting-started/build.html">
+            
+                    
+                    Get and build the code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../getting-started/development-profiles.html">
+            
+                <a href="../getting-started/development-profiles.html">
+            
+                    
+                    Create a development profile
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../contributing.html">
+            
+                <a href="../contributing.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="find-bugs.html">
+            
+                <a href="find-bugs.html">
+            
+                    
+                    Find bugs to work on
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="fixing-bugs.html">
+            
+                <a href="fixing-bugs.html">
+            
+                    
+                    How to fix a bug
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.3" data-path="code-reviews.html">
+            
+                <a href="code-reviews.html">
+            
+                    
+                    Code reviews
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.3.1" data-path="code-reviews-setup.html">
+            
+                <a href="code-reviews-setup.html">
+            
+                    
+                    Set up for code reviews
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.2" data-path="code-reviews-find-reviewer.html">
+            
+                <a href="code-reviews-find-reviewer.html">
+            
+                    
+                    Find a reviewer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.3" data-path="making-prs.html">
+            
+                <a href="making-prs.html">
+            
+                    
+                    Send your code for review
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.4" data-path="code-reviews-checklist.html">
+            
+                <a href="code-reviews-checklist.html">
+            
+                    
+                    Reviews checklist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="landing-code.html">
+            
+                <a href="landing-code.html">
+            
+                    
+                    Landing code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="levelling-up.html">
+            
+                <a href="levelling-up.html">
+            
+                    
+                    Levelling up
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="coding-standards.html">
+            
+                <a href="coding-standards.html">
+            
+                    
+                    Coding standards
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1" data-path="javascript.html">
+            
+                <a href="javascript.html">
+            
+                    
+                    JavaScript
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.6.1.1" data-path="eslint.html">
+            
+                <a href="eslint.html">
+            
+                    
+                    ESLint
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6.2" data-path="css.html">
+            
+                <a href="css.html">
+            
+                    
+                    CSS
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="filing-good-bugs.html">
+            
+                <a href="filing-good-bugs.html">
+            
+                    
+                    Filing good bugs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="performance.html">
+            
+                <a href="performance.html">
+            
+                    
+                    Investigating performance issues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="react-performance-tips.html">
+            
+                <a href="react-performance-tips.html">
+            
+                    
+                    Writing efficient React code
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../tests/">
+            
+                <a href="../tests/">
+            
+                    
+                    Automated tests
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" >
+            
+                <span>
+            
+                    
+                    Running tests
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1.1" data-path="../tests/xpcshell.html">
+            
+                <a href="../tests/xpcshell.html">
+            
+                    
+                    xpcshell
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.2" data-path="../tests/mochitest-chrome.html">
+            
+                <a href="../tests/mochitest-chrome.html">
+            
+                    
+                    Chrome mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.3" data-path="../tests/mochitest-devtools.html">
+            
+                <a href="../tests/mochitest-devtools.html">
+            
+                    
+                    DevTools mochitests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.1.4" data-path="../tests/node-tests.html">
+            
+                <a href="../tests/node-tests.html">
+            
+                    
+                    Node tests
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../tests/writing-tests.html">
+            
+                <a href="../tests/writing-tests.html">
+            
+                    
+                    Writing tests
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../tests/debugging-intermittents.html">
+            
+                <a href="../tests/debugging-intermittents.html">
+            
+                    
+                    Debugging intermittent failures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../tests/performance-tests.html">
+            
+                <a href="../tests/performance-tests.html">
+            
+                    
+                    Performance tests (DAMP)
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.4.1" data-path="../tests/writing-perf-tests.html">
+            
+                <a href="../tests/writing-perf-tests.html">
+            
+                    
+                    Writing a new test
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.2" data-path="../tests/writing-perf-tests-example.html">
+            
+                <a href="../tests/writing-perf-tests-example.html">
+            
+                    
+                    Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4.3" data-path="../tests/writing-perf-tests-tips.html">
+            
+                <a href="../tests/writing-perf-tests-tips.html">
+            
+                    
+                    Avanced tips
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../files/">
+            
+                <a href="../files/">
+            
+                    
+                    Files and directories
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../files/adding-files.html">
+            
+                <a href="../files/adding-files.html">
+            
+                    
+                    Adding New Files
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../tools/tools.html">
+            
+                <a href="../tools/tools.html">
+            
+                    
+                    Tool Architectures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../tools/inspector.html">
+            
+                <a href="../tools/inspector.html">
+            
+                    
+                    Inspector
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="../tools/inspector-panel.html">
+            
+                <a href="../tools/inspector-panel.html">
+            
+                    
+                    Panel Architecture
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.2" data-path="../tools/highlighters.html">
+            
+                <a href="../tools/highlighters.html">
+            
+                    
+                    Highlighters
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../tools/memory-panel.html">
+            
+                <a href="../tools/memory-panel.html">
+            
+                    
+                    Memory
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../tools/debugger-panel.html">
+            
+                <a href="../tools/debugger-panel.html">
+            
+                    
+                    Debugger
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../tools/responsive-design-mode.html">
+            
+                <a href="../tools/responsive-design-mode.html">
+            
+                    
+                    Responsive Design Mode
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../tools/console-panel.html">
+            
+                <a href="../tools/console-panel.html">
+            
+                    
+                    Console
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../frontend/frontend.html">
+            
+                <a href="../frontend/frontend.html">
+            
+                    
+                    Frontend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../frontend/svgs.html">
+            
+                <a href="../frontend/svgs.html">
+            
+                    
+                    Panel SVGs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../frontend/react.html">
+            
+                <a href="../frontend/react.html">
+            
+                    
+                    React
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.2.1" data-path="../frontend/react-guidelines.html">
+            
+                <a href="../frontend/react-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="../frontend/redux.html">
+            
+                <a href="../frontend/redux.html">
+            
+                    
+                    Redux
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.3.1" data-path="../frontend/redux-guidelines.html">
+            
+                <a href="../frontend/redux-guidelines.html">
+            
+                    
+                    Guidelines
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="../frontend/telemetry.html">
+            
+                <a href="../frontend/telemetry.html">
+            
+                    
+                    Telemetry
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="../frontend/csp.html">
+            
+                <a href="../frontend/csp.html">
+            
+                    
+                    Content Security Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../backend/backend.html">
+            
+                <a href="../backend/backend.html">
+            
+                    
+                    Backend
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../backend/protocol.html">
+            
+                <a href="../backend/protocol.html">
+            
+                    
+                    Remote Debugging Protocol
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../backend/client-api.html">
+            
+                <a href="../backend/client-api.html">
+            
+                    
+                    Client API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="../backend/debugger-api.html">
+            
+                <a href="../backend/debugger-api.html">
+            
+                    
+                    Debugger API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.4" data-path="../backend/backward-compatibility.html">
+            
+                <a href="../backend/backward-compatibility.html">
+            
+                    
+                    Backward Compatibility
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5" >
+            
+                <span>
+            
+                    
+                    Actors
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.5.1" data-path="../backend/actor-hierarchy.html">
+            
+                <a href="../backend/actor-hierarchy.html">
+            
+                    
+                    Actors Organization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.2" data-path="../backend/actor-e10s-handling.html">
+            
+                <a href="../backend/actor-e10s-handling.html">
+            
+                    
+                    Handling Multi-Processes in Actors
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.3" data-path="../backend/protocol.js.html">
+            
+                <a href="../backend/protocol.js.html">
+            
+                    
+                    Writing Actors With protocol.js
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.4" data-path="../backend/actor-registration.html">
+            
+                <a href="../backend/actor-registration.html">
+            
+                    
+                    Registering A New Actor
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.5.5" data-path="../backend/actor-best-practices.html">
+            
+                <a href="../backend/actor-best-practices.html">
+            
+                    
+                    Actor Best Practices
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../preferences.html">
+            
+                <a href="../preferences.html">
+            
+                    
+                    Preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../about-documentation.html">
+            
+                <a href="../about-documentation.html">
+            
+                    
+                    About this documentation
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Code reviews</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="code-reviews">Code reviews</h1>
+<p>A review is required before code is added to Mozilla&apos;s repository. In addition, contrary to what you might have seen in other open source projects, code is not pushed directly to the repository. Instead, once the code is approved by reviewers, they will <em>request</em> the code to be <em>landed</em> on the repository.</p>
+<p>All this can be done somehow manually, but we have infrastructure in place to help us with reviews and landing code.</p>
+<p>Learn about how to get started with getting your code reviewed and landed in our <a href="code-reviews-setup.html">setting up</a> guide.</p>
+<p>And read on to learn about why and how we do code reviews.</p>
+<h2 id="why-do-we-do-code-reviews">Why do we do code reviews?</h2>
+<h3 id="quality">Quality</h3>
+<p>Doing code reviews helps with <strong>correctness</strong>. It gives us a chance to check that the code:</p>
+<ul>
+<li>fixes the problem,</li>
+<li>doesn&apos;t have bugs,</li>
+<li>doesn&apos;t regress other things,</li>
+<li>covers edge cases.</li>
+</ul>
+<p>A review is also a chance for the reviewer to check that the right <strong>test coverage</strong> is here, that the change doesn&apos;t have <strong>performance</strong> problems, that it <strong>simplifies hard to understand code</strong> and that it comes with <strong>code comments</strong> and <strong>adequate documentation</strong>.</p>
+<h3 id="learning-and-sharing-knowledge">Learning and sharing knowledge</h3>
+<p>While going through the process of doing a code review, <strong>both the reviewer and the reviewee</strong> will be learning something (a new part of the code, a new efficient way to write code, tests, localization, etc.).</p>
+<p>Making the code easy to understand by the reviewer helps everybody.</p>
+<p>Doing reviews also helps people working on DevTools feel more comfortable and learn about new parts of the codebase.</p>
+<p>It helps build consensus around ideas and practices.</p>
+<h3 id="maintenance">Maintenance</h3>
+<p>Doing reviews gives us an opportunity to check we are willing to maintain and support the new code that being introduced for a feature or bug fix.</p>
+<h3 id="code-consistency">Code consistency</h3>
+<p>It is also a great opportunity for us to check that whatever new code is being written is consistent with what already exists in the code base.</p>
+<h3 id="shared-responsibility">Shared responsibility</h3>
+<p>Approving a code review means that you are the second person who thinks this change is correct and a good idea. Doing this makes you responsible for the code change just as much as the author.</p>
+<p>It is the entire DevTools group who owns the code, not just the author. We write code as a group, not as individuals, because on the long-term it&apos;s the group that maintains it.</p>
+<p>Having a review discussion shares the ownership of the code, because authors and reviewers all put a little bit of themselves in it, and the code that results isn&apos;t just the result of one person&apos;s work</p>
+<h2 id="what-should-be-avoided-in-code-reviews">What should be avoided in code reviews?</h2>
+<ul>
+<li>Style nits that a linter should ideally handle.</li>
+<li>Requests that are outside of the scope of the bug.</li>
+</ul>
+<h2 id="what-are-some-good-practices-for-code-reviews">What are some good practices for code reviews?</h2>
+<h3 id="use-empathetic-language">Use empathetic language.</h3>
+<p>More reading:</p>
+<ul>
+<li><a href="http://amyciavolino.com/assets/MindfulCommunicationInCodeReviews.pdf" target="_blank">Mindful Communication in Code Reviews</a></li>
+<li><a href="https://mtlynch.io/human-code-reviews-1/" target="_blank">How to Do Code Reviews Like a Human</a></li>
+</ul>
+<h3 id="prefer-smaller-commits-over-large-monolithic-commits">Prefer smaller commits over large monolithic commits.</h3>
+<p>It makes it easier for the reviewer to provide a quality review. It&apos;s also easier to get consensus on the change if that change is small. Finally, it&apos;s easier to understand the risk, and find regressions.</p>
+<h3 id="be-explicit">Be explicit</h3>
+<p>Specifically, be explicit about required versus optional changes.</p>
+<p>Reviews are conversations, and the reviewee should feel comfortable on discussing and pushing back on changes before making them.</p>
+<h3 id="be-quick">Be quick</h3>
+<p>As a reviewer, strive to answer in a couple of days, or at least under a week.</p>
+<p>If that is not possible, please update the bug to let the requester know when you&apos;ll get to the review. Or forward it to someone else who has more time.</p>
+<h3 id="ask-for-help">Ask for help</h3>
+<p>Know when you&apos;re out of your comfort zone as a reviewer, and don&apos;t hesitate to ask for an extra review to someone else.</p>
+<p>It&apos;s fine, you can&apos;t know everything, and the more people participate, the more everybody learns, and the more bugs we avoid.</p>
+<h2 id="how-do-we-communicate">How do we communicate?</h2>
+<p>First and foremost, like in any Mozilla-run platforms or events, please abide by <a href="https://www.mozilla.org/en-US/about/governance/policies/participation/" target="_blank">the Community Participation Guidelines</a>.</p>
+<p>Maintainers should <strong>lead by example through their tone and language</strong>. We want to build an inclusive and safe environment for working together.</p>
+<p>As a reviewer, <strong>double-check your comments</strong>. Just because you&apos;re a reviewer and think you have a better solution doesn&apos;t mean that&apos;s true. Assume <strong>the code author has spent more time thinking about this part of the code than you have</strong> (if you&apos;re the reviewer) and might actually be right, even if you originally thought something was wrong. It doesn&apos;t take long to look up the code and double-check.</p>
+<p><strong>Being inclusive</strong> is highly important. We shouldn&apos;t make any assumptions about the person requesting a review, or about the person you&apos;re asking a review from, and always provide as much information as required, in a way that is as inclusive as possible.</p>
+<p>The bug will live forever online, and many people will read it long after the author and reviewers are done.</p>
+<p>Talking over video/IRC/Slack is a great way to get buy-in and share responsibility over a solution. It is also helpful to resolve disagreement and work through issues in a more relaxed environment.</p>
+<p><strong>Do not criticize</strong> the reviewee, talk about the quality of the code on its own, and not directly how the reviewee wrote the code.</p>
+<p>Take the time to thank and point out good code changes.</p>
+<p><strong>Using &quot;please&quot; and &#x201C;what do you think?&#x201D;</strong> goes a long way in making others feel like colleagues, and not subordinates.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="fixing-bugs.html" class="navigation navigation-prev " aria-label="Previous page: How to fix a bug">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="code-reviews-setup.html" class="navigation navigation-next " aria-label="Next page: Set up for code reviews">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Code reviews","level":"1.3.3","depth":2,"next":{"title":"Set up for code reviews","level":"1.3.3.1","depth":3,"path":"contributing/code-reviews-setup.md","ref":"./contributing/code-reviews-setup.md","articles":[]},"previous":{"title":"How to fix a bug","level":"1.3.2","depth":2,"path":"contributing/fixing-bugs.md","ref":"./contributing/fixing-bugs.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"contributing/code-reviews.md","mtime":"2020-02-06T01:15:45.064Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-06T01:17:22.540Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
