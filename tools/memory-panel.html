@@ -1104,7 +1104,7 @@ new data with the <code>HeapAnalysesClient</code>.</p>
 </li>
 </ol>
 <p>Unlike other tools (such as the JavaScript debugger), the memory tool makes very
-little use of the Remote Debugger Server and the actors that reside in it. Use
+little use of the Remote DevTools Server and the actors that reside in it. Use
 of the <a href="devtools/server/actors/memory.js"><code>MemoryActor</code></a> is limited to toggling
 allocation stack recording on and off, and transferring heap snapshots from the
 debuggee (which is on the server) to the <code>HeapAnalysesWorker</code> (which is on the
@@ -1241,7 +1241,7 @@ $PATH</code> command.</p>
 (virtual) DOM. Redux reducers should also be observably pure.</p>
 <p>Impurity within the frontend is confined to the tasks that are creating and
 dispatching actions. All communication with the outside world (such as the
-<code>HeapAnalysesWorker</code>, the Remote Debugger Server, or the file system) is
+<code>HeapAnalysesWorker</code>, the Remote DevTools Server, or the file system) is
 restricted to within these tasks.</p>
 <h3 id="snapshots-state">Snapshots State</h3>
 <p>On the JavaScript side, the snapshots represent a reference to the underlying
@@ -1304,7 +1304,7 @@ are updated in the UI.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Memory","level":"1.6.2","depth":2,"next":{"title":"Debugger","level":"1.6.3","depth":2,"path":"tools/debugger-panel.md","ref":"tools/debugger-panel.md","articles":[]},"previous":{"title":"Highlighters","level":"1.6.1.2","depth":3,"path":"tools/highlighters.md","ref":"tools/highlighters.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/memory-panel.md","mtime":"2020-02-17T01:20:54.202Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-17T01:22:44.923Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Memory","level":"1.6.2","depth":2,"next":{"title":"Debugger","level":"1.6.3","depth":2,"path":"tools/debugger-panel.md","ref":"tools/debugger-panel.md","articles":[]},"previous":{"title":"Highlighters","level":"1.6.1.2","depth":3,"path":"tools/highlighters.md","ref":"tools/highlighters.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/memory-panel.md","mtime":"2020-02-18T01:21:02.099Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-18T01:22:36.150Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
