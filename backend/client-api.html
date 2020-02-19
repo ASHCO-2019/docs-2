@@ -1086,7 +1086,7 @@
 <h2 id="starting-communication">Starting communication</h2>
 <p>In order to communicate, a client and a server instance must be created and a protocol connection must be established. The connection can be either over a TCP socket or an nsIPipe. The <code>start</code> function displayed below establishes an nsIPipe-backed connection:</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> { DevToolsServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/devtools-server&quot;</span>);
-<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
+<span class="hljs-keyword">const</span> { DevToolsClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/devtools-client&quot;</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// Start the server.</span>
@@ -1097,7 +1097,7 @@
   <span class="hljs-keyword">let</span> transport = DevToolsServer.connectPipe();
 
   <span class="hljs-comment">// Start the client.</span>
-  client = <span class="hljs-keyword">new</span> DebuggerClient(transport);
+  client = <span class="hljs-keyword">new</span> DevToolsClient(transport);
 
   client.connect((type, traits) =&gt; {
     <span class="hljs-comment">// Now the client is connected to the server.</span>
@@ -1107,7 +1107,7 @@
 </code></pre>
 <p>If a TCP socket is required, the function should be split in two parts, a server-side and a client-side, like this:</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> { DevToolsServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/devtools-server&quot;</span>);
-<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
+<span class="hljs-keyword">const</span> { DevToolsClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/devtools-client&quot;</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startServer</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// Start the server.</span>
@@ -1119,10 +1119,10 @@
 }
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startClient</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">let</span> transport = <span class="hljs-keyword">await</span> DebuggerClient.socketConnect({ host: <span class="hljs-string">&quot;localhost&quot;</span>, port: <span class="hljs-number">2929</span> });
+  <span class="hljs-keyword">let</span> transport = <span class="hljs-keyword">await</span> DevToolsClient.socketConnect({ host: <span class="hljs-string">&quot;localhost&quot;</span>, port: <span class="hljs-number">2929</span> });
 
   <span class="hljs-comment">// Start the client.</span>
-  client = <span class="hljs-keyword">new</span> DebuggerClient(transport);
+  client = <span class="hljs-keyword">new</span> DevToolsClient(transport);
 
   client.connect((type, traits) =&gt; {
     <span class="hljs-comment">// Now the client is connected to the server.</span>
@@ -1154,7 +1154,7 @@
   });
 }
 </code></pre>
-<p>The debugger client will send event notifications for a number of events the application may be interested in. These events include state changes in the debugger, like pausing and resuming, stack frames or source scripts being ready for retrieval, etc.</p>
+<p>The devtools client will send event notifications for a number of events the application may be interested in. These events include state changes in the debugger, like pausing and resuming, stack frames or source scripts being ready for retrieval, etc.</p>
 <h2 id="handling-location-changes">Handling location changes</h2>
 <p>When the user navigates away from a page, a <code>tabNavigated</code> event will be fired. The proper way to handle this event is to detach from the previous thread and tab and attach to the new ones:</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onTab</span>(<span class="hljs-params"></span>) </span>{
@@ -1193,7 +1193,7 @@ client.attachThread(response.threadActor).then(<span class="hljs-function"><span
  * Debugger API demo.
  */</span>
 <span class="hljs-keyword">const</span> { DevToolsServer } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/server/devtools-server&quot;</span>);
-<span class="hljs-keyword">const</span> { DebuggerClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/debugger-client&quot;</span>);
+<span class="hljs-keyword">const</span> { DevToolsClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;devtools/shared/client/devtools-client&quot;</span>);
 
 <span class="hljs-keyword">let</span> client;
 <span class="hljs-keyword">let</span> threadFront;
@@ -1210,7 +1210,7 @@ client.attachThread(response.threadActor).then(<span class="hljs-function"><span
   <span class="hljs-comment">// let transport = debuggerSocketConnect(host, port);</span>
 
   <span class="hljs-comment">// Start the client.</span>
-  client = <span class="hljs-keyword">new</span> DebuggerClient(transport);
+  client = <span class="hljs-keyword">new</span> DevToolsClient(transport);
   client.connect((type, traits) =&gt; {
     <span class="hljs-comment">// Now the client is connected to the server.</span>
     debugTab();
@@ -1363,7 +1363,7 @@ startDebugger();
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2020-02-18T01:21:02.079Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-18T01:22:36.150Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Client API","level":"1.8.2","depth":2,"next":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"previous":{"title":"Remote Debugging Protocol","level":"1.8.1","depth":2,"path":"backend/protocol.md","ref":"backend/protocol.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/client-api.md","mtime":"2020-02-19T01:21:44.373Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-19T01:23:11.043Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
