@@ -1164,21 +1164,18 @@ mk_add_options MOZ_OBJDIR=./objdir-frontend
 <p>And then you can follow the normal build process again (only <em>faster</em>!)</p>
 <p><strong>Note</strong>: On macOS you might want to use <code>MOZ_OBJDIR=./objdir-frontend.noindex</code> instead. Using the <code>.noindex</code> file extension prevents the Spotlight from indexing your <code>objdir</code>, which is slow.</p>
 <p>For more information on aspects such as technical limitations of artifact builds, read the <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Artifact_builds" target="_blank">Artifact Builds</a> page.</p>
-<h2 id="maybe-you-dont-even-need-to-build">Maybe you don&apos;t even need to build</h2>
-<p>Working in DevTools generally involves editing JavaScript files only. This means that often you don&apos;t even need to run <code>./mach build</code>.</p>
-<p>Instead, you just need to save the files you modified, and restart Firefox. To achieve this, you <em>could</em> quit Firefox, and reopen it again with <code>./mach run</code>. Or you could use the <code>Restart (Developer)</code> option that is available under the <code>File</code> menu in local builds (or its respective shortcut).</p>
-<p><img src="restart.png" alt="Image of Restart (Developer) option under File menu"></p>
-<p>That would be equivalent to the following pseudocode, performed manually:</p>
-<pre><code class="lang-bash"><span class="hljs-comment"># 1. Build</span>
-./mach build
-<span class="hljs-comment"># 2. Run</span>
-./mach run
-<span class="hljs-comment"># 3. you try out things in the browser that opens</span>
-<span class="hljs-comment"># 4. fully close the browser, e.g. &#x2318;Q in MacOS</span>
-<span class="hljs-comment"># 5. edit JS files on the `devtools` folder, save</span>
-<span class="hljs-comment"># 6. Back to step 2!</span>
-./mach run
-</code></pre>
+<h3 id="updating-worker-code-requires-a-few-extra-steps">Updating worker code requires a few extra steps</h3>
+<h4 id="prerequisite">Prerequisite</h4>
+<ol>
+<li>Install yarn 1.x globally via <code>npm install -g yarn</code> if you do not have it installed globally already.</li>
+<li>Go to the <code>client/debugger/</code> directory and run <code>npm install</code>.</li>
+</ol>
+<h4 id="regenerating-work-bundle">Regenerating work bundle</h4>
+<ol>
+<li>Save the modified files.</li>
+<li>Back in your terminal, under <code>client/debugger/</code> directory, execute <code>node bin/build</code>.</li>
+<li>After completion, use the <code>Restart (Developer)</code> option that is available under the <code>File</code> menu in local builds (or its respective shortcut).</li>
+</ol>
 
                                 
                                 </section>
@@ -1222,7 +1219,7 @@ mk_add_options MOZ_OBJDIR=./objdir-frontend
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Get and build the code","level":"1.2.2","depth":2,"next":{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]},"previous":{"title":"Get a Bugzilla account","level":"1.2.1","depth":2,"path":"getting-started/bugzilla.md","ref":"getting-started/bugzilla.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"getting-started/build.md","mtime":"2020-06-30T02:28:19.201Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-30T02:29:53.318Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Get and build the code","level":"1.2.2","depth":2,"next":{"title":"Create a development profile","level":"1.2.3","depth":2,"path":"getting-started/development-profiles.md","ref":"getting-started/development-profiles.md","articles":[]},"previous":{"title":"Get a Bugzilla account","level":"1.2.1","depth":2,"path":"getting-started/bugzilla.md","ref":"getting-started/bugzilla.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"getting-started/build.md","mtime":"2020-07-01T02:28:41.603Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-07-01T02:30:08.393Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
