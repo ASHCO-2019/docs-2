@@ -1090,61 +1090,12 @@
 <ul>
 <li>the exact form of a css shape,</li>
 <li>how a css transform applied to an element,</li>
-<li>where are the color stops of a css gradient,</li>
 <li>which are all the elements that match a given selector,</li>
 <li>...</li>
 </ul>
 <h2 id="using-highlighters">Using highlighters</h2>
 <p>Highlighters run on the debuggee side, not on the toolbox side. This is so that it&apos;s possible to highlight elements on a remote device for instance. This means you need to go through the <a href="protocol.md">Remote Debugging Protocol</a> to use a highlighter.</p>
-<p>Since the box-model highlighter (HighlighterFront) is the most used type of highlighter (for instance it&apos;s displayed when you move your mouse over nodes in the inspector), the HighlighterFront provides a custom set of methods to interact with it:</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>startPicker()</code></td>
-<td>Starts the node picker mode which will highlight every node you hover over in the page, and will change the current node selection in the inspector on click. &#x201C;picker-node-hovered&#x201D; and &#x201C;picker-node-picked&#x201D; events are sent.</td>
-</tr>
-<tr>
-<td><code>stopPicker()</code></td>
-<td>Stops the node picker mode.</td>
-</tr>
-<tr>
-<td><code>highlightNodeFront(nodeFront)</code></td>
-<td>Display the box-model highlighter on a given node. NodeFront objects are what the WalkerActor return.</td>
-</tr>
-<tr>
-<td><code>highlightDomValueGrip(valueGrip)</code></td>
-<td>Display the box-model highlighter on a given node, represented by a debugger object value grip.</td>
-</tr>
-<tr>
-<td><code>unhighlight()</code></td>
-<td>Hide the box-model highlighter.</td>
-</tr>
-</tbody>
-</table>
-<p>Not all methods that are related to highlighters are present on the HighlighterFront. The
-<code>highlightDomValueGrip</code> method also requires the WalkerFront in order to transform a Grip into a
-NodeFront. Therefore, methods that access other Fronts are available on the InspectorFront.</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>highlightDomValueGrip(valueGrip)</code></td>
-<td>Display the box-model highlighter on a given node, represented by a debugger object value grip.</td>
-</tr>
-</tbody>
-</table>
-<p>But the box-model highlighter isn&apos;t the only type of highlighter, so the InspectorFront also provides the following method:</p>
+<p>The InspectorFront provides the following method:</p>
 <table>
 <thead>
 <tr>
@@ -1155,12 +1106,12 @@ NodeFront. Therefore, methods that access other Fronts are available on the Insp
 <tbody>
 <tr>
 <td><code>getHighlighterByType(typeName)</code></td>
-<td>Instantiate a new highlighter, given its type (as a String). At the time of writing, the available types of highlighters are: <code>BoxModelHighlighter</code>, <code>CssTransformHighlighter</code>, <code>SelectorHighlighter</code> and <code>RectHighlighter</code>. This returns a promise that resolves to the new instance of <a href="https://wiki.mozilla.org/DevTools/protocol.js" target="_blank">protocol.js</a> actor.</td>
+<td>Instantiate a new highlighter, given its type (as a String). At the time of writing, the available types of highlighters are: <code>CssGridHighlighter</code>, <code>BoxModelHighlighter</code>, <code>CssTransformHighlighter</code>, <code>FlexboxHighlighter</code>, <code>FontsHighlighter</code>, <code>GeometryEditorHighlighter</code>, <code>MeasuringToolHighlighter</code>, <code>PausedDebuggerOverlay</code>, <code>RulersHighlighter</code>, <code>SelectorHighlighter</code> and <code>ShapesHighlighter</code>. This returns a promise that resolves to the new instance of <a href="https://wiki.mozilla.org/DevTools/protocol.js" target="_blank">protocol.js</a> actor.</td>
 </tr>
 </tbody>
 </table>
 <h3 id="the-highlighter-api">The highlighter API</h3>
-<p>When getting a highlighter via <code>toolbox.inspector.getHighlighterByType(typeName)</code>, the right type of highlighter will be instantiated on the server-side and will be wrapped into a <code>CustomHighlighterActor</code> and that&apos;s what will be returned to the caller. This means that all types of highlighters share the same following API:</p>
+<p>When getting a highlighter via <code>InspectorFront.getHighlighterByType(typeName)</code>, the right type of highlighter will be instantiated on the server-side and will be wrapped into a <code>CustomHighlighterActor</code> and that&apos;s what will be returned to the caller. This means that all types of highlighters share the same following API:</p>
 <table>
 <thead>
 <tr>
@@ -1395,7 +1346,7 @@ NodeFront. Therefore, methods that access other Fronts are available on the Insp
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Highlighters","level":"1.6.1.2","depth":3,"next":{"title":"Memory","level":"1.6.2","depth":2,"path":"tools/memory-panel.md","ref":"tools/memory-panel.md","articles":[]},"previous":{"title":"Panel Architecture","level":"1.6.1.1","depth":3,"path":"tools/inspector-panel.md","ref":"tools/inspector-panel.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/highlighters.md","mtime":"2020-10-23T03:49:18.873Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-23T03:50:47.029Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Highlighters","level":"1.6.1.2","depth":3,"next":{"title":"Memory","level":"1.6.2","depth":2,"path":"tools/memory-panel.md","ref":"tools/memory-panel.md","articles":[]},"previous":{"title":"Panel Architecture","level":"1.6.1.1","depth":3,"path":"tools/inspector-panel.md","ref":"tools/inspector-panel.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tools/highlighters.md","mtime":"2020-10-24T03:40:57.922Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-24T03:42:25.000Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
