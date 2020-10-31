@@ -1108,7 +1108,7 @@ Using <code>yarn &amp;&amp; yarn test</code> would only run the Jest tests, whil
 <h3 id="devtools">DevTools</h3>
 <p>To run the other (non-debugger) DevTools tests, the easiest is to rely on the same script as the one used to run the tests on try:</p>
 <pre><code>&gt; node devtools/client/bin/devtools-node-test-runner.js --suite={suitename}
-</code></pre><p>At the moment of writing, the supported suites for this script are: </p>
+</code></pre><p>At the moment of writing, the supported suites for this script are:</p>
 <ul>
 <li><code>aboutdebugging</code></li>
 <li><code>accessibility</code></li>
@@ -1116,6 +1116,7 @@ Using <code>yarn &amp;&amp; yarn test</code> would only run the Jest tests, whil
 <li><code>compatibility</code></li>
 <li><code>framework</code></li>
 <li><code>netmonitor</code></li>
+<li><code>performance</code></li>
 <li><code>shared_components</code></li>
 <li><code>webconsole</code></li>
 </ul>
@@ -1128,6 +1129,8 @@ Using <code>yarn &amp;&amp; yarn test</code> would only run the Jest tests, whil
 </code></pre><p>It should also mention the command you can run to update the snapshots:</p>
 <pre><code>Inspect your code changes or run `yarn run test-ci -u` to update them.
 </code></pre><p>For example, if you need to update snapshots in a specific panel, first locate the package.json corresponding to the node test folder of the panel. In theory it should be under <code>devtools/client/{panelname}/test/node/</code> but it might be slightly different depending on each panel. Then run <code>yarn run test-ci -u</code> in this folder and add the snapshot changes to your commit.</p>
+<h2 id="typescript">TypeScript</h2>
+<p>The &quot;performance&quot; suite performs TypeScript checks. The TypeScript usage in the performance panel is documented at <a href="https://searchfox.org/mozilla-central/source/devtools/client/performance-new/typescript.md" target="_blank">devtools/client/performance-new/typescript.md</a> (<a href="https://github.com/mozilla/gecko-dev/blob/master/devtools/client/performance-new/typescript.md" target="_blank">see rendered version on GitHub</a>).</p>
 
                                 
                                 </section>
@@ -1171,7 +1174,7 @@ Using <code>yarn &amp;&amp; yarn test</code> would only run the Jest tests, whil
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Node tests","level":"1.4.1.4","depth":3,"next":{"title":"Writing tests","level":"1.4.2","depth":2,"path":"tests/writing-tests.md","ref":"tests/writing-tests.md","articles":[]},"previous":{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"path":"tests/mochitest-devtools.md","ref":"tests/mochitest-devtools.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/node-tests.md","mtime":"2020-10-30T03:57:36.590Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-30T03:59:07.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Node tests","level":"1.4.1.4","depth":3,"next":{"title":"Writing tests","level":"1.4.2","depth":2,"path":"tests/writing-tests.md","ref":"tests/writing-tests.md","articles":[]},"previous":{"title":"DevTools mochitests","level":"1.4.1.3","depth":3,"path":"tests/mochitest-devtools.md","ref":"tests/mochitest-devtools.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tests/node-tests.md","mtime":"2020-10-31T03:52:37.630Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-31T03:54:03.345Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
