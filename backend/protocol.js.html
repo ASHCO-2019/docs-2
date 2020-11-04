@@ -1526,60 +1526,7 @@ getSibling: function (id) {
 </code></pre><p>This creates a new child actor owned by the current child actor.  But in this example we want all actors created by the child to be owned by the HelloActor.  So we can define a <code>defaultParent</code> property that makes use of the <code>parent</code> property provided by the Actor class:</p>
 <pre><code>get marshallPool() { return this.parent }
 </code></pre><p>The front needs to provide a matching <code>defaultParent</code> property that returns an owning front, to make sure the client and server lifetimes stay synced.</p>
-<p>For more complex situations, you can define your own lifetime properties.  Take this new pair of HelloActor methods:</p>
-<pre><code>// When the &quot;temp&quot; lifetime is specified, look for the _temporaryParent attribute as the owner.
-types.addLifetime(&quot;temp&quot;, &quot;_temporaryParent&quot;);
 
-// spec:
-methods: {
-  getTemporaryChild: {
-    request: { id: Arg(0) },
-    response: {
-      child: RetVal(&quot;temp:childActor&quot;) // use the lifetime name here to specify the expected lifetime.
-    }
-  },
-  clearTemporaryChildren: {
-    oneway: true
-  }
-}
-
-// implementation:
-getTemporaryChild: function (id) {
-  if (!this._temporaryParent) {
-    // Create an actor to serve as the parent for all temporary children and explicitly
-    // add it as a child of this actor.
-    this._temporaryParent = new Actor(this.conn));
-    this.manage(this._temporaryParent);
-  }
-  return new ChildActor(this.conn, id);
-}
-
-clearTemporaryChildren: function () {
-  if (this._temporaryParent) {
-    this._temporaryParent.destroy();
-    delete this._temporaryParent;
-  }
-}
-</code></pre><p>This will require some matching work on the front:</p>
-<pre><code>getTemporaryChild: protocol.custom(function (id) {
-    if (!this._temporaryParent) {
-        this._temporaryParent = this.manage(new Front(this.client));
-    }
-    return this._getTemporaryChild(id);
-}, {
-    impl: &quot;_getTemporaryChild&quot;
-}),
-
-clearTemporaryChildren: protocol.custom(function (id) {
-    if (this._temporaryParent) {
-        this._temporaryParent.destroy();
-        delete this._temporaryParent;
-    }
-    return this._clearTemporaryChildren();
-}, {
-    impl: &quot;_clearTemporaryChildren&quot;
-})
-</code></pre>
                                 
                                 </section>
                             
@@ -1622,7 +1569,7 @@ clearTemporaryChildren: protocol.custom(function (id) {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2020-11-03T03:54:50.640Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-03T03:56:16.615Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"next":{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},"previous":{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/protocol.js.md","mtime":"2020-11-04T03:51:33.097Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-04T03:53:06.763Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
