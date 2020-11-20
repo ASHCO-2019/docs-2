@@ -1097,6 +1097,17 @@
 <h2 id="testing">Testing</h2>
 <p>The harder part of this currently is that there is no automated testing to ensure the above guidelines have been met. While we hope to have this at some point, for now manual testing is needed here.</p>
 <p>The easiest way to test this is to check your work against a Firefox for Android device on release channel to ensure existing features in the area you are changing continue to function. That doesn&apos;t cover every case, but it&apos;s a great start.</p>
+<p>Alternatively, you can connect to a Firefox release server. This can be done in multiple steps:</p>
+<ol>
+<li>Start Firefox release from the command line, specifying the <code>--start-debugger-server</code> with an available port (e.g. <code>/Applications/Firefox.app/Contents/MacOS/firefox --start-debugger-server 6081</code>)</li>
+<li>Navigate to a page where you can check that the part of DevTools which is impacted by the patch still works.</li>
+<li>Build and run Firefox locally with the patch you want to check</li>
+<li>In this build, open an <code>about:debugging</code> tab</li>
+<li>On the <code>Network Location</code> section, fill in the host with localhost and the debugger server port you started the Firefox release instance with (e.g. <code>localhost:6081</code>) and hit Enter (or the <code>Add</code> button)</li>
+<li>A new item will appear in the sidebar, click on its <code>Connect</code> button.</li>
+<li>Accept the <code>Incoming connection</code> popup that appears</li>
+<li>Click on the on sidebar item again. You will now see a list of the tabs and workers running in the Firefox release instance. Click on the <code>Inspect</code> button next to them to open a toolbox that is connected to the older server.</li>
+</ol>
 <h2 id="feature-detection">Feature Detection</h2>
 <p>Starting with Firefox 36 (thanks to <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1069673" target="_blank">bug 1069673</a>), you can use actor feature detection to determine which actors exist.</p>
 <h3 id="target-hasactor-helper">Target hasActor helper</h3>
@@ -1120,10 +1131,17 @@
 </ul>
 <p>Ironically, &quot;getTraits&quot; needs to be handled with backwards compatibility. But there is no way to check that &quot;getTraits&quot; is available on the server other than performing a try catch around the method. See the CompatibilityFront example.</p>
 <p>Whenever traits are added, make sure to add a relevant backward compatibility comment so that we know when the trait can be removed.</p>
-<h2 id="removing-old-backward-compatibility-code">Removing old backward compatibility code</h2>
-<p>We used to support old Firefox OS servers (back to Gecko 28), we don&apos;t anymore. Does this mean we can remove compatibility traits for it?</p>
-<p>Maybe. Keep in mind that we still want to support Firefox for Android back to release channel, so we still want to keep traits in general. That&apos;s a much smaller time window than we supported for Firefox OS, so it should allow for some simplification.</p>
-<p>The type of compatibility that could now be removed are things where the protocol semantics changed in some Gecko older than release channel and the trait is not useful for saying &quot;I don&apos;t support feature X&quot;.</p>
+<h2 id="maintaining-backward-compatibility-code">Maintaining backward compatibility code</h2>
+<p>When introducing backward compatibility code, a comment should be added for extra information.
+In order to simplify future code cleanups, the comment should follow the following syntax:
+<code>// @backward-compat { added in XX } Detailed comment</code>, where <code>XX</code> is the Firefox version this code was added in.</p>
+<p>Below is a made-up example of what it should look like:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// @backward-compat { added in 85 } For older server which don&apos;t have the AwesomeActor,</span>
+<span class="hljs-comment">//                                  we have to do this another way.</span>
+<span class="hljs-keyword">if</span> (!toolbox.target.hasActor(<span class="hljs-string">&quot;awesome&quot;</span>)) {
+</code></pre>
+<p>Backward compatibility code can be safely removed when the revision it was added in reaches the release channel.
+So if something landed in Firefox Nightly 85, it can be removed when Firefox 85 is released, i.e. when Firefox Nightly is 87. Search for the corresponding <code>@backward-compat</code> entries to retrieve all the code that can be removed.</p>
 
                                 
                                 </section>
@@ -1163,7 +1181,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Backward Compatibility","level":"1.8.4","depth":2,"next":{"title":"Actors","level":"1.8.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.8.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"previous":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/backward-compatibility.md","mtime":"2020-11-19T03:59:29.869Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-19T04:01:00.331Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Backward Compatibility","level":"1.8.4","depth":2,"next":{"title":"Actors","level":"1.8.5","depth":2,"ref":"","articles":[{"title":"Actors Organization","level":"1.8.5.1","depth":3,"path":"backend/actor-hierarchy.md","ref":"backend/actor-hierarchy.md","articles":[]},{"title":"Handling Multi-Processes in Actors","level":"1.8.5.2","depth":3,"path":"backend/actor-e10s-handling.md","ref":"backend/actor-e10s-handling.md","articles":[]},{"title":"Writing Actors With protocol.js","level":"1.8.5.3","depth":3,"path":"backend/protocol.js.md","ref":"backend/protocol.js.md","articles":[]},{"title":"Registering A New Actor","level":"1.8.5.4","depth":3,"path":"backend/actor-registration.md","ref":"backend/actor-registration.md","articles":[]},{"title":"Actor Best Practices","level":"1.8.5.5","depth":3,"path":"backend/actor-best-practices.md","ref":"backend/actor-best-practices.md","articles":[]}]},"previous":{"title":"Debugger API","level":"1.8.3","depth":2,"path":"backend/debugger-api.md","ref":"backend/debugger-api.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["hints"],"pluginsConfig":{"hints":{"danger":"fa fa-exclamation-circle","info":"fa fa-info-circle","tip":"fa fa-mortar-board","working":"fa fa-wrench"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"index.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"backend/backward-compatibility.md","mtime":"2020-11-20T04:49:26.488Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-20T04:50:56.025Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
